@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "623757eabd831fd445adb5e8b2095c9a",
+    "content-hash": "dc322d5b1888ba73ec9eb3ee56db04b2",
     "packages": [
         {
             "name": "barryvdh/laravel-dompdf",
@@ -57,16 +57,10 @@
         {
             "name": "davejamesmiller/laravel-breadcrumbs",
             "version": "3.0.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/davejamesmiller/laravel-breadcrumbs.git",
-                "reference": "0b0f4792dee645b0f084164aa17d4320e4bb734f"
-            },
             "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/davejamesmiller/laravel-breadcrumbs/zipball/0b0f4792dee645b0f084164aa17d4320e4bb734f",
-                "reference": "0b0f4792dee645b0f084164aa17d4320e4bb734f",
-                "shasum": ""
+                "type": "path",
+                "url": "../laravel-breadcrumbs-3.0.3",
+                "reference": "f8da96e3961f4bd747062eb378aeea3b124419ce"
             },
             "require": {
                 "illuminate/support": "5.*",
@@ -84,7 +78,6 @@
                     "DaveJamesMiller\\Breadcrumbs\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT License"
             ],
@@ -100,7 +93,9 @@
             "keywords": [
                 "laravel"
             ],
-            "time": "2017-06-24T11:10:49+00:00"
+            "transport-options": {
+                "relative": true
+            }
         },
         {
             "name": "doctrine/cache",
@@ -4485,5 +4480,6 @@
     "platform": {
         "php": ">=5.6.4"
     },
-    "platform-dev": []
+    "platform-dev": [],
+    "plugin-api-version": "2.2.0"
 }

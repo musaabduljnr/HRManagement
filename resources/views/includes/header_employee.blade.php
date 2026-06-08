@@ -54,6 +54,9 @@
             @endif
             </a>
         </li>
+        <li class="{{ Request::is('employee/attendance*') ? 'active' : ''}}">
+          <a href="{{route('employee.attendance.qr')}}"> QR Attendance</a>
+        </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li class="dropdown">

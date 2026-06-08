@@ -63,6 +63,15 @@
             @endif
           </a>
         </li>
+        <li class="dropdown {{ Request::is('admin/attendance*') ? 'active' : ''}}">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+            Attendance <span class="caret"></span>
+          </a>
+          <ul class="dropdown-menu">
+            <li><a href="{{route('attendance.index')}}">Daily Logs</a></li>
+            <li><a href="{{route('attendance.scanner')}}">Scanner Kiosk</a></li>
+          </ul>
+        </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li class="dropdown">

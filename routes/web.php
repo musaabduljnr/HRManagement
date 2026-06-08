@@ -404,6 +404,19 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function(
             'destroy' => 'documents.destroy'
         ]]);      
     });
+
+    Route::get('attendance/scanner', '\App\Modules\Attendance\Http\Controllers\AttendanceController@scanner')->name('attendance.scanner');
+    Route::get('attendance/recent', '\App\Modules\Attendance\Http\Controllers\AttendanceController@recent')->name('attendance.recent');
+    Route::post('attendance/scan', '\App\Modules\Attendance\Http\Controllers\AttendanceController@scan')->name('attendance.scan');
+    Route::resource('attendance', '\App\Modules\Attendance\Http\Controllers\AttendanceController', [
+        'only' => ['index', 'store', 'update', 'destroy'],
+        'names' => [
+            'index' => 'attendance.index',
+            'store' => 'attendance.store',
+            'update' => 'attendance.update',
+            'destroy' => 'attendance.destroy',
+        ]
+    ]);
 });
 Route::group(['prefix' => 'employee', 'as' => 'employee.', 'middleware' => ['auth', 'employee']], function() {
     Route::get('/', '\App\Http\Controllers\Employee\HomeController@index')
@@ -462,5 +475,7 @@ Route::group(['prefix' => 'employee', 'as' => 'employee.', 'middleware' => ['aut
         'update' => 'leaves.update',
         'destroy' => 'leaves.destroy'
     ]]);
+
+    Route::get('attendance/qr', '\App\Modules\Attendance\Http\Controllers\AttendanceController@qr')->name('attendance.qr');
 });
 Auth::routes();
