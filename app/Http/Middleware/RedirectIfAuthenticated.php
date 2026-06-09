@@ -19,10 +19,10 @@ class RedirectIfAuthenticated
     public function handle($request, Closure $next, $guard = null)
     {
         if (Auth::guard($guard)->check()) {
-            if (Auth::user()->role == User::USER_ROLE_EMPLOYEE) {
-                return redirect()->to('/employee');
-            } else if (Auth::user()->role == User::USER_ROLE_ADMIN) {
+            if (in_array(Auth::user()->role, [User::USER_ROLE_ADMIN, User::USER_ROLE_HR_MANAGER, User::USER_ROLE_PAYROLL_MANAGER, User::USER_ROLE_DEPT_MANAGER])) {
                 return redirect()->to('/admin');
+            } else {
+                return redirect()->to('/employee');
             }
         }
 

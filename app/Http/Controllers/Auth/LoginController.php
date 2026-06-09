@@ -40,4 +40,18 @@ class LoginController extends Controller
     {
         $this->middleware('guest', ['except' => 'logout']);
     }
+
+    protected function authenticated(Request $request, $user)
+    {
+        if (in_array($user->role, [
+            User::USER_ROLE_ADMIN,
+            User::USER_ROLE_HR_MANAGER,
+            User::USER_ROLE_PAYROLL_MANAGER,
+            User::USER_ROLE_DEPT_MANAGER
+        ])) {
+            return redirect()->to('/admin');
+        }
+
+        return redirect()->to('/employee');
+    }
 }
