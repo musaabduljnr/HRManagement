@@ -153,6 +153,49 @@
                 </div>
             </div>
         </div>
+
+        <!-- Latest Messages from HR -->
+        <div class="custom-panel" style="margin-top: 20px;">
+            <div class="custom-panel-heading"><i class="fa fa-envelope-o"></i> Recent Messages from HR</div>
+            <div class="panel-body" style="padding: 0;">
+                <?php
+                    $latestHrMessages = \App\Modules\Chat\Models\Conversation::with(['hrManager', 'creator'])
+                        ->where('employee_id', Auth::id())
+                        ->orderBy('last_message_at', 'desc')
+                        ->take(3)
+                        ->get();
+                ?>
+                <ul class="list-group" style="margin-bottom: 0;">
+                    @forelse($latestHrMessages as $chat)
+                        <?php 
+                            $hrSender = $chat->hrManager ?: $chat->creator;
+                            $unread = $chat->unreadMessagesCount();
+                        ?>
+                        <li class="list-group-item" style="border-left: none; border-right: none; display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <a href="{{ route('employee.chat.index', ['conversation_id' => $chat->id]) }}" style="font-weight: bold; text-decoration: none; color: #1e3c72;">
+                                    HR: {{ $hrSender ? $hrSender->first_name . ' ' . $hrSender->last_name : 'Admin' }}
+                                </a>
+                                <div style="font-size: 12px; color: #555; margin-top: 2px;">
+                                    Subject: <strong>{{ $chat->subject }}</strong>
+                                </div>
+                                <div style="font-size: 11px; color: #777; margin-top: 2px;">
+                                    Last message &bull; {{ $chat->last_message_at ? $chat->last_message_at->diffForHumans() : '' }}
+                                </div>
+                            </div>
+                            @if($unread > 0)
+                                <span class="badge" style="background-color: #27ae60; color: white;">{{ $unread }}</span>
+                            @endif
+                        </li>
+                    @empty
+                        <li class="list-group-item text-center text-muted" style="padding: 30px 10px;">No message threads from HR.</li>
+                    @endforelse
+                </ul>
+                <div class="panel-footer text-center" style="background: white; border-top: 1px solid #eee;">
+                    <a href="{{ route('employee.chat.index') }}" class="btn btn-default btn-xs btn-block">Open HR Inbox</a>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 

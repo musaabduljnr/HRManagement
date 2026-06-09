@@ -477,6 +477,10 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function(
     });
     Route::get('hr-assistant', '\App\Http\Controllers\Admin\HrAssistantController@index')->name('assistant.index');
     Route::post('hr-assistant/ask', '\App\Http\Controllers\Admin\HrAssistantController@ask')->name('assistant.ask');
+
+    Route::get('chat', '\App\Modules\Chat\Http\Controllers\ChatController@index')->name('chat.index');
+    Route::post('chat', '\App\Modules\Chat\Http\Controllers\ChatController@store')->name('chat.store');
+    Route::post('chat/{id}/reply', '\App\Modules\Chat\Http\Controllers\ChatController@reply')->name('chat.reply');
 });
 Route::group(['prefix' => 'employee', 'as' => 'employee.', 'middleware' => ['auth', 'employee']], function() {
     Route::get('/', '\App\Http\Controllers\Employee\HomeController@index')
@@ -550,5 +554,8 @@ Route::group(['prefix' => 'employee', 'as' => 'employee.', 'middleware' => ['aut
     
     Route::get('hr-assistant', '\App\Http\Controllers\Admin\HrAssistantController@index')->name('assistant.index');
     Route::post('hr-assistant/ask', '\App\Http\Controllers\Admin\HrAssistantController@ask')->name('assistant.ask');
+
+    Route::get('chat', '\App\Modules\Chat\Http\Controllers\EmployeeChatController@index')->name('chat.index');
+    Route::post('chat/{id}/reply', '\App\Modules\Chat\Http\Controllers\EmployeeChatController@reply')->name('chat.reply');
 });
 Auth::routes();

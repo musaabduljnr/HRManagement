@@ -1245,3 +1245,15 @@ Breadcrumbs::register('employee.assistant.index', function($breadcrumbs) {
     $breadcrumbs->push('AI HR Assistant', route('employee.assistant.index'));
 });
 
+// Admin Chat
+Breadcrumbs::register('chat.index', function($breadcrumbs) {
+    $breadcrumbs->parent('home');
+    $breadcrumbs->push('Internal HR Chat', route('chat.index'));
+});
+
+// Employee Chat
+Breadcrumbs::register('employee.chat.index', function($breadcrumbs) {
+    $breadcrumbs->parent('employee.home');
+    $breadcrumbs->push('HR Messaging Inbox', route('employee.chat.index'));
+});
+

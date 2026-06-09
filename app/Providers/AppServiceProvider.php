@@ -28,6 +28,7 @@ class AppServiceProvider extends ServiceProvider
         View::addNamespace('dashboard', base_path('app/Modules/Dashboard/resources/views'));
         View::addNamespace('employee.dashboard_documents', base_path('app/Modules/Employee/Dashboard/resources/views'));
         View::addNamespace('attendance', base_path('app/Modules/Attendance/resources/views'));
+        View::addNamespace('chat', base_path('app/Modules/Chat/resources/views'));
     }
 
     /**

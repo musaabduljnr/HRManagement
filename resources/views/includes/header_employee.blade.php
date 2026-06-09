@@ -67,6 +67,19 @@
         <li class="{{ Request::is('employee/hr-assistant*') ? 'active' : ''}}">
           <a href="{{route('employee.assistant.index')}}"><i class="fa fa-android"></i> AI Assistant</a>
         </li>
+        <?php
+            $unreadChatCount = \App\Modules\Chat\Models\Message::where('receiver_id', Auth::id())->whereNull('read_at')->count();
+        ?>
+        <li class="{{ $current == 'employee.chat' ? 'active' : ''}}">
+          <a href="{{route('employee.chat.index')}}">Messages 
+            @if($unreadChatCount > 0)
+              <span class="label label-danger" style="border-radius: 10px; padding: 2px 6px;">{{ $unreadChatCount }}</span>
+            @endif
+            @if($current == 'employee.chat') 
+              <span class="sr-only">({{trans('app.current')}})</span>
+            @endif
+          </a>
+        </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li class="dropdown">
