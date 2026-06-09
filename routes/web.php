@@ -548,7 +548,7 @@ Route::group(['prefix' => 'employee', 'as' => 'employee.', 'middleware' => ['aut
     Route::get('attendance/qr', '\App\Modules\Attendance\Http\Controllers\AttendanceController@qr')->name('attendance.qr');
     Route::post('attendance/web-clock', '\App\Modules\Attendance\Http\Controllers\AttendanceController@webClock')->name('attendance.web_clock');
     
-    Route::get('hr-assistant', '\App\Http\Controllers\Admin\HrAssistantController@index')->name('employee.assistant.index');
-    Route::post('hr-assistant/ask', '\App\Http\Controllers\Admin\HrAssistantController@ask')->name('employee.assistant.ask');
+    Route::get('hr-assistant', '\App\Http\Controllers\Admin\HrAssistantController@index')->name('assistant.index');
+    Route::post('hr-assistant/ask', '\App\Http\Controllers\Admin\HrAssistantController@ask')->name('assistant.ask');
 });
 Auth::routes();
