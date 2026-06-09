@@ -1,116 +1,127 @@
-@extends ('layouts.main')
+@extends('layouts.main')
 
 @section('content')
-<div class="row" style="margin-bottom: 20px;">
-    <!-- Card 1: Total Employees -->
-    <div class="col-lg-3 col-md-6">
-        <div class="panel panel-primary" style="border-radius: 6px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
-            <div class="panel-heading" style="padding: 15px;">
-                <div class="row">
-                    <div class="col-xs-3">
-                        <i class="fa fa-users fa-4x"></i>
-                    </div>
-                    <div class="col-xs-9 text-right">
-                        <div class="huge" style="font-size: 32px; font-weight: bold;">{{ $totalEmployees }}</div>
-                        <div>Total Employees</div>
-                    </div>
-                </div>
+
+{{-- Page Header --}}
+<div class="page-header-bar">
+    <div>
+        <h1 class="page-title">Dashboard</h1>
+        <p class="page-subtitle">Welcome back, {{ Auth::user()->first_name }}! Here's what's happening today.</p>
+    </div>
+    <div>
+        <span style="font-size:13px; color:var(--text-muted);">
+            <i class="fa fa-calendar"></i> {{ \Carbon\Carbon::now()->format('l, F j Y') }}
+        </span>
+    </div>
+</div>
+
+{{-- Stat Cards Row --}}
+<div class="row" style="margin-bottom: 24px;">
+    <div class="col-lg-3 col-md-6" style="margin-bottom: 16px;">
+        <div class="stat-card">
+            <div class="stat-icon primary">
+                <i class="fa fa-users"></i>
             </div>
-            <div class="panel-footer" style="padding: 10px 15px;">
-                <span class="pull-left"><span class="label label-info">Active: {{ $activeEmployees }}</span></span>
-                <div class="clearfix"></div>
+            <div>
+                <div class="stat-value">{{ $totalEmployees }}</div>
+                <div class="stat-label">Total Employees</div>
+                <div class="stat-sub">
+                    <span class="label label-success">Active: {{ $activeEmployees }}</span>
+                </div>
             </div>
         </div>
     </div>
-    <!-- Card 2: Attendance Today -->
-    <div class="col-lg-3 col-md-6">
-        <div class="panel panel-success" style="border-radius: 6px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
-            <div class="panel-heading" style="padding: 15px; background-color: #5cb85c; border-color: #4cae4c; color: white;">
-                <div class="row">
-                    <div class="col-xs-3">
-                        <i class="fa fa-clock-o fa-4x"></i>
-                    </div>
-                    <div class="col-xs-9 text-right">
-                        <div class="huge" style="font-size: 32px; font-weight: bold;">{{ $attendanceToday }}</div>
-                        <div>Attendance Today</div>
-                    </div>
-                </div>
+    <div class="col-lg-3 col-md-6" style="margin-bottom: 16px;">
+        <div class="stat-card">
+            <div class="stat-icon success">
+                <i class="fa fa-clock-o"></i>
             </div>
-            <div class="panel-footer" style="padding: 10px 15px;">
-                <a href="{{ route('attendance.index') }}" class="pull-left text-success">View Details</a>
-                <span class="pull-right text-success"><i class="fa fa-arrow-circle-right"></i></span>
-                <div class="clearfix"></div>
+            <div>
+                <div class="stat-value">{{ $attendanceToday }}</div>
+                <div class="stat-label">Attendance Today</div>
+                <div class="stat-sub">
+                    <a href="{{ route('attendance.index') }}" style="color: var(--success); font-size:11px; font-weight:600;">View Details →</a>
+                </div>
             </div>
         </div>
     </div>
-    <!-- Card 3: Pending Leaves -->
-    <div class="col-lg-3 col-md-6">
-        <div class="panel panel-warning" style="border-radius: 6px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
-            <div class="panel-heading" style="padding: 15px; background-color: #f0ad4e; border-color: #eea236; color: white;">
-                <div class="row">
-                    <div class="col-xs-3">
-                        <i class="fa fa-plane fa-4x"></i>
-                    </div>
-                    <div class="col-xs-9 text-right">
-                        <div class="huge" style="font-size: 32px; font-weight: bold;">{{ $pendingLeaves }}</div>
-                        <div>Pending Leaves</div>
-                    </div>
-                </div>
+    <div class="col-lg-3 col-md-6" style="margin-bottom: 16px;">
+        <div class="stat-card">
+            <div class="stat-icon warning">
+                <i class="fa fa-plane"></i>
             </div>
-            <div class="panel-footer" style="padding: 10px 15px;">
-                <a href="{{ route('leave.employee_leaves.index') }}" class="pull-left text-warning">Approve Leaves</a>
-                <span class="pull-right text-warning"><i class="fa fa-arrow-circle-right"></i></span>
-                <div class="clearfix"></div>
+            <div>
+                <div class="stat-value">{{ $pendingLeaves }}</div>
+                <div class="stat-label">Pending Leaves</div>
+                <div class="stat-sub">
+                    <a href="{{ route('leave.employee_leaves.index') }}" style="color: var(--warning); font-size:11px; font-weight:600;">Review Now →</a>
+                </div>
             </div>
         </div>
     </div>
-    <!-- Card 4: New Applicants / ATS -->
-    <div class="col-lg-3 col-md-6">
-        <div class="panel panel-danger" style="border-radius: 6px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
-            <div class="panel-heading" style="padding: 15px; background-color: #d9534f; border-color: #d43f3a; color: white;">
-                <div class="row">
-                    <div class="col-xs-3">
-                        <i class="fa fa-graduation-cap fa-4x"></i>
-                    </div>
-                    <div class="col-xs-9 text-right">
-                        <div class="huge" style="font-size: 32px; font-weight: bold;">{{ $newApplicants }}</div>
-                        <div>New Applicants</div>
-                    </div>
-                </div>
+    <div class="col-lg-3 col-md-6" style="margin-bottom: 16px;">
+        <div class="stat-card">
+            <div class="stat-icon danger">
+                <i class="fa fa-graduation-cap"></i>
             </div>
-            <div class="panel-footer" style="padding: 10px 15px;">
-                <span class="pull-left"><span class="label label-danger">Last 30 Days</span></span>
-                <a href="{{ route('pim.candidates.index') }}" class="pull-right text-danger">View Pipeline</a>
-                <div class="clearfix"></div>
+            <div>
+                <div class="stat-value">{{ $newApplicants }}</div>
+                <div class="stat-label">New Applicants</div>
+                <div class="stat-sub">
+                    <a href="{{ route('pim.candidates.index') }}" style="color: var(--danger); font-size:11px; font-weight:600;">View Pipeline →</a>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
-<div class="row" style="margin-bottom: 20px;">
-    <!-- Payroll and Recent Activity Summary Row -->
-    <div class="col-md-4">
-        <div class="panel panel-default" style="border-radius: 6px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
-            <div class="panel-heading" style="font-weight: bold;"><i class="fa fa-money"></i> Payroll Payout (Current Month)</div>
-            <div class="panel-body text-center" style="padding: 25px;">
-                <h2 style="color: #2e6da4; font-weight: bold; margin-top: 0;">${{ number_format($payrollSummary, 2) }}</h2>
-                <p class="text-muted">Total Net Salary Paid / Pending</p>
-                <a href="{{ route('payroll.index') }}" class="btn btn-primary btn-block">Manage Payroll</a>
+{{-- Second Row: Payroll + Recent Activity --}}
+<div class="row" style="margin-bottom: 24px;">
+    <div class="col-md-4" style="margin-bottom: 16px;">
+        <div class="panel" style="height: 100%;">
+            <div class="panel-heading">
+                <i class="fa fa-money"></i> Payroll (Current Month)
+            </div>
+            <div class="panel-body text-center" style="padding: 30px 20px !important;">
+                <div style="font-size: 36px; font-weight: 800; color: var(--primary); line-height: 1; margin-bottom: 8px;">
+                    ${{ number_format($payrollSummary, 2) }}
+                </div>
+                <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 20px;">Total Net Salary Paid / Pending</p>
+                <a href="{{ route('payroll.index') }}" class="btn btn-primary btn-block">
+                    <i class="fa fa-arrow-right"></i> Manage Payroll
+                </a>
             </div>
         </div>
     </div>
-    <div class="col-md-8">
-        <div class="panel panel-default" style="border-radius: 6px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
-            <div class="panel-heading" style="font-weight: bold;"><i class="fa fa-list"></i> Recent Activity Logs</div>
-            <div class="panel-body" style="padding: 0;">
-                <ul class="list-group" style="margin-bottom: 0;">
+    <div class="col-md-8" style="margin-bottom: 16px;">
+        <div class="panel" style="height: 100%;">
+            <div class="panel-heading">
+                <i class="fa fa-list-alt"></i> Recent Activity Logs
+            </div>
+            <div class="panel-body" style="padding: 0 !important; max-height: 280px; overflow-y: auto;">
+                <ul class="list-group" style="margin: 0; border: none;">
                     @forelse($recentActivities as $activity)
-                        <li class="list-group-item" style="border-left: none; border-right: none;">
-                            <strong>{{ $activity->first_name }} {{ $activity->last_name }}</strong>: {{ $activity->activity }}
-                            <span class="text-muted pull-right" style="font-size: 11px;">{{ \Carbon\Carbon::parse($activity->created_at)->diffForHumans() }}</span>
+                        <li class="list-group-item" style="border-left: none; border-right: none; border-top: none;">
+                            <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                                <div>
+                                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 2px;">
+                                        <span class="sidebar-user-avatar" style="width:28px; height:28px; font-size:11px; flex-shrink:0;">
+                                            {{ strtoupper(substr($activity->first_name, 0, 1)) }}
+                                        </span>
+                                        <strong style="font-size:13px;">{{ $activity->first_name }} {{ $activity->last_name }}</strong>
+                                    </div>
+                                    <p style="margin:0; font-size:12px; color: var(--text-secondary); padding-left: 36px;">{{ $activity->activity }}</p>
+                                </div>
+                                <span style="font-size: 11px; color: var(--text-muted); white-space:nowrap; margin-left:12px; flex-shrink:0;">
+                                    {{ \Carbon\Carbon::parse($activity->created_at)->diffForHumans() }}
+                                </span>
+                            </div>
                         </li>
                     @empty
-                        <li class="list-group-item text-center text-muted">No recent activities logged.</li>
+                        <li class="list-group-item text-center" style="padding: 40px; color: var(--text-muted); border: none;">
+                            <i class="fa fa-inbox" style="font-size: 32px; display: block; margin-bottom: 8px; opacity: 0.4;"></i>
+                            No recent activities logged.
+                        </li>
                     @endforelse
                 </ul>
             </div>
@@ -118,152 +129,191 @@
     </div>
 </div>
 
-<div class="row" style="margin-bottom: 20px;">
-    <!-- Message employee quick action & recent chats -->
-    <div class="col-md-6">
-        <div class="panel panel-default" style="border-radius: 6px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
-            <div class="panel-heading" style="font-weight: bold; background: white;"><i class="fa fa-paper-plane-o"></i> Message Employee (Quick Action)</div>
-            <div class="panel-body" style="padding: 20px;">
+{{-- Third Row: Message Employee + Recent Chats --}}
+<div class="row" style="margin-bottom: 24px;">
+    <div class="col-md-6" style="margin-bottom: 16px;">
+        <div class="panel">
+            <div class="panel-heading">
+                <i class="fa fa-paper-plane-o"></i> Message Employee (Quick Action)
+            </div>
+            <div class="panel-body">
                 <?php
                     $quickEmployees = \App\User::where('role', \App\User::USER_ROLE_EMPLOYEE)->orderBy('first_name', 'asc')->get();
                 ?>
                 <form action="{{ route('chat.store') }}" method="POST">
                     {{ csrf_field() }}
                     <div class="form-group">
-                        <select name="employee_id" class="form-control" required style="border-radius: 8px;">
-                            <option value="">-- Choose Employee to Message --</option>
+                        <label>Select Employee</label>
+                        <select name="employee_id" class="form-control" required>
+                            <option value="">— Choose Employee —</option>
                             @foreach($quickEmployees as $emp)
                                 <option value="{{ $emp->id }}">{{ $emp->first_name }} {{ $emp->last_name }}</option>
                             @endforeach
                         </select>
                     </div>
                     <div class="form-group">
-                        <input type="text" name="subject" class="form-control" placeholder="Subject (Optional)" style="border-radius: 8px;">
+                        <label>Subject (Optional)</label>
+                        <input type="text" name="subject" class="form-control" placeholder="e.g. Leave Reminder">
                     </div>
                     <div class="form-group">
-                        <textarea name="body" class="form-control" rows="2" placeholder="Write message..." required style="border-radius: 8px; resize: none;"></textarea>
+                        <label>Message</label>
+                        <textarea name="body" class="form-control" rows="3" placeholder="Write your message..." required style="resize: none;"></textarea>
                     </div>
-                    <button type="submit" class="btn btn-primary btn-block" style="border-radius: 20px; font-weight: bold;">
-                        <i class="fa fa-paper-plane"></i> Send Direct Message
+                    <button type="submit" class="btn btn-primary btn-block">
+                        <i class="fa fa-paper-plane"></i> Send Message
                     </button>
                 </form>
             </div>
         </div>
     </div>
-    <div class="col-md-6">
-        <div class="panel panel-default" style="border-radius: 6px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
-            <div class="panel-heading" style="font-weight: bold; background: white;"><i class="fa fa-comments-o"></i> Recent Chats</div>
-            <div class="panel-body" style="padding: 0;">
+    <div class="col-md-6" style="margin-bottom: 16px;">
+        <div class="panel">
+            <div class="panel-heading">
+                <i class="fa fa-comments-o"></i> Recent Conversations
+            </div>
+            <div class="panel-body" style="padding: 0 !important;">
                 <?php
                     $recentChats = \App\Modules\Chat\Models\Conversation::with('employee')
                         ->orderBy('last_message_at', 'desc')
-                        ->take(3)
+                        ->take(5)
                         ->get();
                 ?>
-                <ul class="list-group" style="margin-bottom: 0;">
+                <ul class="list-group" style="margin: 0; border: none;">
                     @forelse($recentChats as $chat)
                         <?php $unread = $chat->unreadMessagesCount(); ?>
-                        <li class="list-group-item" style="border-left: none; border-right: none; display: flex; justify-content: space-between; align-items: center;">
-                            <div>
-                                <a href="{{ route('chat.index', ['conversation_id' => $chat->id]) }}" style="font-weight: bold; text-decoration: none; color: #1e3c72;">
-                                    {{ $chat->employee ? $chat->employee->first_name . ' ' . $chat->employee->last_name : 'Staff Member' }}
-                                </a>
-                                <div style="font-size: 11px; color: #777;">
-                                    Subject: {{ $chat->subject }} &bull; {{ $chat->last_message_at ? $chat->last_message_at->diffForHumans() : '' }}
+                        <li class="list-group-item" style="border-left: none; border-right: none; border-top: none;">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <div style="flex:1; min-width:0;">
+                                    <a href="{{ route('chat.index', ['conversation_id' => $chat->id]) }}"
+                                       style="font-weight: 600; text-decoration: none; color: var(--text-primary); display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
+                                        {{ $chat->employee ? $chat->employee->first_name . ' ' . $chat->employee->last_name : 'Staff Member' }}
+                                    </a>
+                                    <div style="font-size: 11px; color: var(--text-muted);">
+                                        {{ $chat->subject }} &bull; {{ $chat->last_message_at ? $chat->last_message_at->diffForHumans() : '' }}
+                                    </div>
                                 </div>
+                                @if($unread > 0)
+                                    <span class="nav-badge" style="background: var(--success); margin-left: 8px;">{{ $unread }}</span>
+                                @endif
                             </div>
-                            @if($unread > 0)
-                                <span class="badge" style="background-color: #27ae60; color: white;">{{ $unread }}</span>
-                            @endif
                         </li>
                     @empty
-                        <li class="list-group-item text-center text-muted" style="padding: 30px 10px;">No active conversations.</li>
+                        <li class="list-group-item text-center" style="padding: 40px; color: var(--text-muted); border: none;">
+                            <i class="fa fa-comment-o" style="font-size: 32px; display: block; margin-bottom: 8px; opacity: 0.4;"></i>
+                            No active conversations.
+                        </li>
                     @endforelse
                 </ul>
-                <div class="panel-footer text-center" style="background: white; border-top: 1px solid #eee;">
-                    <a href="{{ route('chat.index') }}" class="btn btn-default btn-xs btn-block">View All Messages</a>
+                <div style="padding: 12px 16px; border-top: 1px solid var(--card-border);">
+                    <a href="{{ route('chat.index') }}" class="btn btn-default btn-sm btn-block">
+                        View All Messages
+                    </a>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
+{{-- Fourth Row: Calendars --}}
 <div class="row">
-    <div class="col-sm-6">
-        <div class="custom-panel">
-            <div class="custom-panel-heading">{{trans('app.leave.calendar.main')}}</div>
-            <div id="leave-calendar"></div>
+    <div class="col-sm-6" style="margin-bottom: 16px;">
+        <div class="panel">
+            <div class="panel-heading">
+                <i class="fa fa-calendar"></i> {{ trans('app.leave.calendar.main') }}
+            </div>
+            <div class="panel-body">
+                <div id="leave-calendar"></div>
+            </div>
         </div>
     </div>
-    <div class="col-sm-6">
-        <div class="custom-panel">
-            <div class="custom-panel-heading">{{trans('app.pim.birthdays')}}</div>
-            <div id="birthday-calendar"></div>
+    <div class="col-sm-6" style="margin-bottom: 16px;">
+        <div class="panel">
+            <div class="panel-heading">
+                <i class="fa fa-birthday-cake"></i> {{ trans('app.pim.birthdays') }}
+            </div>
+            <div class="panel-body">
+                <div id="birthday-calendar"></div>
+            </div>
         </div>
     </div>
 </div>
+
 @endsection
+
 @section('additionalCSS')
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.min.css">
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.print.css" media='print'>
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.print.css" media="print">
+<style>
+    /* Override FullCalendar for modern look */
+    .fc-toolbar h2 { font-size: 15px !important; font-weight: 600 !important; }
+    .fc-button {
+        background: white !important;
+        border: 1px solid var(--card-border) !important;
+        color: var(--text-secondary) !important;
+        border-radius: var(--radius) !important;
+        font-size: 12px !important;
+        padding: 4px 8px !important;
+        font-family: var(--font-family) !important;
+    }
+    .fc-button:hover { background: var(--content-bg) !important; }
+    .fc-button-active, .fc-button.fc-state-active {
+        background: var(--primary) !important;
+        color: white !important;
+        border-color: var(--primary) !important;
+    }
+    .fc-today { background: var(--primary-light) !important; }
+    .fc-event {
+        background: var(--primary) !important;
+        border-color: var(--primary) !important;
+        border-radius: 4px !important;
+        font-size: 11px !important;
+    }
+    .stat-card { height: 100%; }
+</style>
 @endsection
+
 @section('additionalJS')
-<script src="{{url('vendor/moment/moment.min.js')}}"></script>
+<script src="{{ url('vendor/moment/moment.min.js') }}"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.min.js"></script>
 <script>
     $(document).ready(function() {
-        var sources = [];
-        $('#leave-calendar').fullCalendar({
-            header: {
-                left: 'prev,next',
-                center: 'title',
-                right: 'month,basicWeek,basicDay'
-            },
-            defaultDate: '{{get_current_date()}}',
-            navLinks: true, // can click day/week names to navigate views
+        var calOptions = {
+            header: { left: 'prev,next', center: 'title', right: 'month,basicWeek,basicDay' },
+            defaultDate: '{{ get_current_date() }}',
+            navLinks: true,
             editable: false,
-            eventLimit: true, // allow "more" link when too many events
-            viewRender: function(view, element) {
-                var date = $('#leave-calendar').fullCalendar('getDate');
-                date = moment(date).format('YYYY-MM-DD');
-                if(sources.indexOf(date) == -1) {
-                    sources.push(date);
+            eventLimit: true
+        };
+
+        var sources1 = [];
+        $('#leave-calendar').fullCalendar($.extend({}, calOptions, {
+            viewRender: function(view) {
+                var date = moment($('#leave-calendar').fullCalendar('getDate')).format('YYYY-MM-DD');
+                if (sources1.indexOf(date) === -1) {
+                    sources1.push(date);
                     $.ajax({
-                        url: "{{route('leave.calendar.render')}}",
-                        data: {date: date},
-                        success: function(events) {
-                            $('#leave-calendar').fullCalendar('addEventSource', events);
-                        }
+                        url: "{{ route('leave.calendar.render') }}",
+                        data: { date: date },
+                        success: function(events) { $('#leave-calendar').fullCalendar('addEventSource', events); }
                     });
                 }
             }
-        });
-        var sources = [];
-        $('#birthday-calendar').fullCalendar({
-            header: {
-                left: 'prev,next',
-                center: 'title',
-                right: 'month,basicWeek,basicDay'
-            },
-            defaultDate: '{{get_current_date()}}',
-            navLinks: true, // can click day/week names to navigate views
-            editable: false,
-            eventLimit: true, // allow "more" link when too many events
-            viewRender: function(view, element) {
-                var date = $('#birthday-calendar').fullCalendar('getDate');
-                date = moment(date).format('YYYY-MM-DD');
-                if(sources.indexOf(date) == -1) {
-                    sources.push(date);
+        }));
+
+        var sources2 = [];
+        $('#birthday-calendar').fullCalendar($.extend({}, calOptions, {
+            viewRender: function(view) {
+                var date = moment($('#birthday-calendar').fullCalendar('getDate')).format('YYYY-MM-DD');
+                if (sources2.indexOf(date) === -1) {
+                    sources2.push(date);
                     $.ajax({
-                        url: "{{route('pim.employees.birthdays')}}",
-                        data: {date: date},
-                        success: function(events) {
-                            $('#birthday-calendar').fullCalendar('addEventSource', events);
-                        }
+                        url: "{{ route('pim.employees.birthdays') }}",
+                        data: { date: date },
+                        success: function(events) { $('#birthday-calendar').fullCalendar('addEventSource', events); }
                     });
                 }
             }
-        });
+        }));
     });
 </script>
 @endsection
