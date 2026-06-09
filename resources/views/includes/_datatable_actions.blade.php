@@ -14,9 +14,21 @@
 </form>
 @endif
 @if(@$approveUrl)
-<form  action="{{$approveUrl}}" method="POST">
+<form  action="{{$approveUrl}}" method="POST" style="display:inline-block; margin-right: 2px;">
 	{{ Form::token() }} 
-	<button type="submit" class="btn btn-sm btn-default">{{trans('app.approve')}}</button>
+	<button type="submit" class="btn btn-sm btn-success">{{trans('app.approve')}}</button>
+</form>
+@endif
+@if(@$rejectUrl)
+<form  action="{{$rejectUrl}}" method="POST" style="display:inline-block; margin-right: 2px;">
+	{{ Form::token() }} 
+	<button type="submit" class="btn btn-sm btn-warning">Reject</button>
+</form>
+@endif
+@if(@$cancelUrl)
+<form  action="{{$cancelUrl}}" method="POST" style="display:inline-block; margin-right: 2px;">
+	{{ Form::token() }} 
+	<button type="submit" class="btn btn-sm btn-danger">Cancel</button>
 </form>
 @endif
 @if(@$featureUrl && isset($isFeatured))

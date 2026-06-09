@@ -48,25 +48,36 @@ class LeavesController extends Controller
                 'key' => 'user_id',
                 'operator' => '=',
                 'value' => Auth::user()->id
-            ]], ['id', 'leave_type_id', 'start_date', 'end_date', 'approved']))
+            ]], ['id', 'leave_type_id', 'start_date', 'end_date', 'approved', 'status']))
             ->editColumn('leave_type_id', function($leave) {
                 return $leave->leave_type->name;
             })
-            ->editColumn('approved', function($leave) {
-                return $leave->approved ? trans('app.employee.leaves.approved') : trans('app.employee.leaves.pending');
+            ->editColumn('status', function($leave) {
+                $status = strtolower($leave->status ?: 'pending');
+                $classes = [
+                    'pending' => 'label-warning',
+                    'approved' => 'label-success',
+                    'rejected' => 'label-danger',
+                    'cancelled' => 'label-default'
+                ];
+                $class = isset($classes[$status]) ? $classes[$status] : 'label-warning';
+                return '<span class="label ' . $class . '">' . ucfirst($status) . '</span>';
             })
             ->addColumn('actions', function($leave){
-                if($leave->approved) {
-                    return view('includes._datatable_actions', [
-                        'showUrl' => route('employee.leaves.show', $leave->id)
-                    ]);
-                } else {
-                    return view('includes._datatable_actions', [
-                        'deleteUrl' => route('employee.leaves.destroy', $leave->id), 
-                        'editUrl' => route('employee.leaves.edit', $leave->id)
-                    ]);
+                $status = strtolower($leave->status ?: 'pending');
+                $actions = [
+                    'showUrl' => route('employee.leaves.show', $leave->id)
+                ];
+                if ($status == 'pending') {
+                    $actions['editUrl'] = route('employee.leaves.edit', $leave->id);
+                    $actions['deleteUrl'] = route('employee.leaves.destroy', $leave->id);
+                    $actions['cancelUrl'] = route('employee.leaves.cancel', $leave->id);
+                } elseif ($status == 'approved') {
+                    $actions['cancelUrl'] = route('employee.leaves.cancel', $leave->id);
                 }
+                return view('includes._datatable_actions', $actions);
             })
+            ->rawColumns(['status', 'actions'])
             ->make();
     }
 
@@ -94,7 +105,7 @@ class LeavesController extends Controller
     public function store(LeaveRequest $request)
     {
         $user = Auth::user();
-        $employeeLeaveData = $request->all()+['user_id' => $user->id, 'approved' => 0];
+        $employeeLeaveData = $request->all()+['user_id' => $user->id, 'approved' => 0, 'status' => 'pending'];
         $employeeLeaveData = $this->employeeLeaveRepository->create($employeeLeaveData);
         $this->employeeLeaveRepository->updateStatus($employeeLeaveData->user_id, $employeeLeaveData->leave_type_id, $employeeLeaveData->start_date, $employeeLeaveData->end_date);
         $this->sendLeaveRequest($user->id, [
@@ -191,5 +202,19 @@ class LeavesController extends Controller
             $message->subject(trans('app.employee.leaves.request_leave_email.subject', ['employeeName' => $emailDetails['employeeName']]));
             $message->to($adminDetails['email']);
         });
+    }
+
+    public function cancel($id, Request $request)
+    {
+        $employeeLeave = $this->employeeLeaveRepository->getById($id);
+        checkValidity($employeeLeave->user_id);
+        
+        if ($employeeLeave->status == 'approved' || $employeeLeave->approved == 1) {
+            $this->employeeLeaveRepository->deleteUsedDays($employeeLeave->user_id, $employeeLeave->leave_type_id, $employeeLeave->start_date, $employeeLeave->end_date);
+        }
+        
+        $this->employeeLeaveRepository->update($id, ['status' => 'cancelled', 'approved' => 0]);
+        $request->session()->flash('success', 'Leave request cancelled.');
+        return redirect()->route('employee.leaves.index');
     }
 }

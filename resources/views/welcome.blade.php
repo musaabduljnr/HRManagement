@@ -1,6 +1,122 @@
 @extends ('layouts.main')
 
 @section('content')
+<div class="row" style="margin-bottom: 20px;">
+    <!-- Card 1: Total Employees -->
+    <div class="col-lg-3 col-md-6">
+        <div class="panel panel-primary" style="border-radius: 6px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+            <div class="panel-heading" style="padding: 15px;">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="fa fa-users fa-4x"></i>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div class="huge" style="font-size: 32px; font-weight: bold;">{{ $totalEmployees }}</div>
+                        <div>Total Employees</div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer" style="padding: 10px 15px;">
+                <span class="pull-left"><span class="label label-info">Active: {{ $activeEmployees }}</span></span>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+    <!-- Card 2: Attendance Today -->
+    <div class="col-lg-3 col-md-6">
+        <div class="panel panel-success" style="border-radius: 6px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+            <div class="panel-heading" style="padding: 15px; background-color: #5cb85c; border-color: #4cae4c; color: white;">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="fa fa-clock-o fa-4x"></i>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div class="huge" style="font-size: 32px; font-weight: bold;">{{ $attendanceToday }}</div>
+                        <div>Attendance Today</div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer" style="padding: 10px 15px;">
+                <a href="{{ route('attendance.index') }}" class="pull-left text-success">View Details</a>
+                <span class="pull-right text-success"><i class="fa fa-arrow-circle-right"></i></span>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+    <!-- Card 3: Pending Leaves -->
+    <div class="col-lg-3 col-md-6">
+        <div class="panel panel-warning" style="border-radius: 6px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+            <div class="panel-heading" style="padding: 15px; background-color: #f0ad4e; border-color: #eea236; color: white;">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="fa fa-plane fa-4x"></i>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div class="huge" style="font-size: 32px; font-weight: bold;">{{ $pendingLeaves }}</div>
+                        <div>Pending Leaves</div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer" style="padding: 10px 15px;">
+                <a href="{{ route('leave.employee_leaves.index') }}" class="pull-left text-warning">Approve Leaves</a>
+                <span class="pull-right text-warning"><i class="fa fa-arrow-circle-right"></i></span>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+    <!-- Card 4: New Applicants / ATS -->
+    <div class="col-lg-3 col-md-6">
+        <div class="panel panel-danger" style="border-radius: 6px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+            <div class="panel-heading" style="padding: 15px; background-color: #d9534f; border-color: #d43f3a; color: white;">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="fa fa-graduation-cap fa-4x"></i>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div class="huge" style="font-size: 32px; font-weight: bold;">{{ $newApplicants }}</div>
+                        <div>New Applicants</div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer" style="padding: 10px 15px;">
+                <span class="pull-left"><span class="label label-danger">Last 30 Days</span></span>
+                <a href="{{ route('pim.candidates.index') }}" class="pull-right text-danger">View Pipeline</a>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row" style="margin-bottom: 20px;">
+    <!-- Payroll and Recent Activity Summary Row -->
+    <div class="col-md-4">
+        <div class="panel panel-default" style="border-radius: 6px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+            <div class="panel-heading" style="font-weight: bold;"><i class="fa fa-money"></i> Payroll Payout (Current Month)</div>
+            <div class="panel-body text-center" style="padding: 25px;">
+                <h2 style="color: #2e6da4; font-weight: bold; margin-top: 0;">${{ number_format($payrollSummary, 2) }}</h2>
+                <p class="text-muted">Total Net Salary Paid / Pending</p>
+                <a href="{{ route('payroll.index') }}" class="btn btn-primary btn-block">Manage Payroll</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <div class="panel panel-default" style="border-radius: 6px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+            <div class="panel-heading" style="font-weight: bold;"><i class="fa fa-list"></i> Recent Activity Logs</div>
+            <div class="panel-body" style="padding: 0;">
+                <ul class="list-group" style="margin-bottom: 0;">
+                    @forelse($recentActivities as $activity)
+                        <li class="list-group-item" style="border-left: none; border-right: none;">
+                            <strong>{{ $activity->first_name }} {{ $activity->last_name }}</strong>: {{ $activity->activity }}
+                            <span class="text-muted pull-right" style="font-size: 11px;">{{ \Carbon\Carbon::parse($activity->created_at)->diffForHumans() }}</span>
+                        </li>
+                    @empty
+                        <li class="list-group-item text-center text-muted">No recent activities logged.</li>
+                    @endforelse
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="row">
     <div class="col-sm-6">
         <div class="custom-panel">

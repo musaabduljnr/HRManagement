@@ -55,8 +55,8 @@
                 {data: 1, name: 'leave_type_id'},
                 {data: 2, name: 'start_date'},
                 {data: 3, name: 'end_date'},
-                {data: 4, name: 'approved'},
-                {data: 5, name: 'actions', sortable: false, searchable: false}
+                {data: 5, name: 'status'},
+                {data: 6, name: 'actions', sortable: false, searchable: false}
             ]
         });
         table.columns().every(function () {

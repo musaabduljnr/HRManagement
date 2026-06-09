@@ -56,6 +56,26 @@
         {!! Form::input('phone3', 'phone3', null, ['class' => 'form-control']) !!}
     </div>
 </div>
+<h3>Emergency Contacts</h3>
+<hr>
+<div class="form-group">
+    {!! Form::label('emergency_contact_name', 'Contact Name:', ['class' => 'col-sm-3']) !!}
+    <div class="col-sm-6">
+        {!! Form::text('emergency_contact_name', isset($employee) ? $employee->emergency_contact_name : null, ['class' => 'form-control']) !!}
+    </div>
+</div>
+<div class="form-group">
+    {!! Form::label('emergency_contact_phone', 'Contact Phone:', ['class' => 'col-sm-3']) !!}
+    <div class="col-sm-6">
+        {!! Form::text('emergency_contact_phone', isset($employee) ? $employee->emergency_contact_phone : null, ['class' => 'form-control']) !!}
+    </div>
+</div>
+<div class="form-group">
+    {!! Form::label('emergency_contact_relationship', 'Relationship:', ['class' => 'col-sm-3']) !!}
+    <div class="col-sm-6">
+        {!! Form::text('emergency_contact_relationship', isset($employee) ? $employee->emergency_contact_relationship : null, ['class' => 'form-control']) !!}
+    </div>
+</div>
 @include('errors._form-errors')
 <hr>
 <div class="form-group">

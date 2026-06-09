@@ -197,4 +197,50 @@ class AttendanceController extends Controller
 
         return view('attendance::qr', compact('token', 'todayRecord', 'history'));
     }
+
+    /**
+     * Employee: Web Clock-in / Clock-out button action.
+     */
+    public function webClock(Request $request)
+    {
+        $user = Auth::user();
+        if (!$user) {
+            return redirect()->back()->with('error', 'Unauthorized.');
+        }
+
+        $today = Carbon::today()->toDateString();
+        $now = Carbon::now();
+
+        // Check if there is already a scan for today
+        $attendance = Attendance::where('user_id', $user->id)
+            ->where('date', $today)
+            ->first();
+
+        if (!$attendance) {
+            // Check-in logic
+            // E.g., Late if after 09:30 AM
+            $limitTime = Carbon::createFromFormat('H:i', '09:30');
+            $status = $now->format('H:i') > $limitTime->format('H:i') ? 'Late' : 'Present';
+
+            Attendance::create([
+                'user_id' => $user->id,
+                'date' => $today,
+                'check_in' => $now,
+                'status' => $status,
+                'ip_address' => $request->ip() ?: 'Web Interface'
+            ]);
+
+            return redirect()->back()->with('success', 'Checked In successfully. Status: ' . $status);
+        } else {
+            // Check-out logic
+            if ($attendance->check_out) {
+                return redirect()->back()->with('error', 'You have already Checked Out for today.');
+            }
+
+            $attendance->check_out = $now;
+            $attendance->save();
+
+            return redirect()->back()->with('success', 'Checked Out successfully.');
+        }
+    }
 }

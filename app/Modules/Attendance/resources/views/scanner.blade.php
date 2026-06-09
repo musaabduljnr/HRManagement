@@ -207,7 +207,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function processScan(token) {
-        fetch("{{ route('admin.attendance.scan') }}", {
+        fetch("{{ route('attendance.scan') }}", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -246,7 +246,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function fetchRecentScans() {
-        fetch("{{ route('admin.attendance.recent') }}")
+        fetch("{{ route('attendance.recent') }}")
         .then(res => res.json())
         .then(data => {
             document.getElementById('scan-count').textContent = `${data.length} scans`;

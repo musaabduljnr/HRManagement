@@ -18,7 +18,13 @@ class RedirectIfNotAdmin
      */
     public function handle($request, Closure $next, $guard = null)
     {
-        if ($request->user()->role != User::USER_ROLE_ADMIN) {
+        $allowedAdminRoles = [
+            User::USER_ROLE_ADMIN,
+            User::USER_ROLE_HR_MANAGER,
+            User::USER_ROLE_PAYROLL_MANAGER,
+            User::USER_ROLE_DEPT_MANAGER
+        ];
+        if (!in_array($request->user()->role, $allowedAdminRoles)) {
             return redirect()->back();
         }
 

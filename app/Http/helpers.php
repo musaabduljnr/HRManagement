@@ -161,7 +161,10 @@ function get_user_role($role)
     $roles = [
         App\User::USER_ROLE_CANDIDATE => 'candidate',
         App\User::USER_ROLE_EMPLOYEE => 'employee',
-        App\User::USER_ROLE_ADMIN => 'admin'
+        App\User::USER_ROLE_ADMIN => 'admin',
+        App\User::USER_ROLE_HR_MANAGER => 'hr_manager',
+        App\User::USER_ROLE_PAYROLL_MANAGER => 'payroll_manager',
+        App\User::USER_ROLE_DEPT_MANAGER => 'dept_manager'
     ];
     return @$roles[$role];
 }

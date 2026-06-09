@@ -40,6 +40,13 @@
               @endif 
           </a>
         </li>
+        <li class="{{ $current == 'employee.payroll' ? 'active' : ''}}">
+          <a href="{{route('employee.payroll.index')}}"> Payslips
+              @if($current == 'employee.payroll')
+                <span class="sr-only">({{trans('app.current')}})</span>
+              @endif 
+          </a>
+        </li>
         <li class="{{ $current == 'employee.documents' ? 'active' : ''}}">
           <a href="{{route('employee.documents.index')}}"> {{trans('app.pim.employees.documents.main')}}
               @if($current == 'employee.documents')
@@ -56,6 +63,9 @@
         </li>
         <li class="{{ Request::is('employee/attendance*') ? 'active' : ''}}">
           <a href="{{route('employee.attendance.qr')}}"> QR Attendance</a>
+        </li>
+        <li class="{{ Request::is('employee/hr-assistant*') ? 'active' : ''}}">
+          <a href="{{route('employee.assistant.index')}}"><i class="fa fa-android"></i> AI Assistant</a>
         </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">

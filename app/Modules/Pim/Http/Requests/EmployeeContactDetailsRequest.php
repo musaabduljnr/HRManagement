@@ -28,7 +28,10 @@ class EmployeeContactDetailsRequest extends FormRequest
             'city' => ['required'],
             'zip' => ['required'],
             'country' => ['required'],
-            'phone1' => ['required']
+            'phone1' => ['required'],
+            'emergency_contact_name' => ['nullable', 'string'],
+            'emergency_contact_phone' => ['nullable', 'string'],
+            'emergency_contact_relationship' => ['nullable', 'string']
         ];
 
         return $rules;

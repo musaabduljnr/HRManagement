@@ -43,20 +43,35 @@ class EmployeeLeaveController extends Controller
      */
     public function getDatatable()
     {
-        return Datatables::of($this->employeeLeaveRepository->getCollection([], ['id', 'user_id', 'leave_type_id', 'start_date', 'end_date', 'approved']))
+        return Datatables::of($this->employeeLeaveRepository->getCollection([], ['id', 'user_id', 'leave_type_id', 'start_date', 'end_date', 'approved', 'status']))
             ->editColumn('user_id', function($leave) {
                 return $leave->employee->first_name.' '.$leave->employee->last_name;
             })
             ->editColumn('leave_type_id', function($leave) {
                 return $leave->leave_type->name;
             })
+            ->editColumn('status', function($leave) {
+                $status = strtolower($leave->status ?: 'pending');
+                $classes = [
+                    'pending' => 'label-warning',
+                    'approved' => 'label-success',
+                    'rejected' => 'label-danger',
+                    'cancelled' => 'label-default'
+                ];
+                $class = isset($classes[$status]) ? $classes[$status] : 'label-warning';
+                return '<span class="label ' . $class . '">' . ucfirst($status) . '</span>';
+            })
             ->addColumn('actions', function($leave){
+                $status = strtolower($leave->status ?: 'pending');
                 return view('includes._datatable_actions', [
                     'deleteUrl' => route('leave.employee_leaves.destroy', $leave->id), 
                     'editUrl' => route('leave.employee_leaves.edit', $leave->id),
-                    'approveUrl' => !$leave->approved ? route('leave.employee_leaves.approve', $leave->id) : null
+                    'approveUrl' => $status == 'pending' ? route('leave.employee_leaves.approve', $leave->id) : null,
+                    'rejectUrl' => $status == 'pending' ? route('leave.employee_leaves.reject', $leave->id) : null,
+                    'cancelUrl' => $status == 'approved' ? route('leave.employee_leaves.cancel', $leave->id) : null,
                 ]);
             })
+            ->rawColumns(['status', 'actions'])
             ->make();
     }
 
@@ -168,7 +183,7 @@ class EmployeeLeaveController extends Controller
      */
     public function approve($id, Request $request)
     {
-        $employeeLeave = $this->employeeLeaveRepository->approveLeaveRequest($id);
+        $employeeLeave = $this->employeeLeaveRepository->update($id, ['approved' => 1, 'status' => 'approved']);
 
         $this->sendLeaveRequest($id, [
             'employeeEmail' => $employeeLeave->employee->email,
@@ -191,6 +206,34 @@ class EmployeeLeaveController extends Controller
         }
 
         $request->session()->flash('success', trans('app.leave.employee_leaves.approve_success'));
+        return redirect()->route('leave.employee_leaves.index');
+    }
+
+    public function reject($id, Request $request)
+    {
+        $employeeLeave = $this->employeeLeaveRepository->getById($id);
+        
+        if ($employeeLeave->status == 'approved' || $employeeLeave->approved == 1) {
+            $this->employeeLeaveRepository->deleteUsedDays($employeeLeave->user_id, $employeeLeave->leave_type_id, $employeeLeave->start_date, $employeeLeave->end_date);
+        }
+        
+        $this->employeeLeaveRepository->update($id, ['approved' => 0, 'status' => 'rejected']);
+
+        $request->session()->flash('success', 'Leave request rejected.');
+        return redirect()->route('leave.employee_leaves.index');
+    }
+
+    public function cancel($id, Request $request)
+    {
+        $employeeLeave = $this->employeeLeaveRepository->getById($id);
+        
+        if ($employeeLeave->status == 'approved' || $employeeLeave->approved == 1) {
+            $this->employeeLeaveRepository->deleteUsedDays($employeeLeave->user_id, $employeeLeave->leave_type_id, $employeeLeave->start_date, $employeeLeave->end_date);
+        }
+        
+        $this->employeeLeaveRepository->update($id, ['approved' => 0, 'status' => 'cancelled']);
+
+        $request->session()->flash('success', 'Leave request cancelled.');
         return redirect()->route('leave.employee_leaves.index');
     }
 

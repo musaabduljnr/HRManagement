@@ -36,5 +36,15 @@
             <h2>{{trans('app.settings.salary_components.main')}}</h2>
         </a>
     </div>
+    <div class="col-lg-3 col-md-4 col-sm-6">
+        <a class="nav-box" href="{{route('settings.departments.index')}}">
+            <h2>Departments</h2>
+        </a>
+    </div>
+    <div class="col-lg-3 col-md-4 col-sm-6">
+        <a class="nav-box" href="{{route('settings.job_titles.index')}}">
+            <h2>Job Titles</h2>
+        </a>
+    </div>
 </div>
 @endsection

@@ -19,6 +19,9 @@ class User extends Authenticatable
     const USER_ROLE_ADMIN = 1;
     const USER_ROLE_EMPLOYEE = 2;
     const USER_ROLE_CANDIDATE = 3;
+    const USER_ROLE_HR_MANAGER = 4;
+    const USER_ROLE_PAYROLL_MANAGER = 5;
+    const USER_ROLE_DEPT_MANAGER = 6;
 
     use Notifiable;
 
@@ -28,7 +31,8 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'first_name', 'last_name', 'email', 'gender', 'birth_date', 'password', 'role', 'notes', 'how_did_they_hear'
+        'first_name', 'last_name', 'email', 'gender', 'birth_date', 'password', 'role', 'notes', 'how_did_they_hear',
+        'department_id', 'job_title_id', 'employment_status', 'emergency_contact_name', 'emergency_contact_phone', 'emergency_contact_relationship'
     ];
 
     /**
@@ -70,6 +74,16 @@ class User extends Authenticatable
     public function getFullNameAttribute()
     {
         return $this->attributes['first_name'] . ' ' . $this->attributes['last_name'];
+    }
+
+    public function department()
+    {
+        return $this->belongsTo(\App\Modules\Settings\Models\Department::class, 'department_id');
+    }
+
+    public function jobTitle()
+    {
+        return $this->belongsTo(\App\Modules\Settings\Models\JobTitle::class, 'job_title_id');
     }
 
     public function jobs()

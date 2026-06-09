@@ -42,6 +42,13 @@
             @endif
           </a>
         </li>
+        <li class="{{ $current == 'payroll' ? 'active' : ''}}">
+          <a href="{{route('payroll.index')}}">Payroll
+            @if($current == 'payroll') 
+              <span class="sr-only">({{trans('app.current')}})</span>
+            @endif
+          </a>
+        </li>
         <li class="{{ $current == 'recruitment' ? 'active' : ''}}">
           <a href="{{route('recruitment.index')}}">{{trans('app.recruitment.main')}}
             @if($current == 'recruitment') 
@@ -71,6 +78,9 @@
             <li><a href="{{route('attendance.index')}}">Daily Logs</a></li>
             <li><a href="{{route('attendance.scanner')}}">Scanner Kiosk</a></li>
           </ul>
+        </li>
+        <li class="{{ Request::is('admin/hr-assistant*') ? 'active' : ''}}">
+          <a href="{{route('assistant.index')}}"><i class="fa fa-android"></i> AI Assistant</a>
         </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">

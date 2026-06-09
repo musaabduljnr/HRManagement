@@ -43,6 +43,26 @@
                         @endif
                     </div>
 
+                    <!-- Manual Clock Buttons -->
+                    <div style="margin-top: 25px;">
+                        <form action="{{ route('employee.attendance.web_clock') }}" method="POST">
+                            {{ csrf_field() }}
+                            @if(!$todayRecord)
+                                <button type="submit" class="btn btn-success btn-lg" style="border-radius: 24px; padding: 10px 24px; font-weight: 600; width: 80%;">
+                                    <i class="glyphicon glyphicon-play"></i> Clock In
+                                </button>
+                            @elseif(!$todayRecord->check_out)
+                                <button type="submit" class="btn btn-danger btn-lg" style="border-radius: 24px; padding: 10px 24px; font-weight: 600; width: 80%;">
+                                    <i class="glyphicon glyphicon-stop"></i> Clock Out
+                                </button>
+                            @else
+                                <button type="button" class="btn btn-default btn-lg disabled" style="border-radius: 24px; padding: 10px 24px; font-weight: 600; width: 80%;">
+                                    Completed Today
+                                </button>
+                            @endif
+                        </form>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -65,6 +85,7 @@
                                 <th style="padding: 15px;">Check In</th>
                                 <th style="padding: 15px;">Check Out</th>
                                 <th style="padding: 15px;">Working Time</th>
+                                <th style="padding: 15px;">Overtime</th>
                                 <th style="padding: 15px;">Location IP</th>
                             </tr>
                         </thead>
@@ -89,6 +110,25 @@
                                                 $hours = floor($diff / 60);
                                                 $mins = $diff % 60;
                                                 echo sprintf('%dh %02dm', $hours, $mins);
+                                            ?>
+                                        @else
+                                            -
+                                        @endif
+                                    </td>
+                                    <td style="padding: 15px; font-weight: 600; color: #e67e22;">
+                                        @if($record->check_out)
+                                            <?php
+                                                $in = \Carbon\Carbon::parse($record->check_in);
+                                                $out = \Carbon\Carbon::parse($record->check_out);
+                                                $diff = $in->diffInMinutes($out);
+                                                if ($diff > 480) {
+                                                    $ot = $diff - 480;
+                                                    $otHours = floor($ot / 60);
+                                                    $otMins = $ot % 60;
+                                                    echo sprintf('%dh %02dm', $otHours, $otMins);
+                                                } else {
+                                                    echo '0h 00m';
+                                                }
                                             ?>
                                         @else
                                             -

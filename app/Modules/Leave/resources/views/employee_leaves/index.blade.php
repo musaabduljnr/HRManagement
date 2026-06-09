@@ -16,6 +16,7 @@
                     <th>{{trans('app.leave.employee_leaves.leave')}}</th>
                     <th>{{trans('app.leave.employee_leaves.start_date')}}</th>
                     <th>{{trans('app.leave.employee_leaves.end_date')}}</th>
+                    <th>Status</th>
                     <th></th>
                 </thead>
                 <tfoot>
@@ -33,6 +34,9 @@
                     </th>
                     <th>
                         <input type="date" placeholder="{{trans('app.leave.employee_leaves.end_date')}}"/>
+                    </th>
+                    <th>
+                        <input type="text" placeholder="Status"/>
                     </th>
                     <th></th>
                 </tfoot>
@@ -58,6 +62,7 @@
                 {data: 2, name: 'leave_type_id'},
                 {data: 3, name: 'start_date'},
                 {data: 4, name: 'end_date'},
+                {data: 5, name: 'status'},
                 {data: 6, name: 'actions', sortable: false, searchable: false}
             ]
         });

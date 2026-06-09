@@ -63,6 +63,56 @@ Breadcrumbs::register('settings.job_positions.show', function($breadcrumbs, $bre
     $breadcrumbs->push($breadcrumb['title'], route('settings.job_positions.show', $breadcrumb['id']));
 });
 
+// Home > Settings > Departments
+Breadcrumbs::register('settings.departments.index', function($breadcrumbs)
+{
+    $breadcrumbs->parent('settings.index');
+    $breadcrumbs->push('Departments', route('settings.departments.index'));
+});
+
+Breadcrumbs::register('settings.departments.create', function($breadcrumbs)
+{
+    $breadcrumbs->parent('settings.departments.index');
+    $breadcrumbs->push(trans('app.add_record'), route('settings.departments.create'));
+});
+
+Breadcrumbs::register('settings.departments.edit', function($breadcrumbs, $breadcrumb)
+{
+    $breadcrumbs->parent('settings.departments.index');
+    $breadcrumbs->push(trans('app.edit').': '.$breadcrumb['title'], route('settings.departments.edit', $breadcrumb['id']));
+});
+
+Breadcrumbs::register('settings.departments.show', function($breadcrumbs, $breadcrumb)
+{
+    $breadcrumbs->parent('settings.departments.index');
+    $breadcrumbs->push($breadcrumb['title'], route('settings.departments.show', $breadcrumb['id']));
+});
+
+// Home > Settings > Job Titles
+Breadcrumbs::register('settings.job_titles.index', function($breadcrumbs)
+{
+    $breadcrumbs->parent('settings.index');
+    $breadcrumbs->push('Job Titles', route('settings.job_titles.index'));
+});
+
+Breadcrumbs::register('settings.job_titles.create', function($breadcrumbs)
+{
+    $breadcrumbs->parent('settings.job_titles.index');
+    $breadcrumbs->push(trans('app.add_record'), route('settings.job_titles.create'));
+});
+
+Breadcrumbs::register('settings.job_titles.edit', function($breadcrumbs, $breadcrumb)
+{
+    $breadcrumbs->parent('settings.job_titles.index');
+    $breadcrumbs->push(trans('app.edit').': '.$breadcrumb['title'], route('settings.job_titles.edit', $breadcrumb['id']));
+});
+
+Breadcrumbs::register('settings.job_titles.show', function($breadcrumbs, $breadcrumb)
+{
+    $breadcrumbs->parent('settings.job_titles.index');
+    $breadcrumbs->push($breadcrumb['title'], route('settings.job_titles.show', $breadcrumb['id']));
+});
+
 /**
  * Job positions breadcrumbs end here
  */
@@ -1113,3 +1163,85 @@ Breadcrumbs::register('employee.dashboard_documents.index', function($breadcrumb
     $breadcrumbs->parent('employee.home');
     $breadcrumbs->push(trans('app.dashboard.documents.main'), route('employee.dashboard_documents.index'));
 });
+
+// Attendance Logs
+Breadcrumbs::register('attendance.index', function($breadcrumbs)
+{
+    $breadcrumbs->parent('home');
+    $breadcrumbs->push('Attendance Logs', route('attendance.index'));
+});
+
+// Attendance Logs > Scanner Terminal
+Breadcrumbs::register('attendance.scanner', function($breadcrumbs)
+{
+    $breadcrumbs->parent('attendance.index');
+    $breadcrumbs->push('Scanner Terminal', route('attendance.scanner'));
+});
+
+// Employee QR Attendance
+Breadcrumbs::register('employee.attendance.qr', function($breadcrumbs)
+{
+    $breadcrumbs->parent('employee.home');
+    $breadcrumbs->push('QR Attendance', route('employee.attendance.qr'));
+});
+
+// Payroll
+Breadcrumbs::register('payroll.index', function($breadcrumbs) {
+    $breadcrumbs->parent('home');
+    $breadcrumbs->push('Payroll Management', route('payroll.index'));
+});
+Breadcrumbs::register('payroll.payslip', function($breadcrumbs, $breadcrumb = null) {
+    $breadcrumbs->parent('payroll.index');
+    $breadcrumbs->push('Payslip Details');
+});
+
+// Job Openings
+Breadcrumbs::register('recruitment.job-openings.index', function($breadcrumbs) {
+    $breadcrumbs->parent('home');
+    $breadcrumbs->push('Job Openings', route('recruitment.job-openings.index'));
+});
+Breadcrumbs::register('recruitment.job-openings.create', function($breadcrumbs) {
+    $breadcrumbs->parent('recruitment.job-openings.index');
+    $breadcrumbs->push('Create Job Opening', route('recruitment.job-openings.create'));
+});
+Breadcrumbs::register('recruitment.job-openings.edit', function($breadcrumbs, $breadcrumb = null) {
+    $breadcrumbs->parent('recruitment.job-openings.index');
+    $breadcrumbs->push('Edit Job Opening');
+});
+
+// Interviews
+Breadcrumbs::register('recruitment.interviews.index', function($breadcrumbs) {
+    $breadcrumbs->parent('home');
+    $breadcrumbs->push('Interviews', route('recruitment.interviews.index'));
+});
+Breadcrumbs::register('recruitment.interviews.create', function($breadcrumbs) {
+    $breadcrumbs->parent('recruitment.interviews.index');
+    $breadcrumbs->push('Schedule Interview', route('recruitment.interviews.create'));
+});
+Breadcrumbs::register('recruitment.interviews.edit', function($breadcrumbs, $breadcrumb = null) {
+    $breadcrumbs->parent('recruitment.interviews.index');
+    $breadcrumbs->push('Edit Interview');
+});
+
+// AI Assistant Admin
+Breadcrumbs::register('assistant.index', function($breadcrumbs) {
+    $breadcrumbs->parent('home');
+    $breadcrumbs->push('AI HR Assistant', route('assistant.index'));
+});
+
+// Employee Payslips
+Breadcrumbs::register('employee.payroll.index', function($breadcrumbs) {
+    $breadcrumbs->parent('employee.home');
+    $breadcrumbs->push('My Payslips', route('employee.payroll.index'));
+});
+Breadcrumbs::register('employee.payroll.show', function($breadcrumbs, $breadcrumb = null) {
+    $breadcrumbs->parent('employee.payroll.index');
+    $breadcrumbs->push('Payslip Details');
+});
+
+// Employee AI Assistant
+Breadcrumbs::register('employee.assistant.index', function($breadcrumbs) {
+    $breadcrumbs->parent('employee.home');
+    $breadcrumbs->push('AI HR Assistant', route('employee.assistant.index'));
+});
+

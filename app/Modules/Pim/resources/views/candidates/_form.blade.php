@@ -43,6 +43,40 @@
         {!! Form::text('how_did_they_hear', null, ['class' => 'form-control']) !!}
     </div>
 </div>
+<div class="form-group">
+    {!! Form::label('job_opening_id', 'Applying For:', ['class' => 'col-sm-3']) !!}
+    <div class="col-sm-6">
+        {!! Form::select('job_opening_id', $jobOpenings, @$application->job_opening_id, ['class' => 'form-control', 'placeholder' => '-- Select Job Opening --']) !!}
+    </div>
+</div>
+<div class="form-group">
+    {!! Form::label('status', 'Application Status:', ['class' => 'col-sm-3']) !!}
+    <div class="col-sm-6">
+        {!! Form::select('status', [
+            'Applied' => 'Applied',
+            'Shortlisted' => 'Shortlisted',
+            'Interviewing' => 'Interviewing',
+            'Offered' => 'Offered',
+            'Hired' => 'Hired',
+            'Rejected' => 'Rejected'
+        ], @$application->status, ['class' => 'form-control']) !!}
+    </div>
+</div>
+<div class="form-group">
+    {!! Form::label('resume', 'Resume:', ['class' => 'col-sm-3']) !!}
+    <div class="col-sm-6">
+        {!! Form::file('resume', ['class' => 'form-control']) !!}
+        @if(@$application->resume_path)
+            <p class="help-block"><a href="{{ route('storage', str_replace('uploads/', '', $application->resume_path)) }}" target="_blank">View Uploaded Resume</a></p>
+        @endif
+    </div>
+</div>
+<div class="form-group">
+    {!! Form::label('app_notes', 'Application Notes:', ['class' => 'col-sm-3']) !!}
+    <div class="col-sm-6">
+        {!! Form::textarea('app_notes', @$application->notes, ['class' => 'form-control', 'rows' => 3]) !!}
+    </div>
+</div>
 @include('errors._form-errors')
 <hr>
 <div class="form-group">

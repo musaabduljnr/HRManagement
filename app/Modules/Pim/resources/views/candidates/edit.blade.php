@@ -4,7 +4,13 @@
     <div class="col-sm-12">
         <div class="custom-panel">
             <div class="custom-panel-heading">{{trans('app.pim.candidates.edit_details')}}
-                <a href="{{route('pim.candidates.feature', $employee->id)}}" title="{{trans('app.pim.candidates.mark_featured_title')}}" class="btn btn-default pull-right"><i style="{{$employee->featured ? 'color: orange' : ''}}" class="glyphicon glyphicon-star" aria-hidden="true"></i></a>
+                <form method="POST" action="{{ route('pim.candidates.convert', $employee->id) }}" style="display:inline-block; margin-left: 10px;" class="pull-right">
+                    {{ csrf_field() }}
+                    <button type="submit" class="btn btn-success btn-xs" onclick="return confirm('Are you sure you want to convert this candidate to an employee?')">
+                        <i class="glyphicon glyphicon-user"></i> Convert to Employee
+                    </button>
+                </form>
+                <a href="{{route('pim.candidates.feature', $employee->id)}}" title="{{trans('app.pim.candidates.mark_featured_title')}}" class="btn btn-default pull-right" style="margin-right: 5px;"><i style="{{$employee->featured ? 'color: orange' : ''}}" class="glyphicon glyphicon-star" aria-hidden="true"></i></a>
             </div>
             {!! Form::model($employee, ['method' => 'PUT', 'route' => ['pim.candidates.update', $employee->id], 'class' => 'form-horizontal', 'enctype' => 'multipart/form-data']) !!}
                 @include('pim::candidates._form', ['submitName' => trans('app.submit')])

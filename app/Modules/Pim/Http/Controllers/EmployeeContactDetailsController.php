@@ -37,9 +37,9 @@ class EmployeeContactDetailsController extends Controller
             'parent_type' => get_user_role($employee->role)
         ];
         if($contactDetails) {
-            return view('pim::employee_contact_details.edit', compact('breadcrumb', 'contactDetails'));
+            return view('pim::employee_contact_details.edit', compact('breadcrumb', 'contactDetails', 'employee'));
         }
-        return view('pim::employee_contact_details.create', compact('breadcrumb'));
+        return view('pim::employee_contact_details.create', compact('breadcrumb', 'employee'));
     }
 
     /**
@@ -53,6 +53,10 @@ class EmployeeContactDetailsController extends Controller
     {
         $contactData = $request->all() + ['user_id' => $employeeId];
         $contactData = $this->employeecontactDetailsRepository->create($contactData);
+        
+        $employee = $this->employeeRepository->getById($employeeId);
+        $employee->update($request->only(['emergency_contact_name', 'emergency_contact_phone', 'emergency_contact_relationship']));
+
         $request->session()->flash('success', trans('app.pim.employees.contact_details.store_success'));
         return redirect()->route('pim.employees.contact_details.index', $employeeId);
     }
@@ -68,6 +72,10 @@ class EmployeeContactDetailsController extends Controller
     public function update($employeeId, $id, EmployeeContactDetailsRequest $request)
     {
         $contactData = $this->employeecontactDetailsRepository->update($id, $request->all());
+        
+        $employee = $this->employeeRepository->getById($employeeId);
+        $employee->update($request->only(['emergency_contact_name', 'emergency_contact_phone', 'emergency_contact_relationship']));
+
         $request->session()->flash('success', trans('app.pim.employees.contact_details.update_success'));
         return redirect()->route('pim.employees.contact_details.index', [$employeeId]);
     }

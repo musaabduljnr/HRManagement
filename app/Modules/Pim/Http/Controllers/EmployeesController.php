@@ -5,6 +5,8 @@ namespace App\Modules\Pim\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Modules\Pim\Http\Requests\EmployeeRequest;
 use App\Modules\Pim\Repositories\Interfaces\EmployeeRepositoryInterface as EmployeeRepository;
+use App\Modules\Settings\Models\Department;
+use App\Modules\Settings\Models\JobTitle;
 use Datatables;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -88,7 +90,15 @@ class EmployeesController extends Controller
      */
     public function create()
     {
-        return view('pim::employees.create');
+        $departments = Department::pluck('name', 'id');
+        $jobTitles = JobTitle::pluck('name', 'id');
+        $employmentStatuses = [
+            'Full-Time' => 'Full-Time',
+            'Part-Time' => 'Part-Time',
+            'Contract' => 'Contract',
+            'Intern' => 'Intern'
+        ];
+        return view('pim::employees.create', compact('departments', 'jobTitles', 'employmentStatuses'));
     }
 
     /**
@@ -170,7 +180,21 @@ class EmployeesController extends Controller
         if($employee->role == $this->employeeRepository->model::USER_ROLE_CANDIDATE) {
             return redirect()->route('pim.candidates.edit', $id);
         }
-        return view('pim::employees.edit', ['employee' => $employee, 'breadcrumb' => ['title' => $employee->first_name.' '.$employee->last_name, 'id' => $employee->id]]);
+        $departments = Department::pluck('name', 'id');
+        $jobTitles = JobTitle::pluck('name', 'id');
+        $employmentStatuses = [
+            'Full-Time' => 'Full-Time',
+            'Part-Time' => 'Part-Time',
+            'Contract' => 'Contract',
+            'Intern' => 'Intern'
+        ];
+        return view('pim::employees.edit', [
+            'employee' => $employee, 
+            'departments' => $departments, 
+            'jobTitles' => $jobTitles, 
+            'employmentStatuses' => $employmentStatuses,
+            'breadcrumb' => ['title' => $employee->first_name.' '.$employee->last_name, 'id' => $employee->id]
+        ]);
     }
 
     /**

@@ -32,6 +32,24 @@
     </div>
 </div>
 <div class="form-group">
+    {!! Form::label('department_id', 'Department:', ['class' => 'col-sm-3']) !!}
+    <div class="col-sm-6">
+        {!! Form::select('department_id', $departments, null, ['class' => 'form-control', 'placeholder' => '-- Select Department --']) !!}
+    </div>
+</div>
+<div class="form-group">
+    {!! Form::label('job_title_id', 'Job Title:', ['class' => 'col-sm-3']) !!}
+    <div class="col-sm-6">
+        {!! Form::select('job_title_id', $jobTitles, null, ['class' => 'form-control', 'placeholder' => '-- Select Job Title --']) !!}
+    </div>
+</div>
+<div class="form-group">
+    {!! Form::label('employment_status', 'Employment Status:', ['class' => 'col-sm-3']) !!}
+    <div class="col-sm-6">
+        {!! Form::select('employment_status', $employmentStatuses, null, ['class' => 'form-control', 'placeholder' => '-- Select Status --']) !!}
+    </div>
+</div>
+<div class="form-group">
     {!! Form::label('notes', trans('app.pim.employees.notes').':', ['class' => 'col-sm-3']) !!}
     <div class="col-sm-6">
         {!! Form::textarea('notes', null, ['class' => 'form-control']) !!}

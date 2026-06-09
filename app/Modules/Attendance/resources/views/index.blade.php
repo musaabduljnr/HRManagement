@@ -12,14 +12,14 @@
                     <button class="btn btn-success" data-toggle="modal" data-target="#addModal" style="border-radius: 8px; font-weight: 600; padding: 6px 15px;">
                         <i class="glyphicon glyphicon-plus"></i> Add Manual Record
                     </button>
-                    <a href="{{ route('admin.attendance.scanner') }}" class="btn btn-primary" style="border-radius: 8px; font-weight: 600; padding: 6px 15px; margin-left: 5px;">
+                    <a href="{{ route('attendance.scanner') }}" class="btn btn-primary" style="border-radius: 8px; font-weight: 600; padding: 6px 15px; margin-left: 5px;">
                         <i class="glyphicon glyphicon-camera"></i> Scanner Terminal
                     </a>
                 </div>
             </div>
             <div class="panel-body" style="padding: 20px;">
                 <!-- Filter Form -->
-                <form method="GET" action="{{ route('admin.attendance.index') }}" class="well form-inline" style="background-color: #fafbfc; border: 1px solid #eef0f2; border-radius: 8px; padding: 15px; margin-bottom: 20px;">
+                <form method="GET" action="{{ route('attendance.index') }}" class="well form-inline" style="background-color: #fafbfc; border: 1px solid #eef0f2; border-radius: 8px; padding: 15px; margin-bottom: 20px;">
                     <div class="form-group" style="margin-right: 15px;">
                         <label for="date" style="margin-right: 8px; font-weight: 600; color: #555;">Date:</label>
                         <input type="date" id="date" name="date" class="form-control" value="{{ request('date', date('Y-m-d')) }}" style="border-radius: 6px; height: 36px;">
@@ -38,7 +38,7 @@
                     <button type="submit" class="btn btn-primary" style="border-radius: 6px; height: 36px; padding: 0 20px; font-weight: 600;">
                         <i class="glyphicon glyphicon-filter"></i> Filter
                     </button>
-                    <a href="{{ route('admin.attendance.index') }}" class="btn btn-default" style="border-radius: 6px; height: 36px; line-height: 34px; padding: 0 15px; margin-left: 5px;">
+                    <a href="{{ route('attendance.index') }}" class="btn btn-default" style="border-radius: 6px; height: 36px; line-height: 34px; padding: 0 15px; margin-left: 5px;">
                         Clear
                     </a>
                 </form>
@@ -53,6 +53,7 @@
                                 <th>Check In</th>
                                 <th>Check Out</th>
                                 <th>Working Hours</th>
+                                <th>Overtime</th>
                                 <th>IP Address</th>
                                 <th class="text-right">Actions</th>
                             </tr>
@@ -82,6 +83,25 @@
                                             -
                                         @endif
                                     </td>
+                                    <td style="font-weight: 600; color: #e67e22;">
+                                        @if($record->check_out)
+                                            <?php
+                                                $in = \Carbon\Carbon::parse($record->check_in);
+                                                $out = \Carbon\Carbon::parse($record->check_out);
+                                                $diff = $in->diffInMinutes($out);
+                                                if ($diff > 480) {
+                                                    $ot = $diff - 480;
+                                                    $otHours = floor($ot / 60);
+                                                    $otMins = $ot % 60;
+                                                    echo sprintf('%dh %02dm', $otHours, $otMins);
+                                                } else {
+                                                    echo '0h 00m';
+                                                }
+                                            ?>
+                                        @else
+                                            -
+                                        @endif
+                                    </td>
                                     <td><code style="font-size: 11px;">{{ $record->ip_address ?: '-' }}</code></td>
                                     <td class="text-right">
                                         <button class="btn btn-xs btn-primary edit-btn" 
@@ -92,7 +112,7 @@
                                                 style="border-radius: 4px; padding: 2px 8px;">
                                             <i class="glyphicon glyphicon-edit"></i> Edit
                                         </button>
-                                        <form action="{{ route('admin.attendance.destroy', $record->id) }}" method="POST" style="display:inline-block;" onsubmit="return confirm('Are you sure you want to delete this attendance log?');">
+                                        <form action="{{ route('attendance.destroy', $record->id) }}" method="POST" style="display:inline-block;" onsubmit="return confirm('Are you sure you want to delete this attendance log?');">
                                             {{ csrf_field() }}
                                             {{ method_field('DELETE') }}
                                             <button type="submit" class="btn btn-xs btn-danger" style="border-radius: 4px; padding: 2px 8px; margin-left: 2px;">
@@ -103,7 +123,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="7" class="text-center text-muted" style="padding: 40px 0;">
+                                    <td colspan="8" class="text-center text-muted" style="padding: 40px 0;">
                                         No attendance logs found for this date.
                                     </td>
                                 </tr>
@@ -119,7 +139,7 @@
 <!-- Add Modal -->
 <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel">
     <div class="modal-dialog" role="document">
-        <form action="{{ route('admin.attendance.store') }}" method="POST">
+        <form action="{{ route('attendance.store') }}" method="POST">
             {{ csrf_field() }}
             <div class="modal-content" style="border-radius: 12px; overflow: hidden; border: none; box-shadow: 0 10px 30px rgba(0,0,0,0.15);">
                 <div class="modal-header" style="background-color: #27ae60; color: white; border: none; padding: 15px 20px;">
@@ -219,7 +239,7 @@ document.addEventListener('DOMContentLoaded', function() {
         $('#edit-out').val(checkOut);
         
         // Dynamic form action
-        let action = "{{ route('admin.attendance.update', ':id') }}";
+        let action = "{{ route('attendance.update', ':id') }}";
         action = action.replace(':id', id);
         $('#edit-form').attr('action', action);
 
