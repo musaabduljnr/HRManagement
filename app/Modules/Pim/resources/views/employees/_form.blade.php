@@ -50,6 +50,12 @@
     </div>
 </div>
 <div class="form-group">
+    {!! Form::label('password', 'Password:', ['class' => 'col-sm-3']) !!}
+    <div class="col-sm-6">
+        {!! Form::password('password', ['class' => 'form-control', 'placeholder' => isset($employee) ? 'Leave blank to keep current' : 'Leave blank to auto-generate']) !!}
+    </div>
+</div>
+<div class="form-group">
     {!! Form::label('notes', trans('app.pim.employees.notes').':', ['class' => 'col-sm-3']) !!}
     <div class="col-sm-6">
         {!! Form::textarea('notes', null, ['class' => 'form-control']) !!}
