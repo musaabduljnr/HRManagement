@@ -24,27 +24,42 @@
             <div class="custom-panel-heading">{{trans('app.pim.candidates.additional')}}</div>
             <div class="clearfix">
                 <div class="col-lg-3 col-md-4 col-sm-6">
-                    <a class="nav-box" href="{{route('pim.employees.social_media.index', $employee->id)}}">
+                    <a class="nav-box card-primary" href="{{route('pim.employees.social_media.index', $employee->id)}}">
+                        <div class="nav-card-icon">
+                            <i class="fa fa-globe"></i>
+                        </div>
                         <h2>{{trans('app.pim.employees.external_accounts.main')}}</h2>
                     </a>
                 </div>
                 <div class="col-lg-3 col-md-4 col-sm-6">
-                    <a class="nav-box" href="{{route('pim.employees.documents.index', $employee->id)}}">
+                    <a class="nav-box card-success" href="{{route('pim.employees.documents.index', $employee->id)}}">
+                        <div class="nav-card-icon">
+                            <i class="fa fa-file-text-o"></i>
+                        </div>
                         <h2>{{trans('app.pim.employees.documents.main')}}</h2>
                     </a>
                 </div>
                 <div class="col-lg-3 col-md-4 col-sm-6">
-                    <a class="nav-box" href="{{route('pim.employees.contact_details.index', $employee->id)}}">
+                    <a class="nav-box card-warning" href="{{route('pim.employees.contact_details.index', $employee->id)}}">
+                        <div class="nav-card-icon">
+                            <i class="fa fa-phone"></i>
+                        </div>
                         <h2>{{trans('app.pim.employees.contact_details.main')}}</h2>
                     </a>
                 </div>
                 <div class="col-lg-3 col-md-4 col-sm-6">
-                    <a class="nav-box" href="{{route('pim.employees.qualifications.index', $employee->id)}}">
+                    <a class="nav-box card-danger" href="{{route('pim.employees.qualifications.index', $employee->id)}}">
+                        <div class="nav-card-icon">
+                            <i class="fa fa-graduation-cap"></i>
+                        </div>
                         <h2>{{trans('app.pim.employees.qualifications.main')}}</h2>
                     </a>
                 </div>
                 <div class="col-lg-3 col-md-4 col-sm-6">
-                    <a class="nav-box" href="{{route('pim.employees.preferences.index', $employee->id)}}">
+                    <a class="nav-box card-info" href="{{route('pim.employees.preferences.index', $employee->id)}}">
+                        <div class="nav-card-icon">
+                            <i class="fa fa-cog"></i>
+                        </div>
                         <h2>{{trans('app.pim.candidates.preferences.main')}}</h2>
                     </a>
                 </div>

@@ -67,7 +67,7 @@
                     <div class="form-group">
                         {!! Form::label('currency_id', trans('app.pim.employees.salaries.config.currency'), ['class' => 'col-sm-3']) !!}
                         <div class="col-sm-6">
-                            {!! Form::select('currency_id', $currencies, null, ['class' => 'form-control']) !!}
+                            {!! Form::select('currency_id', $currencies, isset($currentSalary->currency_id) ? $currentSalary->currency_id : 4, ['class' => 'form-control']) !!}
                         </div>
                     </div>
                     <div class="form-group">
@@ -98,11 +98,11 @@
             serverSide: true,
             ajax: '{{ route("pim.employees.salaries.datatable", Route::input("employeeId"))}}',
             columns: [
-                {data: 0, name: 'id'},
-                {data: 1, name: 'gross_total'},
-                {data: 2, name: 'nett_total'},
-                {data: 3, name: 'payment_date'},
-                {data: 4, name: 'actions', sortable: false, searchable: false}
+                {data: 'id', name: 'id'},
+                {data: 'gross_total', name: 'gross_total'},
+                {data: 'nett_total', name: 'nett_total'},
+                {data: 'payment_date', name: 'payment_date'},
+                {data: 'actions', name: 'actions', sortable: false, searchable: false}
             ]
         });
         table.columns().every(function () {

@@ -52,11 +52,11 @@
                         <tr>
                             <td>{{ $record->user->first_name }} {{ $record->user->last_name }}</td>
                             <td>{{ $record->payroll_month }}</td>
-                            <td>${{ number_format($record->base_salary, 2) }}</td>
-                            <td>${{ number_format($record->allowances, 2) }}</td>
-                            <td>${{ number_format($record->deductions, 2) }}</td>
-                            <td>${{ number_format($record->bonuses, 2) }}</td>
-                            <td><strong>${{ number_format($record->net_salary, 2) }}</strong></td>
+                            <td>₦{{ number_format($record->base_salary, 2) }}</td>
+                            <td>₦{{ number_format($record->allowances, 2) }}</td>
+                            <td>₦{{ number_format($record->deductions, 2) }}</td>
+                            <td>₦{{ number_format($record->bonuses, 2) }}</td>
+                            <td><strong>₦{{ number_format($record->net_salary, 2) }}</strong></td>
                             <td>
                                 @if($record->status == 'paid')
                                     <span class="label label-success">Paid</span>
@@ -66,6 +66,18 @@
                             </td>
                             <td>
                                 @if($record->status == 'draft')
+                                    <div style="margin-bottom:6px;">
+                                        <form method="POST" action="{{ route('payroll.bonus', $record->id) }}" class="form-inline" style="display:inline;">
+                                            {{ csrf_field() }}
+                                            <div class="input-group input-group-sm" style="width:180px;">
+                                                <span class="input-group-addon">₦ Bonus</span>
+                                                <input type="number" step="0.01" min="0" name="bonuses" value="{{ $record->bonuses }}" class="form-control" placeholder="0.00">
+                                                <span class="input-group-btn">
+                                                    <button type="submit" class="btn btn-xs btn-info" title="Save Bonus"><i class="fa fa-save"></i></button>
+                                                </span>
+                                            </div>
+                                        </form>
+                                    </div>
                                     <form method="POST" action="{{ route('payroll.pay', $record->id) }}" style="display:inline;">
                                         {{ csrf_field() }}
                                         <button type="submit" class="btn btn-xs btn-primary">

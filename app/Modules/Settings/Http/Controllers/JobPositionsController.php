@@ -41,7 +41,8 @@ class JobPositionsController extends Controller
                     'editUrl' => route('settings.job_positions.edit', $jobPosition->id)
                 ]);
             })
-            ->make();
+            ->escapeColumns([])
+            ->make(true);
     }
 
     /**

@@ -46,6 +46,20 @@
             </a>
         </li>
 
+        <li class="{{ Request::is('employee/assets*') ? 'active' : '' }}">
+            <a href="{{ route('employee.assets.index') }}">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="2" y="2" width="20" height="8" rx="2" ry="2"/>
+                    <rect x="2" y="14" width="20" height="8" rx="2" ry="2"/>
+                    <line x1="6" y1="6" x2="6" y2="6"/>
+                    <line x1="6" y1="18" x2="6" y2="18"/>
+                </svg>
+                My Assets
+            </a>
+        </li>
+
+        
+
         <li class="{{ $current == 'employee.time' ? 'active' : '' }}">
             <a href="{{ route('employee.time.index') }}">
                 <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -84,6 +98,7 @@
                 My Documents
             </a>
         </li>
+
 
         <li class="{{ $current == 'employee.dashboard_documents' ? 'active' : '' }}">
             <a href="{{ route('employee.dashboard_documents.index') }}">

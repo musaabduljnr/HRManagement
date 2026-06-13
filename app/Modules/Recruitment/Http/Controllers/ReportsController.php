@@ -67,7 +67,8 @@ class ReportsController extends Controller
             })
             ->removeColumn('id')
             ->removeColumn('featured')
-            ->make();
+            ->escapeColumns([])
+            ->make(true);
     }
 
     public function show($id)

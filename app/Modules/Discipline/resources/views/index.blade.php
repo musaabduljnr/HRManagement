@@ -2,7 +2,10 @@
 @section('content')
 <div class="row">
     <div class="col-lg-3 col-md-4 col-sm-6">
-        <a class="nav-box" href="{{route('discipline.disciplinary_cases.index')}}">
+        <a class="nav-box card-danger" href="{{route('discipline.disciplinary_cases.index')}}">
+            <div class="nav-card-icon">
+                <i class="fa fa-gavel"></i>
+            </div>
             <h2>{{trans('app.discipline.disciplinary_cases.main')}}</h2>
         </a>
     </div>

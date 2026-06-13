@@ -53,12 +53,12 @@
             serverSide: true,
             ajax: '{{ route("settings.salary_components.datatable")}}',
             columns: [
-                {data: 0, name: 'id'},
-                {data: 1, name: 'name'},
-                {data: 2, name: 'contract_type_id'},
-                {data: 3, name: 'type'},
-                {data: 4, name: 'is_cost'},
-                {data: 5, name: 'actions', sortable: false, searchable: false}
+                {data: 'id', name: 'id'},
+                {data: 'name', name: 'name'},
+                {data: 'contract_type_id', name: 'contract_type_id'},
+                {data: 'type', name: 'type'},
+                {data: 'is_cost', name: 'is_cost'},
+                {data: 'actions', name: 'actions', sortable: false, searchable: false}
             ]
         });
         table.columns().every(function () {

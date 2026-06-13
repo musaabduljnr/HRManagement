@@ -49,11 +49,11 @@
             serverSide: true,
             ajax: '{{ route("pim.employees.datatable")}}',
             columns: [
-                {data: 0, name: 'id'},
-                {data: 1, name: 'first_name'},
-                {data: 2, name: 'last_name'},
-                {data: 3, name: 'email'},
-                {data: 4, name: 'actions', sortable: false, searchable: false}
+                {data: 'id', name: 'id'},
+                {data: 'first_name', name: 'first_name'},
+                {data: 'last_name', name: 'last_name'},
+                {data: 'email', name: 'email'},
+                {data: 'actions', name: 'actions', sortable: false, searchable: false}
             ]
         });
         table.columns().every(function () {

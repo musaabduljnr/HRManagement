@@ -43,7 +43,8 @@ class CandidatesController extends Controller
                     'editUrl' => route('pim.candidates.edit', $employee->id)
                 ]);
             })
-            ->make();
+            ->escapeColumns([])
+            ->make(true);
     }
 
     /**

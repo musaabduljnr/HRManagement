@@ -41,7 +41,8 @@ class ClientsController extends Controller
                     'editUrl' => route('time.clients.edit', $client->id)
                 ]);
             })
-            ->make();
+            ->escapeColumns([])
+            ->make(true);
     }
 
     /**

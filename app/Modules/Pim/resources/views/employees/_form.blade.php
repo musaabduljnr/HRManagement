@@ -56,6 +56,18 @@
     </div>
 </div>
 <div class="form-group">
+    {!! Form::label('bank_name', 'Bank Name:', ['class' => 'col-sm-3']) !!}
+    <div class="col-sm-6">
+        {!! Form::text('bank_name', null, ['class' => 'form-control']) !!}
+    </div>
+</div>
+<div class="form-group">
+    {!! Form::label('account_number', 'Account Number:', ['class' => 'col-sm-3']) !!}
+    <div class="col-sm-6">
+        {!! Form::text('account_number', null, ['class' => 'form-control']) !!}
+    </div>
+</div>
+<div class="form-group">
     {!! Form::label('notes', trans('app.pim.employees.notes').':', ['class' => 'col-sm-3']) !!}
     <div class="col-sm-6">
         {!! Form::textarea('notes', null, ['class' => 'form-control']) !!}

@@ -30,7 +30,9 @@ class EmployeeRequest extends FormRequest
             'last_name' => ['required'],
             'email' => ['required', 'email', 'unique:users'],
             'gender' => ['required'],
-            'birth_date' => ['required']
+            'birth_date' => ['required'],
+            'bank_name' => ['nullable', 'string', 'max:100'],
+            'account_number' => ['nullable', 'string', 'max:30']
         ];
         if(preg_match('/update/', Route::currentRouteName())) {
             $rules['email'] = [

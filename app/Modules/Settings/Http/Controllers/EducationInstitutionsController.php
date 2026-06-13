@@ -41,7 +41,8 @@ class EducationInstitutionsController extends Controller
                     'editUrl' => route('settings.education_institutions.edit', $educationInstitution->id)
                 ]);
             })
-            ->make();
+            ->escapeColumns([])
+            ->make(true);
     }
 
     /**

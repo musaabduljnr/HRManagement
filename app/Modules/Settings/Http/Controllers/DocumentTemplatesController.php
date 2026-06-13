@@ -44,7 +44,8 @@ class DocumentTemplatesController extends Controller
                     'editUrl' => route('settings.document_templates.edit', $document->id)
                 ]);
             })
-            ->make();
+            ->escapeColumns([])
+            ->make(true);
     }
 
     /**

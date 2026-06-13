@@ -10,6 +10,7 @@ use App\Modules\Recruitment as Recruitment;
 use App\Modules\Discipline as Discipline;
 use App\Modules\Time as Time;
 use App\Modules\Dashboard as Dashboard;
+use App\Modules\Assets as Assets;
 
 class RepositoryServiceProvider extends ServiceProvider
 {
@@ -52,7 +53,13 @@ class RepositoryServiceProvider extends ServiceProvider
             Time\Repositories\ClientRepository::class => [Time\Repositories\Interfaces\ClientRepositoryInterface::class],
             Time\Repositories\ProjectRepository::class => [Time\Repositories\Interfaces\ProjectRepositoryInterface::class],
             Time\Repositories\TimeLogRepository::class => [Time\Repositories\Interfaces\TimeLogRepositoryInterface::class],
+            
             Dashboard\Repositories\DashboardDocumentsRepository::class => [Dashboard\Repositories\Interfaces\DashboardDocumentsRepositoryInterface::class],
+            Assets\Repositories\AssetCategoryRepository::class => [Assets\Repositories\Interfaces\AssetCategoryRepositoryInterface::class],
+            Assets\Repositories\AssetRepository::class => [Assets\Repositories\Interfaces\AssetRepositoryInterface::class],
+            Assets\Repositories\AssetAssignmentRepository::class => [Assets\Repositories\Interfaces\AssetAssignmentRepositoryInterface::class],
+            Assets\Repositories\AssetHistoryRepository::class => [Assets\Repositories\Interfaces\AssetHistoryRepositoryInterface::class],
+            Assets\Repositories\AssetMaintenanceRepository::class => [Assets\Repositories\Interfaces\AssetMaintenanceRepositoryInterface::class],
         ];
 
         foreach ($bindings as $concrete => $interfaces) {

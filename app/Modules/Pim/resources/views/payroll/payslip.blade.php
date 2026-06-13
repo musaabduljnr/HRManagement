@@ -37,6 +37,8 @@
                     <div class="col-xs-6 text-right">
                         <h4><strong>Payment Info</strong></h4>
                         <p><strong>Payment Method:</strong> Bank Transfer<br>
+                        <strong>Bank Name:</strong> {{ $record->user->bank_name ?: 'N/A' }}<br>
+                        <strong>Account Number:</strong> {{ $record->user->account_number ?: 'N/A' }}<br>
                         <strong>Date Paid:</strong> {{ $record->updated_at->format('Y-m-d') }}</p>
                     </div>
                 </div>
@@ -55,27 +57,27 @@
                     <tbody>
                         <tr>
                             <td>Basic Salary</td>
-                            <td class="text-right">${{ number_format($record->base_salary, 2) }}</td>
+                            <td class="text-right">₦{{ number_format($record->base_salary, 2) }}</td>
                             <td>Taxes & Deductions</td>
-                            <td class="text-right">${{ number_format($record->deductions, 2) }}</td>
+                            <td class="text-right">₦{{ number_format($record->deductions, 2) }}</td>
                         </tr>
                         <tr>
                             <td>Other Allowances</td>
-                            <td class="text-right">${{ number_format($record->allowances, 2) }}</td>
+                            <td class="text-right">₦{{ number_format($record->allowances, 2) }}</td>
                             <td></td>
                             <td class="text-right">-</td>
                         </tr>
                         <tr>
                             <td>Bonuses</td>
-                            <td class="text-right">${{ number_format($record->bonuses, 2) }}</td>
+                            <td class="text-right">₦{{ number_format($record->bonuses, 2) }}</td>
                             <td></td>
                             <td class="text-right">-</td>
                         </tr>
                         <tr style="font-weight: bold; background-color: #f5f5f5;">
                             <td>Total Earnings</td>
-                            <td class="text-right">${{ number_format($record->base_salary + $record->allowances + $record->bonuses, 2) }}</td>
+                            <td class="text-right">₦{{ number_format($record->base_salary + $record->allowances + $record->bonuses, 2) }}</td>
                             <td>Total Deductions</td>
-                            <td class="text-right">${{ number_format($record->deductions, 2) }}</td>
+                            <td class="text-right">₦{{ number_format($record->deductions, 2) }}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -83,7 +85,7 @@
                 <div class="row">
                     <div class="col-xs-6 col-xs-offset-6 text-right">
                         <div style="border-top: 2px solid #ddd; padding-top: 10px; margin-top: 10px;">
-                            <h3><strong>Net Salary: ${{ number_format($record->net_salary, 2) }}</strong></h3>
+                            <h3><strong>Net Salary: ₦{{ number_format($record->net_salary, 2) }}</strong></h3>
                         </div>
                     </div>
                 </div>

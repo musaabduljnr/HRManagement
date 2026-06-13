@@ -48,7 +48,8 @@ class ProjectsController extends Controller
                     'editUrl' => route('time.projects.edit', $project->id)
                 ]);
             })
-            ->make();
+            ->escapeColumns([])
+            ->make(true);
     }
 
     /**

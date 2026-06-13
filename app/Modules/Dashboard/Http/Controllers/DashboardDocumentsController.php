@@ -38,7 +38,8 @@ class DashboardDocumentsController extends Controller
                     'downloadUrl' => route('dashboard.documents.download', $document->id)
                 ]);
             })
-            ->make();
+            ->escapeColumns([])
+            ->make(true);
     }
 
     public function create() 

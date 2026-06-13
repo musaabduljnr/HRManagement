@@ -63,7 +63,8 @@ class DocumentsController extends Controller
                 ]);
             })
             ->removeColumn('user_id')
-            ->make();
+            ->escapeColumns([])
+            ->make(true);
     }
 
     public function downloadDocument(Request $request) 

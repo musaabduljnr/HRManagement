@@ -55,7 +55,8 @@ class EmployeeWorkExperienceController extends Controller
                 ]);
             })
             ->removeColumn('user_id')
-            ->make();
+            ->escapeColumns([])
+            ->make(true);
     }
 
     /**

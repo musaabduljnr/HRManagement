@@ -4,7 +4,7 @@
 <h2 class="auth-card-title">Welcome back</h2>
 <p class="auth-card-sub">Sign in to your HR Management account</p>
 
-<form role="form" method="POST" action="{{ url('/login') }}">
+<form role="form" method="POST" action="{{ route('login') }}">
     {{ csrf_field() }}
 
     <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
@@ -20,7 +20,7 @@
     <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}" style="margin-bottom: 12px;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
             <label for="password" style="margin: 0;">Password</label>
-            <a class="auth-forgot" href="{{ url('/password/reset') }}">Forgot password?</a>
+            <a class="auth-forgot" href="{{ route('password.request') }}">Forgot password?</a>
         </div>
         <input id="password" type="password" class="form-control" name="password"
                required placeholder="••••••••">

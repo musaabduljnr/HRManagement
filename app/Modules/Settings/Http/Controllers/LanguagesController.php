@@ -41,7 +41,8 @@ class LanguagesController extends Controller
                     'editUrl' => route('settings.languages.edit', $language->id)
                 ]);
             })
-            ->make();
+            ->escapeColumns([])
+            ->make(true);
     }
 
     /**

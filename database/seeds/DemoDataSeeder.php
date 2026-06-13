@@ -110,24 +110,24 @@ class DemoDataSeeder extends Seeder
                 'activity' => 'Generated Payroll',
                 'description' => 'Generated payroll records for the month of ' . date('Y-m'),
                 'ip_address' => '127.0.0.1',
-                'created_at' => now(),
-                'updated_at' => now()
+                'created_at' => \Carbon\Carbon::now(),
+                'updated_at' => \Carbon\Carbon::now()
             ],
             [
                 'user_id' => $adminId,
                 'activity' => 'Created Job Opening',
                 'description' => 'Created Job Opening: Senior Laravel Backend Developer',
                 'ip_address' => '127.0.0.1',
-                'created_at' => now(),
-                'updated_at' => now()
+                'created_at' => \Carbon\Carbon::now(),
+                'updated_at' => \Carbon\Carbon::now()
             ],
             [
                 'user_id' => $adminId,
                 'activity' => 'System Settings Update',
                 'description' => 'Configured company department structures.',
                 'ip_address' => '127.0.0.1',
-                'created_at' => now(),
-                'updated_at' => now()
+                'created_at' => \Carbon\Carbon::now(),
+                'updated_at' => \Carbon\Carbon::now()
             ]
         ]);
     }

@@ -1257,3 +1257,124 @@ Breadcrumbs::register('employee.chat.index', function($breadcrumbs) {
     $breadcrumbs->push('HR Messaging Inbox', route('employee.chat.index'));
 });
 
+// Admin Assets breadcrumbs
+Breadcrumbs::register('assets.dashboard', function($breadcrumbs) {
+    $breadcrumbs->parent('home');
+    $breadcrumbs->push('Assets Dashboard', route('assets.dashboard'));
+});
+
+Breadcrumbs::register('assets.categories.index', function($breadcrumbs) {
+    $breadcrumbs->parent('assets.dashboard');
+    $breadcrumbs->push('Asset Categories', route('assets.categories.index'));
+});
+Breadcrumbs::register('assets.categories.create', function($breadcrumbs) {
+    $breadcrumbs->parent('assets.categories.index');
+    $breadcrumbs->push(trans('app.add_record'), route('assets.categories.create'));
+});
+Breadcrumbs::register('assets.categories.edit', function($breadcrumbs, $breadcrumb) {
+    $breadcrumbs->parent('assets.categories.index');
+    $breadcrumbs->push(trans('app.edit').': '.$breadcrumb['title'], route('assets.categories.edit', $breadcrumb['id']));
+});
+
+Breadcrumbs::register('assets.list.index', function($breadcrumbs) {
+    $breadcrumbs->parent('assets.dashboard');
+    $breadcrumbs->push('Assets Inventory', route('assets.list.index'));
+});
+Breadcrumbs::register('assets.list.create', function($breadcrumbs) {
+    $breadcrumbs->parent('assets.list.index');
+    $breadcrumbs->push(trans('app.add_record'), route('assets.list.create'));
+});
+Breadcrumbs::register('assets.list.edit', function($breadcrumbs, $breadcrumb) {
+    $breadcrumbs->parent('assets.list.index');
+    $breadcrumbs->push(trans('app.edit').': '.$breadcrumb['title'], route('assets.list.edit', $breadcrumb['id']));
+});
+Breadcrumbs::register('assets.list.show', function($breadcrumbs, $breadcrumb) {
+    $breadcrumbs->parent('assets.list.index');
+    $breadcrumbs->push($breadcrumb['title'], route('assets.list.show', $breadcrumb['id']));
+});
+
+Breadcrumbs::register('assets.assignments.index', function($breadcrumbs) {
+    $breadcrumbs->parent('assets.dashboard');
+    $breadcrumbs->push('Asset Assignments', route('assets.assignments.index'));
+});
+Breadcrumbs::register('assets.assignments.create', function($breadcrumbs) {
+    $breadcrumbs->parent('assets.assignments.index');
+    $breadcrumbs->push('Assign Asset', route('assets.assignments.create'));
+});
+Breadcrumbs::register('assets.assignments.edit', function($breadcrumbs, $breadcrumb) {
+    $breadcrumbs->parent('assets.assignments.index');
+    $breadcrumbs->push('Edit Assignment: ' . $breadcrumb['title'], route('assets.assignments.edit', $breadcrumb['id']));
+});
+Breadcrumbs::register('assets.assignments.return', function($breadcrumbs, $id) {
+    $breadcrumbs->parent('assets.assignments.index');
+    $breadcrumbs->push('Return Asset', route('assets.assignments.return', $id));
+});
+
+Breadcrumbs::register('assets.maintenances.index', function($breadcrumbs) {
+    $breadcrumbs->parent('assets.dashboard');
+    $breadcrumbs->push('Asset Maintenance Logs', route('assets.maintenances.index'));
+});
+Breadcrumbs::register('assets.maintenances.create', function($breadcrumbs) {
+    $breadcrumbs->parent('assets.maintenances.index');
+    $breadcrumbs->push('Add Log', route('assets.maintenances.create'));
+});
+Breadcrumbs::register('assets.maintenances.edit', function($breadcrumbs, $breadcrumb) {
+    $breadcrumbs->parent('assets.maintenances.index');
+    $breadcrumbs->push('Edit Log', route('assets.maintenances.edit', $breadcrumb['id']));
+});
+
+Breadcrumbs::register('assets.reports.index', function($breadcrumbs) {
+    $breadcrumbs->parent('assets.dashboard');
+    $breadcrumbs->push('Asset Reports', route('assets.reports.index'));
+});
+
+// Employee Portal My Assets breadcrumbs
+Breadcrumbs::register('employee.assets.index', function($breadcrumbs) {
+    $breadcrumbs->parent('employee.home');
+    $breadcrumbs->push('My Assets', route('employee.assets.index'));
+});
+Breadcrumbs::register('employee.assets.show', function($breadcrumbs, $id) {
+    $breadcrumbs->parent('employee.assets.index');
+    $breadcrumbs->push('Asset Details', route('employee.assets.show', $id));
+});
+
+// PIM Employee Profile Assets sub-integration breadcrumbs
+Breadcrumbs::register('pim.employees.assets.index', function($breadcrumbs, $breadcrumb) {
+    $breadcrumbs->parent('pim.employees.edit', ['id' => $breadcrumb['parent_id'], 'title' => $breadcrumb['parent_title']]);
+    $breadcrumbs->push('Assigned Assets', route('pim.employees.assets.index', $breadcrumb['parent_id']));
+});
+Breadcrumbs::register('pim.employees.assets.create', function($breadcrumbs, $breadcrumb) {
+    $breadcrumbs->parent('pim.employees.assets.index', $breadcrumb);
+    $breadcrumbs->push('Assign Asset', route('pim.employees.assets.create', $breadcrumb['parent_id']));
+});
+
+// HR Policies
+Breadcrumbs::register('hr_policies.index', function($breadcrumbs) {
+    $breadcrumbs->parent('home');
+    $breadcrumbs->push('HR Policies', route('hr_policies.index'));
+});
+Breadcrumbs::register('hr_policies.create', function($breadcrumbs) {
+    $breadcrumbs->parent('hr_policies.index');
+    $breadcrumbs->push('Add HR Policy', route('hr_policies.create'));
+});
+Breadcrumbs::register('hr_policies.edit', function($breadcrumbs, $breadcrumb) {
+    $breadcrumbs->parent('hr_policies.index');
+    $breadcrumbs->push('Edit HR Policy: ' . $breadcrumb['title'], route('hr_policies.edit', $breadcrumb['id']));
+});
+
+// Attendance Rules
+Breadcrumbs::register('attendance_rules.index', function($breadcrumbs) {
+    $breadcrumbs->parent('home');
+    $breadcrumbs->push('Attendance Rules', route('attendance_rules.index'));
+});
+Breadcrumbs::register('attendance_rules.create', function($breadcrumbs) {
+    $breadcrumbs->parent('attendance_rules.index');
+    $breadcrumbs->push('Add Attendance Rule', route('attendance_rules.create'));
+});
+Breadcrumbs::register('attendance_rules.edit', function($breadcrumbs, $breadcrumb) {
+    $breadcrumbs->parent('attendance_rules.index');
+    $breadcrumbs->push('Edit Attendance Rule: ' . $breadcrumb['title'], route('attendance_rules.edit', $breadcrumb['id']));
+});
+
+
+

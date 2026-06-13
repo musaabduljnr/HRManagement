@@ -44,10 +44,10 @@
             serverSide: true,
             ajax: '{{ route("pim.employees.documents.datatable", Route::input("employeeId"))}}',
             columns: [
-                {data: 0, name: 'id'},
-                {data: 1, name: 'name'},
-                {data: 2, name: 'attachment', sortable: false, searchable: false},
-                {data: 3, name: 'actions', sortable: false, searchable: false}
+                {data: 'id', name: 'id'},
+                {data: 'name', name: 'name'},
+                {data: 'attachment', name: 'attachment', sortable: false, searchable: false},
+                {data: 'actions', name: 'actions', sortable: false, searchable: false}
             ]
         });
         table.columns().every(function () {

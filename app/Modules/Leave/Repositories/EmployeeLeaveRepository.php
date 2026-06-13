@@ -35,15 +35,24 @@ class EmployeeLeaveRepository extends EloquentRepository implements EmployeeLeav
         } else {
             $date = Carbon::createFromFormat('Y-m-d', $date);
         }
-        $items = $this->model
-            ->whereRaw('(MONTH(start_date) = ? AND YEAR(start_date) = ?) OR (MONTH(end_date) = ? AND YEAR(end_date) = ?)', 
-                [
-                    $date->month, 
-                    $date->year, 
-                    $date->month, 
-                    $date->year
-            ])
-            ->get();
+        $driver = \DB::connection()->getDriverName();
+        if ($driver === 'sqlite') {
+            $month = str_pad($date->month, 2, '0', STR_PAD_LEFT);
+            $year  = $date->year;
+            $items = $this->model
+                ->whereRaw(
+                    "(strftime('%m', start_date) = ? AND strftime('%Y', start_date) = ?) OR (strftime('%m', end_date) = ? AND strftime('%Y', end_date) = ?)",
+                    [$month, $year, $month, $year]
+                )
+                ->get();
+        } else {
+            $items = $this->model
+                ->whereRaw(
+                    '(MONTH(start_date) = ? AND YEAR(start_date) = ?) OR (MONTH(end_date) = ? AND YEAR(end_date) = ?)',
+                    [$date->month, $date->year, $date->month, $date->year]
+                )
+                ->get();
+        }
 
         $events = [];
         foreach ($items as $key => $value) {

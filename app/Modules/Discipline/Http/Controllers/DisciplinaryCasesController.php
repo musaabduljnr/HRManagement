@@ -47,7 +47,8 @@ class DisciplinaryCasesController extends Controller
                     'editUrl' => route('discipline.disciplinary_cases.edit', $disciplinary_case->id)
                 ]);
             })
-            ->make();
+            ->escapeColumns([])
+            ->make(true);
     }
 
     /**

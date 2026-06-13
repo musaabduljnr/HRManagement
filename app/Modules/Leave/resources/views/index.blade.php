@@ -2,22 +2,34 @@
 @section('content')
 <div class="row">
     <div class="col-lg-3 col-md-4 col-sm-6">
-        <a href="{{route('leave.leave_types.index')}}" class="nav-box">
+        <a href="{{route('leave.leave_types.index')}}" class="nav-box card-primary">
+            <div class="nav-card-icon">
+                <i class="fa fa-list-ul"></i>
+            </div>
             <h2>{{trans('app.leave.leave_types.main')}}</h2>
         </a>
     </div>
     <div class="col-lg-3 col-md-4 col-sm-6">
-        <a href="{{route('leave.employee_leaves.index')}}" class="nav-box">
+        <a href="{{route('leave.employee_leaves.index')}}" class="nav-box card-success">
+            <div class="nav-card-icon">
+                <i class="fa fa-plane"></i>
+            </div>
             <h2>{{trans('app.leave.employee_leaves.main')}}</h2>
         </a>
     </div>
     <div class="col-lg-3 col-md-4 col-sm-6">
-        <a href="{{route('leave.holidays.index')}}" class="nav-box">
+        <a href="{{route('leave.holidays.index')}}" class="nav-box card-warning">
+            <div class="nav-card-icon">
+                <i class="fa fa-calendar-check-o"></i>
+            </div>
             <h2>{{trans('app.leave.holidays.main')}}</h2>
         </a>
     </div>
     <div class="col-lg-3 col-md-4 col-sm-6">
-        <a href="{{route('leave.calendar.index')}}" class="nav-box">
+        <a href="{{route('leave.calendar.index')}}" class="nav-box card-info">
+            <div class="nav-card-icon">
+                <i class="fa fa-calendar"></i>
+            </div>
             <h2>{{trans('app.leave.calendar.main')}}</h2>
         </a>
     </div>

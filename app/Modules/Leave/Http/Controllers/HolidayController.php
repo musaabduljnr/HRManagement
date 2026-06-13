@@ -41,7 +41,8 @@ class HolidayController extends Controller
                     'editUrl' => route('leave.holidays.edit', $leave_type->id)
                 ]);
             })
-            ->make();
+            ->escapeColumns([])
+            ->make(true);
     }
 
     /**

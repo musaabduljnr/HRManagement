@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Employee;
 
 use App\Http\Controllers\Controller;
 
+use Illuminate\Http\Request;
+
 class HomeController extends Controller
 {
     /**
@@ -53,5 +55,31 @@ class HomeController extends Controller
             'token',
             'current'
         ));
+    }
+
+    /**
+     * Update employee bank details from their dashboard.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function updateBankDetails(Request $request)
+    {
+        $this->validate($request, [
+            'bank_name' => 'required|string|max:100',
+            'account_number' => 'required|string|max:30'
+        ]);
+
+        $user = \Auth::user();
+        $user->bank_name = $request->bank_name;
+        $user->account_number = $request->account_number;
+        $user->save();
+
+        if ($request->ajax()) {
+            return response()->json(['success' => true]);
+        }
+
+        $request->session()->flash('success', 'Bank details updated successfully.');
+        return redirect()->route('employee.home');
     }
 }

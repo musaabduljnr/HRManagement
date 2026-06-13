@@ -77,8 +77,8 @@ class LeavesController extends Controller
                 }
                 return view('includes._datatable_actions', $actions);
             })
-            ->rawColumns(['status', 'actions'])
-            ->make();
+            ->escapeColumns([])
+            ->make(true);
     }
 
     /**

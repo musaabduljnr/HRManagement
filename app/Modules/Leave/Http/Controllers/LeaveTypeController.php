@@ -41,7 +41,8 @@ class LeaveTypeController extends Controller
                     'editUrl' => route('leave.leave_types.edit', $leave_type->id)
                 ]);
             })
-            ->make();
+            ->escapeColumns([])
+            ->make(true);
     }
 
     /**

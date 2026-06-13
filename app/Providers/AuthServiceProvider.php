@@ -54,5 +54,25 @@ class AuthServiceProvider extends ServiceProvider
                 \App\User::USER_ROLE_DEPT_MANAGER
             ]);
         });
+
+        Gate::define('manage-assets', function($user) {
+            return in_array($user->role, [\App\User::USER_ROLE_ADMIN, \App\User::USER_ROLE_HR_MANAGER]);
+        });
+
+        Gate::define('assign-assets', function($user) {
+            return in_array($user->role, [\App\User::USER_ROLE_ADMIN, \App\User::USER_ROLE_HR_MANAGER]);
+        });
+
+        Gate::define('return-assets', function($user) {
+            return in_array($user->role, [\App\User::USER_ROLE_ADMIN, \App\User::USER_ROLE_HR_MANAGER]);
+        });
+
+        Gate::define('view-assets', function($user) {
+            return in_array($user->role, [\App\User::USER_ROLE_ADMIN, \App\User::USER_ROLE_HR_MANAGER, \App\User::USER_ROLE_DEPT_MANAGER]);
+        });
+
+        Gate::define('manage-maintenance', function($user) {
+            return in_array($user->role, [\App\User::USER_ROLE_ADMIN, \App\User::USER_ROLE_HR_MANAGER]);
+        });
     }
 }

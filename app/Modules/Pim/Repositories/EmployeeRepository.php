@@ -32,7 +32,12 @@ class EmployeeRepository extends EloquentRepository implements EmployeeRepositor
         }
         $items = $this->model
             ->where('role', $this->model::USER_ROLE_EMPLOYEE)
-            ->whereRaw('MONTH(birth_date) = ?', [$date->month])
+            ->whereRaw(
+                DB::connection()->getDriverName() === 'sqlite'
+                    ? "strftime('%m', birth_date) = ?"
+                    : 'MONTH(birth_date) = ?',
+                [str_pad($date->month, 2, '0', STR_PAD_LEFT)]
+            )
             ->get();
 
         $events = [];
@@ -49,7 +54,11 @@ class EmployeeRepository extends EloquentRepository implements EmployeeRepositor
 
     public function pluckName()
     {
-        return $this->model->select(DB::raw('CONCAT(first_name, " ", last_name) as name, id'))
+        $concat = DB::connection()->getDriverName() === 'sqlite'
+            ? 'first_name || " " || last_name'
+            : 'CONCAT(first_name, " ", last_name)';
+
+        return $this->model->select(DB::raw("$concat as name, id"))
             ->where('role', $this->model::USER_ROLE_EMPLOYEE)
             ->pluck('name', 'id');
     }
@@ -59,7 +68,10 @@ class EmployeeRepository extends EloquentRepository implements EmployeeRepositor
         $qry = DB::table('users')
             ->select('id', 'first_name', 'last_name', 'email');
         if ($filter) {
-            $qry->whereRaw('CONCAT(first_name, " ", last_name) like ?', [$filter.'%'])
+            $concat = DB::connection()->getDriverName() === 'sqlite'
+                ? 'first_name || " " || last_name'
+                : 'CONCAT(first_name, " ", last_name)';
+            $qry->whereRaw("$concat like ?", [$filter.'%'])
                 ->orWhere('first_name', 'like', $filter.'%')
                 ->orWhere('last_name', 'like', $filter.'%');
         }

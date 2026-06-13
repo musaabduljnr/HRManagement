@@ -41,7 +41,8 @@ class CompaniesController extends Controller
                     'editUrl' => route('settings.companies.edit', $company->id)
                 ]);
             })
-            ->make();
+            ->escapeColumns([])
+            ->make(true);
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace App\Modules\Pim\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\ActivityLog;
 use App\Modules\Pim\Models\PayrollRecord;
 use App\Modules\Pim\Models\Payslip;
 use App\Modules\Pim\Models\CurrentSalary;
@@ -45,11 +46,6 @@ class PayrollController extends Controller
         
         $month = $request->input('month');
 
-        $existing = PayrollRecord::where('payroll_month', $month)->first();
-        if ($existing) {
-            return redirect()->back()->with('error', 'Payroll has already been generated for ' . $month);
-        }
-
         $employees = \App\User::whereIn('role', [
             \App\User::USER_ROLE_EMPLOYEE,
             \App\User::USER_ROLE_HR_MANAGER,
@@ -61,7 +57,19 @@ class PayrollController extends Controller
             return redirect()->back()->with('error', 'No active employees found to generate payroll.');
         }
 
+        $generated = 0;
+        $skipped = 0;
+
         foreach ($employees as $employee) {
+            // Skip if this employee already has a record for the month
+            $alreadyExists = PayrollRecord::where('user_id', $employee->id)
+                ->where('payroll_month', $month)
+                ->exists();
+            if ($alreadyExists) {
+                $skipped++;
+                continue;
+            }
+            $generated++;
             $config = CurrentSalary::where('user_id', $employee->id)->orderBy('id', 'desc')->first();
             $baseSalary = $config ? $config->amount : 1000.00;
 
@@ -96,7 +104,21 @@ class PayrollController extends Controller
             ]);
         }
 
-        return redirect()->route('payroll.index', ['month' => $month])->with('success', 'Payroll successfully generated for ' . $month);
+        if ($generated === 0) {
+            return redirect()->route('payroll.index', ['month' => $month])->with('error', 'All active employees already have payroll records for ' . $month . '. No new records created.');
+        }
+
+        $message = 'Payroll generated for ' . $month . ': ' . $generated . ' new record(s) created.';
+        if ($skipped > 0) {
+            $message .= ' ' . $skipped . ' employee(s) already had records and were skipped.';
+        }
+
+        ActivityLog::log(
+            'Payroll Generated',
+            'Payroll for ' . $month . ' generated: ' . $generated . ' record(s) created, ' . $skipped . ' skipped.'
+        );
+
+        return redirect()->route('payroll.index', ['month' => $month])->with('success', $message);
     }
 
     public function markAsPaid($id)
@@ -116,9 +138,14 @@ class PayrollController extends Controller
         
         Payslip::create([
             'payroll_record_id' => $record->id,
-            'payslip_number' => $payslipNum,
-            'pdf_path' => null
+            'payslip_number'    => $payslipNum,
+            'pdf_path'          => null
         ]);
+
+        ActivityLog::log(
+            'Payroll Paid',
+            'Payslip ' . $payslipNum . ' generated for ' . $record->user->first_name . ' ' . $record->user->last_name . ' (' . $record->payroll_month . ').'
+        );
 
         return redirect()->back()->with('success', 'Payroll record marked as PAID. Payslip ' . $payslipNum . ' generated.');
     }
@@ -135,5 +162,27 @@ class PayrollController extends Controller
         }
         $current = 'payroll';
         return view('pim::payroll.payslip', compact('record', 'payslip', 'current'));
+    }
+
+    public function updateBonus($id, Request $request)
+    {
+        if (\Gate::denies('manage-payroll')) {
+            abort(403);
+        }
+        $this->validate($request, [
+            'bonuses' => 'required|numeric|min:0',
+        ]);
+
+        $record = PayrollRecord::findOrFail($id);
+
+        if ($record->status === 'paid') {
+            return redirect()->back()->with('error', 'Cannot edit a paid payroll record.');
+        }
+
+        $record->bonuses = $request->input('bonuses');
+        $record->net_salary = $record->base_salary + $record->allowances + $record->bonuses - $record->deductions;
+        $record->save();
+
+        return redirect()->back()->with('success', 'Bonus updated for ' . $record->user->first_name . ' ' . $record->user->last_name . '. Net salary recalculated.');
     }
 }

@@ -69,7 +69,8 @@ class TimeLogsController extends Controller
             ->editColumn('time', function($time_log) {
                 return format_hours($time_log->time);
             })
-            ->make();
+            ->escapeColumns([])
+            ->make(true);
     }
 
     /**

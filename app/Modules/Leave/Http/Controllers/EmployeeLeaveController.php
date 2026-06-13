@@ -3,6 +3,7 @@
 namespace App\Modules\Leave\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\ActivityLog;
 use App\Modules\Leave\Repositories\Interfaces\EmployeeLeaveRepositoryInterface as EmployeeLeaveRepository;
 use App\Modules\Pim\Repositories\Interfaces\EmployeeRepositoryInterface as EmployeeRepository;
 use App\Modules\Leave\Repositories\Interfaces\LeaveTypeRepositoryInterface as LeaveTypeRepository;
@@ -71,8 +72,8 @@ class EmployeeLeaveController extends Controller
                     'cancelUrl' => $status == 'approved' ? route('leave.employee_leaves.cancel', $leave->id) : null,
                 ]);
             })
-            ->rawColumns(['status', 'actions'])
-            ->make();
+            ->escapeColumns([])
+            ->make(true);
     }
 
     /**
@@ -205,6 +206,11 @@ class EmployeeLeaveController extends Controller
             ]);
         }
 
+        ActivityLog::log(
+            'Leave Approved',
+            'Leave request #' . $id . ' for ' . $employeeLeave->employee->first_name . ' ' . $employeeLeave->employee->last_name . ' was approved.'
+        );
+
         $request->session()->flash('success', trans('app.leave.employee_leaves.approve_success'));
         return redirect()->route('leave.employee_leaves.index');
     }
@@ -218,6 +224,11 @@ class EmployeeLeaveController extends Controller
         }
         
         $this->employeeLeaveRepository->update($id, ['approved' => 0, 'status' => 'rejected']);
+
+        ActivityLog::log(
+            'Leave Rejected',
+            'Leave request #' . $id . ' for ' . $employeeLeave->employee->first_name . ' ' . $employeeLeave->employee->last_name . ' was rejected.'
+        );
 
         $request->session()->flash('success', 'Leave request rejected.');
         return redirect()->route('leave.employee_leaves.index');

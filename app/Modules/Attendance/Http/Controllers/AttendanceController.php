@@ -9,8 +9,17 @@ use App\Attendance;
 use Carbon\Carbon;
 use Auth;
 
+use App\Services\AttendanceService;
+use App\AttendanceQrToken;
+
 class AttendanceController extends Controller
 {
+    protected $attendanceService;
+
+    public function __construct(AttendanceService $attendanceService)
+    {
+        $this->attendanceService = $attendanceService;
+    }
     /**
      * Admin: List all attendance records.
      */
@@ -26,7 +35,12 @@ class AttendanceController extends Controller
         }
 
         $attendances = $query->orderBy('check_in', 'desc')->get();
-        $users = User::where('role', User::USER_ROLE_EMPLOYEE)->get();
+        $users = User::whereIn('role', [
+            User::USER_ROLE_EMPLOYEE,
+            User::USER_ROLE_HR_MANAGER,
+            User::USER_ROLE_PAYROLL_MANAGER,
+            User::USER_ROLE_DEPT_MANAGER,
+        ])->orderBy('first_name')->get();
 
         return view('attendance::index', compact('attendances', 'users'));
     }
@@ -64,38 +78,74 @@ class AttendanceController extends Controller
             return response()->json(['status' => 'error', 'message' => 'No token scanned.'], 400);
         }
 
-        // Find user by secure token
-        $user = User::where('attendance_token', $token)->first();
+        // 1. Find dynamic QR token
+        $qrToken = AttendanceQrToken::where('token', $token)->first();
+
+        if (!$qrToken) {
+            // Fallback: check if static token is matched for backward compatibility or simple scans
+            $user = User::where('attendance_token', $token)->first();
+            if (!$user) {
+                return response()->json(['status' => 'error', 'message' => 'Invalid QR Code token. Access Denied.'], 404);
+            }
+            $rule = $this->attendanceService->getApplicableRuleForUser($user);
+        } else {
+            // Validate expiration
+            if (Carbon::parse($qrToken->expires_at)->isPast()) {
+                return response()->json(['status' => 'error', 'message' => 'QR Code has expired. Please generate a fresh code.'], 410);
+            }
+            $user = $qrToken->user;
+            $rule = $qrToken->rule;
+        }
 
         if (!$user) {
-            return response()->json(['status' => 'error', 'message' => 'Invalid QR Code token. Access Denied.'], 404);
+            return response()->json(['status' => 'error', 'message' => 'User associated with QR code not found.'], 404);
+        }
+
+        if (!$rule) {
+            return response()->json(['status' => 'error', 'message' => 'No active shift resolved for this employee today.'], 403);
         }
 
         $today = Carbon::today()->toDateString();
-        $now = Carbon::now();
+        $yesterday = Carbon::yesterday()->toDateString();
 
-        // Check if there is already a scan for today
+        // 2. Resolve session: check if already checked in today
         $attendance = Attendance::where('user_id', $user->id)
             ->where('date', $today)
             ->first();
 
-        if (!$attendance) {
-            // Check-in logic
-            // E.g., Late if after 09:30 AM
-            $limitTime = Carbon::createFromFormat('H:i', '09:30');
-            $status = $now->format('H:i') > $limitTime->format('H:i') ? 'Late' : 'Present';
+        // Check if yesterday overnight check-in exists for check-out
+        $isCheckout = false;
+        if ($attendance && !is_null($attendance->check_in)) {
+            $isCheckout = true;
+        } else {
+            // Check overnight from yesterday
+            $yesterdayAttendance = Attendance::where('user_id', $user->id)
+                ->where('date', $yesterday)
+                ->whereNotNull('check_in')
+                ->whereNull('check_out')
+                ->first();
 
-            $attendance = Attendance::create([
-                'user_id' => $user->id,
-                'date' => $today,
-                'check_in' => $now,
-                'status' => $status,
-                'ip_address' => $request->ip()
-            ]);
+            if ($yesterdayAttendance) {
+                $attendance = $yesterdayAttendance;
+                $isCheckout = true;
+            }
+        }
+
+        $data = $request->all();
+        $data['ip_address'] = $request->ip();
+
+        if (!$isCheckout) {
+            // Check-in logic
+            $validation = $this->attendanceService->validateCheckIn($user, $rule, $data);
+            if (!$validation['status']) {
+                return response()->json(['status' => 'error', 'message' => $validation['message']], 403);
+            }
+
+            $attendance = $this->attendanceService->processCheckIn($user, $rule, $data);
 
             return response()->json([
                 'status' => 'success',
-                'message' => 'Checked In: ' . $user->first_name . ' ' . $user->last_name . ' (' . $status . ')'
+                'message' => 'Checked In: ' . $user->first_name . ' ' . $user->last_name . ' (' . $attendance->status . ')'
             ]);
         } else {
             // Check-out logic
@@ -106,12 +156,14 @@ class AttendanceController extends Controller
                 ]);
             }
 
-            $attendance->check_out = $now;
-            $attendance->save();
+            $res = $this->attendanceService->processCheckOut($user, $data);
+            if ($res['status'] === 'error') {
+                return response()->json(['status' => 'error', 'message' => $res['message']], 403);
+            }
 
             return response()->json([
                 'status' => 'success',
-                'message' => 'Clocked Out: ' . $user->first_name . ' ' . $user->last_name
+                'message' => 'Clocked Out: ' . $user->first_name . ' ' . $user->last_name . ' (Worked ' . $attendance->fresh()->work_duration_minutes . ' mins)'
             ]);
         }
     }
@@ -195,7 +247,9 @@ class AttendanceController extends Controller
             ->take(15)
             ->get();
 
-        return view('attendance::qr', compact('token', 'todayRecord', 'history'));
+        $rule = $this->attendanceService->getApplicableRuleForUser($user, $today);
+
+        return view('attendance::qr', compact('token', 'todayRecord', 'history', 'rule'));
     }
 
     /**
@@ -208,39 +262,60 @@ class AttendanceController extends Controller
             return redirect()->back()->with('error', 'Unauthorized.');
         }
 
-        $today = Carbon::today()->toDateString();
-        $now = Carbon::now();
+        $rule = $this->attendanceService->getApplicableRuleForUser($user);
+        if (!$rule) {
+            return redirect()->back()->with('error', 'No active attendance rule resolved for your profile today. Please contact HR.');
+        }
 
-        // Check if there is already a scan for today
+        $today = Carbon::today()->toDateString();
+        $yesterday = Carbon::yesterday()->toDateString();
+
+        // Resolve active session
         $attendance = Attendance::where('user_id', $user->id)
             ->where('date', $today)
             ->first();
 
-        if (!$attendance) {
-            // Check-in logic
-            // E.g., Late if after 09:30 AM
-            $limitTime = Carbon::createFromFormat('H:i', '09:30');
-            $status = $now->format('H:i') > $limitTime->format('H:i') ? 'Late' : 'Present';
-
-            Attendance::create([
-                'user_id' => $user->id,
-                'date' => $today,
-                'check_in' => $now,
-                'status' => $status,
-                'ip_address' => $request->ip() ?: 'Web Interface'
-            ]);
-
-            return redirect()->back()->with('success', 'Checked In successfully. Status: ' . $status);
+        $isCheckout = false;
+        if ($attendance && !is_null($attendance->check_in)) {
+            $isCheckout = true;
         } else {
-            // Check-out logic
+            // Check overnight from yesterday
+            $yesterdayAttendance = Attendance::where('user_id', $user->id)
+                ->where('date', $yesterday)
+                ->whereNotNull('check_in')
+                ->whereNull('check_out')
+                ->first();
+
+            if ($yesterdayAttendance) {
+                $attendance = $yesterdayAttendance;
+                $isCheckout = true;
+            }
+        }
+
+        $data = $request->all();
+        $data['ip_address'] = $request->ip() ?: 'Web Interface';
+
+        if (!$isCheckout) {
+            // Validate check-in
+            $validation = $this->attendanceService->validateCheckIn($user, $rule, $data);
+            if (!$validation['status']) {
+                return redirect()->back()->with('error', $validation['message']);
+            }
+
+            $attendance = $this->attendanceService->processCheckIn($user, $rule, $data);
+            return redirect()->back()->with('success', 'Checked In successfully. Status: ' . $attendance->status);
+        } else {
+            // Check if already checked out
             if ($attendance->check_out) {
                 return redirect()->back()->with('error', 'You have already Checked Out for today.');
             }
 
-            $attendance->check_out = $now;
-            $attendance->save();
+            $res = $this->attendanceService->processCheckOut($user, $data);
+            if ($res['status'] === 'error') {
+                return redirect()->back()->with('error', $res['message']);
+            }
 
-            return redirect()->back()->with('success', 'Checked Out successfully.');
+            return redirect()->back()->with('success', 'Checked Out successfully. Duration: ' . $attendance->fresh()->work_duration_minutes . ' minutes.');
         }
     }
 }

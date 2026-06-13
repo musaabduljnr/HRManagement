@@ -32,7 +32,8 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'first_name', 'last_name', 'email', 'gender', 'birth_date', 'password', 'role', 'notes', 'how_did_they_hear',
-        'department_id', 'job_title_id', 'employment_status', 'emergency_contact_name', 'emergency_contact_phone', 'emergency_contact_relationship'
+        'department_id', 'job_title_id', 'employment_status', 'emergency_contact_name', 'emergency_contact_phone',
+        'emergency_contact_relationship', 'profile_photo', 'bank_name', 'account_number'
     ];
 
     /**
@@ -74,6 +75,17 @@ class User extends Authenticatable
     public function getFullNameAttribute()
     {
         return $this->attributes['first_name'] . ' ' . $this->attributes['last_name'];
+    }
+
+    /**
+     * Return the public URL of the profile photo, or null if none uploaded.
+     */
+    public function getProfilePhotoUrlAttribute()
+    {
+        if ($this->profile_photo) {
+            return asset('storage/' . $this->profile_photo);
+        }
+        return null;
     }
 
     public function department()

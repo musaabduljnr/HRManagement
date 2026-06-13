@@ -60,7 +60,8 @@ class SalaryController extends Controller
             })
             ->removeColumn('attachment')
             ->removeColumn('user_id')
-            ->make();
+            ->escapeColumns([])
+            ->make(true);
     }
 
     public function show($id, SalaryComponentsRepository $salaryComponentsRepository, SalariesSalaryComponentsRepository $salariesSalaryComponentsRepository)

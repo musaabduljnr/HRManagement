@@ -50,11 +50,11 @@
             serverSide: true,
             ajax: '{{ route("discipline.disciplinary_cases.datatable")}}',
             columns: [
-                {data: 0, name: 'id'},
-                {data: 1, name: 'user_id'},
-                {data: 2, name: 'name'},
-                {data: 3, name: 'description'},
-                {data: 4, name: 'actions', sortable: false, searchable: false}
+                {data: 'id', name: 'id'},
+                {data: 'user_id', name: 'user_id'},
+                {data: 'name', name: 'name'},
+                {data: 'description', name: 'description'},
+                {data: 'actions', name: 'actions', sortable: false, searchable: false}
             ]
         });
 

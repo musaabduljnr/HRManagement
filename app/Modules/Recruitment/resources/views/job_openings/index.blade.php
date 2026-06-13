@@ -46,7 +46,7 @@
         var table = $('#jobOpeningsTable').DataTable({
             processing: true,
             serverSide: true,
-            ajax: '{{ route("recruitment.job_openings.datatable")}}',
+            ajax: '{{ route("recruitment.job-openings.datatable")}}',
             columns: [
                 {data: 'id', name: 'id'},
                 {data: 'title', name: 'title'},

@@ -60,7 +60,8 @@ class EmployeeLanguagesController extends Controller
                 ]);
             })
             ->removeColumn('user_id')
-            ->make();
+            ->escapeColumns([])
+            ->make(true);
     }
 
     /**

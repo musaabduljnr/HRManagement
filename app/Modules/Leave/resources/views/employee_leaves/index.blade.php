@@ -57,13 +57,13 @@
             serverSide: true,
             ajax: '{{ route("leave.employee_leaves.datatable")}}',
             columns: [
-                {data: 0, name: 'id'},
-                {data: 1, name: 'user_id'},
-                {data: 2, name: 'leave_type_id'},
-                {data: 3, name: 'start_date'},
-                {data: 4, name: 'end_date'},
-                {data: 5, name: 'status'},
-                {data: 6, name: 'actions', sortable: false, searchable: false}
+                {data: 'id', name: 'id'},
+                {data: 'user_id', name: 'user_id'},
+                {data: 'leave_type_id', name: 'leave_type_id'},
+                {data: 'start_date', name: 'start_date'},
+                {data: 'end_date', name: 'end_date'},
+                {data: 'status', name: 'status'},
+                {data: 'actions', name: 'actions', sortable: false, searchable: false}
             ]
         });
         table.columns().every(function () {

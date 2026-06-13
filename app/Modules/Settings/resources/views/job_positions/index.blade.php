@@ -45,10 +45,10 @@
             serverSide: true,
             ajax: '{{ route("settings.job_positions.datatable")}}',
             columns: [
-                {data: 0, name: 'id'},
-                {data: 1, name: 'name'},
-                {data: 2, name: 'description'},
-                {data: 3, name: 'actions', sortable: false, searchable: false}
+                {data: 'id', name: 'id'},
+                {data: 'name', name: 'name'},
+                {data: 'description', name: 'description'},
+                {data: 'actions', name: 'actions', sortable: false, searchable: false}
             ]
         });
         table.columns().every(function () {

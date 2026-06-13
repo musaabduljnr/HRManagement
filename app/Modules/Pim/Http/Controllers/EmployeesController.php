@@ -3,6 +3,7 @@
 namespace App\Modules\Pim\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\ActivityLog;
 use App\Modules\Pim\Http\Requests\EmployeeRequest;
 use App\Modules\Pim\Repositories\Interfaces\EmployeeRepositoryInterface as EmployeeRepository;
 use App\Modules\Settings\Models\Department;
@@ -60,7 +61,8 @@ class EmployeesController extends Controller
                     'editUrl' => route('pim.employees.edit', $employee->id)
                 ]);
             })
-            ->make();
+            ->escapeColumns([])
+            ->make(true);
     }
 
     /**
@@ -129,6 +131,11 @@ class EmployeesController extends Controller
         }
 
         $request->session()->flash('success', trans('app.pim.employees.store_success'));
+
+        ActivityLog::log(
+            'Employee Created',
+            'New employee ' . $employeeData->first_name . ' ' . $employeeData->last_name . ' (ID: ' . $employeeData->id . ') was added to the system.'
+        );
 
         return redirect()->route('pim.employees.edit', $employeeData->id);
     }

@@ -41,7 +41,8 @@ class ContractTypesController extends Controller
                     'editUrl' => route('settings.contract_types.edit', $contractType->id)
                 ]);
             })
-            ->make();
+            ->escapeColumns([])
+            ->make(true);
     }
 
     /**

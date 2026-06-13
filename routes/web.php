@@ -29,6 +29,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function(
             ]
         ]
     );
+    Route::post('profile/photo/upload', '\App\Http\Controllers\Admin\ProfileController@uploadPhoto')->name('profile.photo.upload');
+    Route::post('profile/photo/remove', '\App\Http\Controllers\Admin\ProfileController@removePhoto')->name('profile.photo.remove');
     Route::group(['prefix' => 'settings', 'as' => 'settings.', 'middleware' => ['auth', 'admin']], function () {
         Route::get('/', function() {
             return view('settings::index');
@@ -141,6 +143,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function(
             'destroy' => 'job_titles.destroy'
         ]]);
     });
+    
     Route::group(['prefix' => 'pim', 'as' => 'pim.', 'middleware' => ['auth', 'admin']], function() {
         Route::get('/', function() {
             return view('pim::index');
@@ -293,6 +296,14 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function(
                 'update' => 'preferences.update',
                 'destroy' => 'preferences.destroy'
             ]]);  
+            Route::get('assets/datatable', '\App\Modules\Assets\Http\Controllers\EmployeeAssetsController@getDatatable')
+                ->name('assets.datatable');
+            Route::resource('assets', '\App\Modules\Assets\Http\Controllers\EmployeeAssetsController', ['names' => [
+                'index' => 'assets.index',
+                'create' => 'assets.create',
+                'store' => 'assets.store',
+                'destroy' => 'assets.destroy'
+            ]]);
         });  
     });
     Route::group(['prefix' => 'leave', 'as' => 'leave.', 'middleware' => ['auth', 'admin']], function() {
@@ -358,15 +369,15 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function(
             'destroy' => 'reports.destroy'
         ]]);
         
-        Route::get('job-openings/datatable', '\App\Modules\Recruitment\Http\Controllers\JobOpeningsController@getDatatable')->name('job_openings.datatable');
+        Route::get('job-openings/datatable', '\App\Modules\Recruitment\Http\Controllers\JobOpeningsController@getDatatable')->name('job-openings.datatable');
         Route::resource('job-openings', '\App\Modules\Recruitment\Http\Controllers\JobOpeningsController', ['names' => [
-            'index' => 'job_openings.index',
-            'create' => 'job_openings.create',
-            'show' => 'job_openings.show',
-            'edit' => 'job_openings.edit',
-            'store' => 'job_openings.store',
-            'update' => 'job_openings.update',
-            'destroy' => 'job_openings.destroy',
+            'index' => 'job-openings.index',
+            'create' => 'job-openings.create',
+            'show' => 'job-openings.show',
+            'edit' => 'job-openings.edit',
+            'store' => 'job-openings.store',
+            'update' => 'job-openings.update',
+            'destroy' => 'job-openings.destroy',
         ]]);
 
         Route::get('interviews/datatable', '\App\Modules\Recruitment\Http\Controllers\InterviewsController@getDatatable')->name('interviews.datatable');
@@ -474,13 +485,88 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function(
         Route::post('/store', '\App\Modules\Pim\Http\Controllers\PayrollController@store')->name('store');
         Route::post('/{id}/pay', '\App\Modules\Pim\Http\Controllers\PayrollController@markAsPaid')->name('pay');
         Route::get('/{id}/payslip', '\App\Modules\Pim\Http\Controllers\PayrollController@payslip')->name('payslip');
+        Route::post('/{id}/bonus', '\App\Modules\Pim\Http\Controllers\PayrollController@updateBonus')->name('bonus');
     });
     Route::get('hr-assistant', '\App\Http\Controllers\Admin\HrAssistantController@index')->name('assistant.index');
     Route::post('hr-assistant/ask', '\App\Http\Controllers\Admin\HrAssistantController@ask')->name('assistant.ask');
 
+    // HR Policies CRUD
+    Route::get('hr-policies', '\App\Http\Controllers\Admin\HrPoliciesController@index')->name('hr_policies.index');
+    Route::get('hr-policies/create', '\App\Http\Controllers\Admin\HrPoliciesController@create')->name('hr_policies.create');
+    Route::post('hr-policies', '\App\Http\Controllers\Admin\HrPoliciesController@store')->name('hr_policies.store');
+    Route::get('hr-policies/{id}/edit', '\App\Http\Controllers\Admin\HrPoliciesController@edit')->name('hr_policies.edit');
+    Route::put('hr-policies/{id}', '\App\Http\Controllers\Admin\HrPoliciesController@update')->name('hr_policies.update');
+    Route::delete('hr-policies/{id}', '\App\Http\Controllers\Admin\HrPoliciesController@destroy')->name('hr_policies.destroy');
+
+    // Attendance Rules CRUD
+    Route::get('attendance-rules', '\App\Http\Controllers\Admin\AttendanceRulesController@index')->name('attendance_rules.index');
+    Route::get('attendance-rules/create', '\App\Http\Controllers\Admin\AttendanceRulesController@create')->name('attendance_rules.create');
+    Route::post('attendance-rules', '\App\Http\Controllers\Admin\AttendanceRulesController@store')->name('attendance_rules.store');
+    Route::get('attendance-rules/{id}/edit', '\App\Http\Controllers\Admin\AttendanceRulesController@edit')->name('attendance_rules.edit');
+    Route::put('attendance-rules/{id}', '\App\Http\Controllers\Admin\AttendanceRulesController@update')->name('attendance_rules.update');
+    Route::delete('attendance-rules/{id}', '\App\Http\Controllers\Admin\AttendanceRulesController@destroy')->name('attendance_rules.destroy');
+
     Route::get('chat', '\App\Modules\Chat\Http\Controllers\ChatController@index')->name('chat.index');
     Route::post('chat', '\App\Modules\Chat\Http\Controllers\ChatController@store')->name('chat.store');
     Route::post('chat/{id}/reply', '\App\Modules\Chat\Http\Controllers\ChatController@reply')->name('chat.reply');
+
+    Route::group(['prefix' => 'assets', 'as' => 'assets.', 'middleware' => ['auth', 'admin']], function () {
+        Route::get('/', '\App\Modules\Assets\Http\Controllers\AssetsDashboardController@index')->name('dashboard');
+        
+        // Categories
+        Route::get('categories/datatable', '\App\Modules\Assets\Http\Controllers\AssetCategoriesController@getDatatable')->name('categories.datatable');
+        Route::resource('categories', '\App\Modules\Assets\Http\Controllers\AssetCategoriesController', ['names' => [
+            'index' => 'categories.index',
+            'create' => 'categories.create',
+            'show' => 'categories.show',
+            'edit' => 'categories.edit',
+            'store' => 'categories.store',
+            'update' => 'categories.update',
+            'destroy' => 'categories.destroy'
+        ]]);
+
+        // Assets
+        Route::get('datatable', '\App\Modules\Assets\Http\Controllers\AssetsController@getDatatable')->name('datatable');
+        Route::resource('list', '\App\Modules\Assets\Http\Controllers\AssetsController', ['names' => [
+            'index' => 'list.index',
+            'create' => 'list.create',
+            'show' => 'list.show',
+            'edit' => 'list.edit',
+            'store' => 'list.store',
+            'update' => 'list.update',
+            'destroy' => 'list.destroy'
+        ]]);
+
+        // Assignments
+        Route::get('assignments/datatable', '\App\Modules\Assets\Http\Controllers\AssetAssignmentsController@getDatatable')->name('assignments.datatable');
+        Route::get('assignments/{id}/return', '\App\Modules\Assets\Http\Controllers\AssetAssignmentsController@returnForm')->name('assignments.return');
+        Route::post('assignments/{id}/return', '\App\Modules\Assets\Http\Controllers\AssetAssignmentsController@processReturn')->name('assignments.return.process');
+        Route::resource('assignments', '\App\Modules\Assets\Http\Controllers\AssetAssignmentsController', ['names' => [
+            'index' => 'assignments.index',
+            'create' => 'assignments.create',
+            'edit' => 'assignments.edit',
+            'store' => 'assignments.store',
+            'update' => 'assignments.update',
+            'destroy' => 'assignments.destroy'
+        ]]);
+
+        // Maintenances
+        Route::get('maintenances/datatable', '\App\Modules\Assets\Http\Controllers\AssetMaintenancesController@getDatatable')->name('maintenances.datatable');
+        Route::post('maintenances/{id}/complete', '\App\Modules\Assets\Http\Controllers\AssetMaintenancesController@complete')->name('maintenances.complete');
+        Route::resource('maintenances', '\App\Modules\Assets\Http\Controllers\AssetMaintenancesController', ['names' => [
+            'index' => 'maintenances.index',
+            'create' => 'maintenances.create',
+            'show' => 'maintenances.show',
+            'edit' => 'maintenances.edit',
+            'store' => 'maintenances.store',
+            'update' => 'maintenances.update',
+            'destroy' => 'maintenances.destroy'
+        ]]);
+
+        // Reports
+        Route::get('reports', '\App\Modules\Assets\Http\Controllers\AssetReportsController@index')->name('reports.index');
+        Route::get('reports/export', '\App\Modules\Assets\Http\Controllers\AssetReportsController@export')->name('reports.export');
+    });
 });
 Route::group(['prefix' => 'employee', 'as' => 'employee.', 'middleware' => ['auth', 'employee']], function() {
     Route::get('/', '\App\Http\Controllers\Employee\HomeController@index')
@@ -542,6 +628,9 @@ Route::group(['prefix' => 'employee', 'as' => 'employee.', 'middleware' => ['aut
     Route::post('leaves/{id}/cancel', '\App\Modules\Employee\Leaves\Http\Controllers\LeavesController@cancel')
             ->name('leaves.cancel');
 
+    Route::get('assets', '\App\Modules\Employee\Assets\Http\Controllers\EmployeePortalAssetsController@index')->name('assets.index');
+    Route::get('assets/{id}', '\App\Modules\Employee\Assets\Http\Controllers\EmployeePortalAssetsController@show')->name('assets.show');
+
     Route::get('payroll/datatable', '\App\Modules\Employee\Salary\Http\Controllers\EmployeePayrollController@getDatatable')
             ->name('payroll.datatable');
     Route::resource('payroll', '\App\Modules\Employee\Salary\Http\Controllers\EmployeePayrollController', ['names' => [
@@ -551,11 +640,17 @@ Route::group(['prefix' => 'employee', 'as' => 'employee.', 'middleware' => ['aut
 
     Route::get('attendance/qr', '\App\Modules\Attendance\Http\Controllers\AttendanceController@qr')->name('attendance.qr');
     Route::post('attendance/web-clock', '\App\Modules\Attendance\Http\Controllers\AttendanceController@webClock')->name('attendance.web_clock');
+    Route::get('attendance/token', '\App\Modules\Attendance\Http\Controllers\AttendanceQrController@generateToken')->name('attendance.token');
     
     Route::get('hr-assistant', '\App\Http\Controllers\Admin\HrAssistantController@index')->name('assistant.index');
     Route::post('hr-assistant/ask', '\App\Http\Controllers\Admin\HrAssistantController@ask')->name('assistant.ask');
 
     Route::get('chat', '\App\Modules\Chat\Http\Controllers\EmployeeChatController@index')->name('chat.index');
     Route::post('chat/{id}/reply', '\App\Modules\Chat\Http\Controllers\EmployeeChatController@reply')->name('chat.reply');
+
+    // Profile photo routes for employees
+    Route::post('profile/photo/upload', '\App\Http\Controllers\Employee\ProfilePhotoController@upload')->name('profile.photo.upload');
+    Route::post('profile/photo/remove', '\App\Http\Controllers\Employee\ProfilePhotoController@remove')->name('profile.photo.remove');
+    Route::post('profile/bank-details', '\App\Http\Controllers\Employee\HomeController@updateBankDetails')->name('profile.bank_details');
 });
 Auth::routes();

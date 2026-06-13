@@ -156,12 +156,12 @@
             serverSide: true,
             ajax: '{{ route("pim.employees.qualifications.work_experience.datatable", Route::input("employeeId"))}}',
             columns: [
-                {data: 0, name: 'id'},
-                {data: 1, name: 'job_title'},
-                {data: 2, name: 'start_date'},
-                {data: 3, name: 'end_date'},
-                {data: 4, name: 'company_id'},
-                {data: 5, name: 'actions', sortable: false, searchable: false}
+                {data: 'id', name: 'id'},
+                {data: 'job_title', name: 'job_title'},
+                {data: 'start_date', name: 'start_date'},
+                {data: 'end_date', name: 'end_date'},
+                {data: 'company_id', name: 'company_id'},
+                {data: 'actions', name: 'actions', sortable: false, searchable: false}
             ]
         });
 
@@ -184,12 +184,12 @@
             serverSide: true,
             ajax: '{{ route("pim.employees.qualifications.education.datatable", Route::input("employeeId"))}}',
             columns: [
-                {data: 0, name: 'id'},
-                {data: 1, name: 'type'},
-                {data: 2, name: 'education_institution_id'},
-                {data: 3, name: 'major'},
-                {data: 4, name: 'year'},
-                {data: 5, name: 'actions', sortable: false, searchable: false}
+                {data: 'id', name: 'id'},
+                {data: 'type', name: 'type'},
+                {data: 'education_institution_id', name: 'education_institution_id'},
+                {data: 'major', name: 'major'},
+                {data: 'year', name: 'year'},
+                {data: 'actions', name: 'actions', sortable: false, searchable: false}
             ]
         });
 
@@ -212,11 +212,11 @@
             serverSide: true,
             ajax: '{{ route("pim.employees.qualifications.languages.datatable", Route::input("employeeId"))}}',
             columns: [
-                {data: 0, name: 'id'},
-                {data: 1, name: 'language_id'},
-                {data: 2, name: 'level'},
-                {data: 3, name: 'skill'},
-                {data: 4, name: 'actions', sortable: false, searchable: false}
+                {data: 'id', name: 'id'},
+                {data: 'language_id', name: 'language_id'},
+                {data: 'level', name: 'level'},
+                {data: 'skill', name: 'skill'},
+                {data: 'actions', name: 'actions', sortable: false, searchable: false}
             ]
         });
 

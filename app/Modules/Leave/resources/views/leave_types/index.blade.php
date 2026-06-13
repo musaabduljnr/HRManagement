@@ -51,12 +51,12 @@
             serverSide: true,
             ajax: '{{ route("leave.leave_types.datatable")}}',
             columns: [
-                {data: 0, name: 'id'},
-                {data: 1, name: 'name'},
-                {data: 2, name: 'available_days', sortable: false, searchable: false},
-                {data: 3, name: 'start_date'},
-                {data: 4, name: 'end_date'},
-                {data: 5, name: 'actions', sortable: false, searchable: false}
+                {data: 'id', name: 'id'},
+                {data: 'name', name: 'name'},
+                {data: 'available_days', name: 'available_days', sortable: false, searchable: false},
+                {data: 'start_date', name: 'start_date'},
+                {data: 'end_date', name: 'end_date'},
+                {data: 'actions', name: 'actions', sortable: false, searchable: false}
             ]
         });
         table.columns().every(function () {

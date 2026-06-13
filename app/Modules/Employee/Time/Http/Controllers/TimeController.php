@@ -56,7 +56,8 @@ class TimeController extends Controller {
                     'editUrl' => route('employee.time.edit', $time->id)
                 ]);
             })
-            ->make();
+            ->escapeColumns([])
+            ->make(true);
     }
 
     /**

@@ -31,7 +31,8 @@ class DepartmentsController extends Controller
                     'editUrl' => route('settings.departments.edit', $department->id)
                 ]);
             })
-            ->make();
+            ->escapeColumns([])
+            ->make(true);
     }
 
     public function create()

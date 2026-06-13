@@ -45,10 +45,10 @@
             serverSide: true,
             ajax: '{{ route("time.projects.datatable")}}',
             columns: [
-                {data: 0, name: 'id'},
-                {data: 1, name: 'name'},
-                {data: 2, name: 'client_id'},
-                {data: 3, name: 'actions', sortable: false, searchable: false}
+                {data: 'id', name: 'id'},
+                {data: 'name', name: 'name'},
+                {data: 'client_id', name: 'client_id'},
+                {data: 'actions', name: 'actions', sortable: false, searchable: false}
             ]
         });
         table.columns().every(function () {

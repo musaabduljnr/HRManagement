@@ -133,16 +133,16 @@
             serverSide: true,
             ajax: '{{ route("recruitment.reports.datatable")}}?{!!$filter!!}',
             columns: [
-                {data: 0, name: 'first_name'},
-                {data: 1, name: 'last_name'},
-                {data: 2, name: 'email'},
-                {data: 3, name: 'how_did_they_hear', sortable: true, searchable: true},
-                {data: 4, name: 'comments', sortable: false, searchable: false},
-                {data: 5, name: 'skills', sortable: false, searchable: false},
-                {data: 6, name: 'salary', sortable: false, searchable: false},
-                {data: 7, name: 'contract_type', sortable: false, searchable: false},
-                {data: 8, name: 'location', sortable: false, searchable: false},
-                {data: 9, name: 'actions', sortable: false, searchable: false}
+                {data: 'first_name', name: 'first_name'},
+                {data: 'last_name', name: 'last_name'},
+                {data: 'email', name: 'email'},
+                {data: 'how_did_they_hear', name: 'how_did_they_hear', sortable: true, searchable: true},
+                {data: 'comments', name: 'comments', sortable: false, searchable: false},
+                {data: 'skills', name: 'skills', sortable: false, searchable: false},
+                {data: 'salary', name: 'salary', sortable: false, searchable: false},
+                {data: 'contract_type', name: 'contract_type', sortable: false, searchable: false},
+                {data: 'location', name: 'location', sortable: false, searchable: false},
+                {data: 'actions', name: 'actions', sortable: false, searchable: false}
             ]
         });
 

@@ -84,7 +84,7 @@
             </div>
             <div class="panel-body text-center" style="padding: 30px 20px !important;">
                 <div style="font-size: 36px; font-weight: 800; color: var(--primary); line-height: 1; margin-bottom: 8px;">
-                    ${{ number_format($payrollSummary, 2) }}
+                    ₦{{ number_format($payrollSummary, 2) }}
                 </div>
                 <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 20px;">Total Net Salary Paid / Pending</p>
                 <a href="{{ route('payroll.index') }}" class="btn btn-primary btn-block">

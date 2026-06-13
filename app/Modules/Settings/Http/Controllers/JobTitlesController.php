@@ -31,7 +31,8 @@ class JobTitlesController extends Controller
                     'editUrl' => route('settings.job_titles.edit', $jobTitle->id)
                 ]);
             })
-            ->make();
+            ->escapeColumns([])
+            ->make(true);
     }
 
     public function create()

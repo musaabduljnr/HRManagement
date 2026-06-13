@@ -96,7 +96,7 @@ body {
 .hrm-sidebar {
   width: var(--sidebar-width);
   background: var(--sidebar-bg);
-  min-height: 100vh;
+  height: 100vh;
   position: fixed;
   top: 0;
   left: 0;
@@ -104,15 +104,14 @@ body {
   display: flex;
   flex-direction: column;
   transition: var(--transition);
-  overflow-y: auto;
-  overflow-x: hidden;
+  overflow: hidden;
 }
 
-.hrm-sidebar::-webkit-scrollbar {
+.sidebar-nav::-webkit-scrollbar {
   width: 4px;
 }
-.hrm-sidebar::-webkit-scrollbar-track { background: transparent; }
-.hrm-sidebar::-webkit-scrollbar-thumb { background: var(--sidebar-border); border-radius: 2px; }
+.sidebar-nav::-webkit-scrollbar-track { background: transparent; }
+.sidebar-nav::-webkit-scrollbar-thumb { background: var(--sidebar-border); border-radius: 2px; }
 
 /* Sidebar Brand / Logo */
 .sidebar-brand {
@@ -175,6 +174,8 @@ body {
   margin: 0;
   padding: 8px 10px;
   flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .sidebar-nav li {
@@ -1144,4 +1145,492 @@ body.login-page {
 /* ── Custom Panel Heading (from app.css) ── */
 .custom-panel-heading {
   font-size: 14px !important;
+}
+
+/* ─────────────────────────────────────────
+   ENHANCED STYLING FOR UI CONSISTENCY
+   ───────────────────────────────────────── */
+
+/* ── Utility Spacing Classes ── */
+.m-0 { margin: 0 !important; }
+.m-1 { margin: 8px !important; }
+.m-2 { margin: 16px !important; }
+.m-3 { margin: 24px !important; }
+.mt-0 { margin-top: 0 !important; }
+.mt-1 { margin-top: 8px !important; }
+.mt-2 { margin-top: 16px !important; }
+.mt-3 { margin-top: 24px !important; }
+.mb-0 { margin-bottom: 0 !important; }
+.mb-1 { margin-bottom: 8px !important; }
+.mb-2 { margin-bottom: 16px !important; }
+.mb-3 { margin-bottom: 24px !important; }
+.mx-auto { margin-left: auto !important; margin-right: auto !important; }
+
+.p-0 { padding: 0 !important; }
+.p-1 { padding: 8px !important; }
+.p-2 { padding: 16px !important; }
+.p-3 { padding: 24px !important; }
+.pt-2 { padding-top: 16px !important; }
+.pb-2 { padding-bottom: 16px !important; }
+.px-2 { padding-left: 16px !important; padding-right: 16px !important; }
+.py-2 { padding-top: 16px !important; padding-bottom: 16px !important; }
+
+/* ── Unified Spacing for Components ── */
+.card, .panel, .custom-panel {
+  margin-bottom: 20px !important;
+}
+
+.card-header, .panel-heading, .custom-panel-heading {
+  border-bottom: 1px solid var(--card-border) !important;
+  padding: 16px 20px !important;
+}
+
+.card-body, .panel-body {
+  padding: 20px !important;
+}
+
+/* ── Text Utilities ── */
+.text-center { text-align: center !important; }
+.text-right { text-align: right !important; }
+.text-left { text-align: left !important; }
+.text-truncate { overflow: hidden !important; text-overflow: ellipsis !important; white-space: nowrap !important; }
+.text-break { word-wrap: break-word !important; }
+.font-weight-bold { font-weight: 700 !important; }
+.font-weight-normal { font-weight: 400 !important; }
+.font-weight-light { font-weight: 300 !important; }
+.font-size-sm { font-size: 12px !important; }
+.font-size-lg { font-size: 16px !important; }
+
+/* ── Display Utilities ── */
+.d-flex { display: flex !important; }
+.d-inline-flex { display: inline-flex !important; }
+.d-block { display: block !important; }
+.d-inline-block { display: inline-block !important; }
+.d-none { display: none !important; }
+.flex-center { display: flex !important; align-items: center !important; justify-content: center !important; }
+.flex-between { display: flex !important; align-items: center !important; justify-content: space-between !important; }
+.flex-column { flex-direction: column !important; }
+.align-center { align-items: center !important; }
+.justify-center { justify-content: center !important; }
+.gap-1 { gap: 8px !important; }
+.gap-2 { gap: 16px !important; }
+.gap-3 { gap: 24px !important; }
+
+/* ── Border Utilities ── */
+.border { border: 1px solid var(--card-border) !important; }
+.border-top { border-top: 1px solid var(--card-border) !important; }
+.border-bottom { border-bottom: 1px solid var(--card-border) !important; }
+.border-left { border-left: 1px solid var(--card-border) !important; }
+.border-right { border-right: 1px solid var(--card-border) !important; }
+.rounded { border-radius: var(--radius) !important; }
+.rounded-lg { border-radius: var(--radius-lg) !important; }
+.rounded-full { border-radius: var(--radius-full) !important; }
+
+/* ── Shadow Utilities ── */
+.shadow { box-shadow: var(--card-shadow) !important; }
+.shadow-md { box-shadow: var(--card-shadow-hover) !important; }
+.shadow-none { box-shadow: none !important; }
+
+/* ── Consistent Component Colors (replacing hardcoded colors) ── */
+.panel-heading, .custom-panel-heading {
+  color: var(--text-primary) !important;
+}
+
+.panel-heading .fa, .custom-panel-heading .fa,
+.panel-heading i, .custom-panel-heading i {
+  color: var(--primary) !important;
+  margin-right: 6px;
+}
+
+/* ── Consistent Link Colors ── */
+a, .link {
+  color: var(--primary) !important;
+  text-decoration: none !important;
+  transition: var(--transition);
+}
+
+a:hover, .link:hover {
+  color: var(--primary-dark) !important;
+  text-decoration: underline !important;
+}
+
+/* ── Form Group Consistency ── */
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.form-group .help-block {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+.form-group.has-error .form-control {
+  border-color: var(--danger) !important;
+}
+
+.form-group.has-error .help-block {
+  color: var(--danger) !important;
+}
+
+/* ── Textarea Styling ── */
+textarea.form-control {
+  resize: vertical;
+  font-family: var(--font-family) !important;
+  min-height: 100px;
+}
+
+/* ── Consistent Hover States ── */
+.table tbody tr:hover {
+  background-color: #f8fafc !important;
+}
+
+.list-group-item:hover {
+  background-color: #f8fafc !important;
+  cursor: pointer;
+}
+
+/* ── Consistent Active States ── */
+.list-group-item.active {
+  background-color: var(--primary-light) !important;
+  border-color: var(--primary) !important;
+  color: var(--primary) !important;
+}
+
+/* ── Popover & Tooltip ── */
+.popover {
+  border-radius: var(--radius) !important;
+  box-shadow: 0 10px 25px -5px rgba(0,0,0,0.12) !important;
+}
+
+.tooltip-inner {
+  background-color: var(--text-primary) !important;
+  border-radius: var(--radius) !important;
+  padding: 6px 10px !important;
+  font-size: 12px !important;
+}
+
+/* ── Close Button Consistency ── */
+.close {
+  color: var(--text-secondary) !important;
+  opacity: 0.6;
+  transition: var(--transition);
+}
+
+.close:hover {
+  color: var(--text-primary) !important;
+  opacity: 1;
+}
+
+/* ── Checkbox & Radio Consistency ── */
+input[type="checkbox"],
+input[type="radio"] {
+  cursor: pointer;
+  accent-color: var(--primary);
+}
+
+input[type="checkbox"]:focus,
+input[type="radio"]:focus {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+.checkbox,
+.radio {
+  margin-bottom: 8px;
+}
+
+.checkbox label,
+.radio label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 400;
+  cursor: pointer;
+  margin-bottom: 0;
+}
+
+/* ── Color-coded text replacements ── */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--text-primary) !important;
+}
+
+/* ── Remove old hardcoded color references ── */
+.text-muted { color: var(--text-muted) !important; }
+.text-secondary { color: var(--text-secondary) !important; }
+
+/* ── Consistent icon sizing ── */
+.icon-sm { font-size: 14px; }
+.icon-md { font-size: 18px; }
+.icon-lg { font-size: 24px; }
+
+/* ── Action buttons in tables ── */
+.btn-action-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-action {
+  padding: 4px 8px !important;
+  font-size: 12px !important;
+}
+
+/* ── Status indicators ── */
+.status-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.status-dot.success { background: var(--success); }
+.status-dot.warning { background: var(--warning); }
+.status-dot.danger { background: var(--danger); }
+.status-dot.info { background: var(--info); }
+
+/* ── Consistent spacing for breadcrumbs and headers ── */
+.page-title + .page-subtitle {
+  margin-top: 4px;
+}
+
+/* ── DataTables responsive adjustments ── */
+.dataTables_wrapper .dataTables_length,
+.dataTables_wrapper .dataTables_filter {
+  margin-bottom: 16px;
+}
+
+.dataTables_wrapper .dataTables_info,
+.dataTables_wrapper .dataTables_paginate {
+  margin-top: 16px;
+}
+
+/* ── Ensure consistent form control heights ── */
+.form-control[type="date"],
+.form-control[type="time"],
+.form-control[type="datetime-local"],
+.form-control[type="month"],
+.form-control[type="number"],
+.form-control[type="email"],
+.form-control[type="text"],
+.form-control[type="password"],
+.form-control[type="search"],
+.form-control[type="url"],
+.form-control[type="tel"] {
+  height: 38px;
+  padding: 8px 12px;
+}
+
+/* ── Input group addon consistency ── */
+.input-group-btn .btn {
+  height: 38px;
+}
+
+/* ── Consistent navbar items ── */
+.navbar-brand {
+  font-weight: 700;
+  font-size: 16px;
+}
+
+/* ── Consistent menu/dropdown styling ── */
+.btn-group > .btn {
+  border-radius: 0 !important;
+}
+
+.btn-group > .btn:first-child {
+  border-radius: var(--radius) 0 0 var(--radius) !important;
+}
+
+.btn-group > .btn:last-child {
+  border-radius: 0 var(--radius) var(--radius) 0 !important;
+}
+
+/* =============================================================
+   Modern Dashboard Navigation Cards (Overriding legacy .nav-box)
+   ============================================================= */
+.nav-box {
+  background: var(--card-bg) !important;
+  border: 1px solid var(--card-border) !important;
+  border-radius: var(--card-radius) !important;
+  box-shadow: var(--card-shadow) !important;
+  padding: 24px 20px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  height: 165px !important;
+  margin: 10px 0 !important;
+  color: var(--text-primary) !important;
+  transition: var(--transition) !important;
+  text-decoration: none !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+.nav-box:hover {
+  background: var(--card-bg) !important;
+  box-shadow: var(--card-shadow-hover) !important;
+  transform: translateY(-4px) !important;
+  border-color: var(--primary) !important;
+  color: var(--primary) !important;
+  text-decoration: none !important;
+}
+
+.nav-box h2 {
+  font-size: 15px !important;
+  font-weight: 600 !important;
+  color: var(--text-primary) !important;
+  margin: 14px 0 0 0 !important;
+  padding: 0 !important;
+  top: auto !important;
+  transform: none !important;
+  -webkit-transform: none !important;
+  -ms-transform: none !important;
+  transition: color 0.2s !important;
+}
+
+.nav-box:hover h2 {
+  color: var(--primary) !important;
+}
+
+.nav-box .nav-card-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  background: var(--primary-light);
+  color: var(--primary);
+  transition: var(--transition);
+}
+
+.nav-box:hover .nav-card-icon {
+  background: var(--primary);
+  color: #ffffff;
+}
+
+/* Specific colored icon containers for variety */
+.nav-box.card-primary .nav-card-icon { background: var(--primary-light); color: var(--primary); }
+.nav-box.card-success .nav-card-icon { background: var(--success-light); color: var(--success); }
+.nav-box.card-warning .nav-card-icon { background: var(--warning-light); color: var(--warning); }
+.nav-box.card-danger .nav-card-icon  { background: var(--danger-light);  color: var(--danger); }
+.nav-box.card-info .nav-card-icon    { background: var(--info-light);    color: var(--info); }
+
+.nav-box.card-primary:hover .nav-card-icon { background: var(--primary); color: white; }
+.nav-box.card-success:hover .nav-card-icon { background: var(--success); color: white; }
+.nav-box.card-warning:hover .nav-card-icon { background: var(--warning); color: white; }
+.nav-box.card-danger:hover .nav-card-icon  { background: var(--danger);  color: white; }
+.nav-box.card-info:hover .nav-card-icon    { background: var(--info);    color: white; }
+
+/* =============================================================
+   LAYOUT OVERFLOW FIXES
+   Prevents elements from breaking out of their Bootstrap columns
+   ============================================================= */
+
+/* Ensure all Bootstrap columns clip overflow content */
+[class*="col-"] {
+  min-width: 0;
+}
+
+/* Prevent panels from overflowing their column containers */
+.col-md-6 > .panel,
+.col-md-6 > .custom-panel,
+.col-sm-6 > .panel,
+.col-sm-6 > .custom-panel,
+.col-lg-3 > .panel,
+.col-lg-3 > .custom-panel,
+.col-md-4 > .panel,
+.col-md-4 > .custom-panel,
+.col-md-8 > .panel,
+.col-md-8 > .custom-panel {
+  max-width: 100%;
+  overflow: hidden;
+}
+
+/* Ensure dashboard row children have consistent bottom spacing */
+#dashboard-content > [class*="col-"] {
+  margin-bottom: 0;
+}
+
+/* Fix employee ID card widget — prevent fixed-size elements from bleeding */
+#employee-id-card {
+  max-width: 100%;
+  height: auto !important;
+}
+
+/* Ensure the profile panel inner row columns stack gracefully */
+.custom-panel .panel-body .row [class*="col-"] {
+  min-width: 0;
+  overflow: hidden;
+}
+
+/* Stat cards: ensure equal height in their row */
+.row .col-lg-3.col-md-6 > .stat-card,
+.row .col-md-4 > .panel,
+.row .col-md-8 > .panel {
+  height: 100%;
+  margin-bottom: 0;
+}
+
+/* Clock display — prevent text overflow on narrow screens */
+#clock-display {
+  word-break: break-all;
+  overflow-wrap: break-word;
+}
+
+/* Admin dashboard page header bar — ensure it wraps instead of overflowing */
+.page-header-bar {
+  flex-wrap: wrap;
+}
+
+/* Ensure Bootstrap rows within panel bodies don't create negative-margin overflow */
+.panel-body > .row,
+.panel-body > .row:first-child {
+  margin-left: -10px;
+  margin-right: -10px;
+}
+
+.panel-body > .row > [class*="col-"] {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+/* Fix the dashboard stat card row alignment */
+.row .col-lg-3.col-md-6 {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Mobile: stack employee dashboard two-column layout */
+@media (max-width: 767px) {
+  #dashboard-content > .col-md-6 {
+    margin-bottom: 20px;
+  }
+
+  #employee-id-card {
+    max-width: 200px;
+    margin: 0 auto;
+    display: block !important;
+  }
+
+  .panel-body > .row > .col-sm-6 {
+    width: 100%;
+    float: none;
+  }
 }

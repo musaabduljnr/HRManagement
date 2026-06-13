@@ -53,7 +53,8 @@ class SalaryComponentsController extends Controller
                     'editUrl' => route('settings.salary_components.edit', $salaryComponent->id)
                 ]);
             })
-            ->make();
+            ->escapeColumns([])
+            ->make(true);
     }
 
     /**

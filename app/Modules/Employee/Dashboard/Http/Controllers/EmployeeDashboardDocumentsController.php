@@ -37,7 +37,8 @@ class EmployeeDashboardDocumentsController extends Controller
                     'downloadUrl' => route('employee.dashboard_documents.download', $document->id)
                 ]);
             })
-            ->make();
+            ->escapeColumns([])
+            ->make(true);
     }
 
     public function download($id) 
