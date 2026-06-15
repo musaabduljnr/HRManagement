@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # Clear configurations
+rm -f bootstrap/cache/config.php
 php artisan config:clear
 php artisan cache:clear
 
