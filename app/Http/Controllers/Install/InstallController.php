@@ -166,7 +166,7 @@ class InstallController extends Controller
                 try {
                     DB::table('system_settings')->updateOrInsert(
                         ['key' => 'app_installed'],
-                        ['value' => 'true', 'updated_at' => now()]
+                        ['value' => 'true', 'updated_at' => date('Y-m-d H:i:s')]
                     );
                 } catch (\Exception $e) {
                     return back()->with('error', 'Failed to update installation flag in database: ' . $e->getMessage());
