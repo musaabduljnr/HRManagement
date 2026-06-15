@@ -17,8 +17,12 @@
                         <canvas id="qr-code-canvas"></canvas>
                         <!-- QR Expire overlay/countdown -->
                         <div id="qr-timer" style="position: absolute; bottom: -20px; left: 0; right: 0; text-align: center; color: #fff; font-size: 11px; font-weight: 600;">
-                            Rotating in <span id="countdown-secs">30</span>s
+                            Static ID Card QR Code
                         </div>
+                    </div>
+
+                    <div style="margin-bottom: 15px;">
+                        <button type="button" class="btn btn-sm btn-info" onclick="window.print()" style="border-radius: 20px;"><i class="glyphicon glyphicon-print"></i> Print QR Badge</button>
                     </div>
 
                     <div style="font-weight: 600; font-size: 18px; margin-bottom: 5px; margin-top: 15px;">
@@ -218,37 +222,14 @@ document.addEventListener('DOMContentLoaded', function() {
         level: 'H'
     });
 
-    // 1. Dynamic Rotating QR Codes
-    function fetchAndRotateQr() {
-        fetch("{{ route('employee.attendance.token') }}")
-        .then(res => res.json())
-        .then(data => {
-            if (data.token) {
-                qr.set({ value: data.token });
-                resetCountdown(data.expires_in || 30);
-            }
-        })
-        .catch(err => console.error("QR rotation fetch error:", err));
-    }
+    // 1. Dynamic Rotating QR Codes (Disabled to use Static Unique ID Card QR)
+    // function fetchAndRotateQr() {
+    //     fetch("{{ route('employee.attendance.token') }}")
+    //     ...
+    // }
 
-    function resetCountdown(duration) {
-        clearInterval(countdownInterval);
-        countdownSecs = duration;
-        document.getElementById('countdown-secs').textContent = countdownSecs;
-
-        countdownInterval = setInterval(() => {
-            countdownSecs--;
-            if (countdownSecs <= 0) {
-                clearInterval(countdownInterval);
-                fetchAndRotateQr();
-            } else {
-                document.getElementById('countdown-secs').textContent = countdownSecs;
-            }
-        }, 1000);
-    }
-
-    // Start rotation countdown
-    resetCountdown(30);
+    // Use Static Default QR Code for ID Card
+    document.getElementById('qr-timer').innerHTML = 'Static ID Badge QR';
 
     // 2. Local Device Fingerprinting
     function getOrGenerateDeviceUuid() {

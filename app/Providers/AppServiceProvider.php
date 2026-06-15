@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Schema;
 use View;
 
 class AppServiceProvider extends ServiceProvider
@@ -14,6 +15,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        Schema::defaultStringLength(191);
         View::addNamespace('pim', base_path('app/Modules/Pim/resources/views'));
         View::addNamespace('settings', base_path('app/Modules/Settings/resources/views'));
         View::addNamespace('leave', base_path('app/Modules/Leave/resources/views'));
