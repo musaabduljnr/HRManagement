@@ -15,6 +15,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        if (config('app.env') !== 'local') {
+            \URL::forceScheme('https');
+        }
         Schema::defaultStringLength(191);
         View::addNamespace('pim', base_path('app/Modules/Pim/resources/views'));
         View::addNamespace('settings', base_path('app/Modules/Settings/resources/views'));

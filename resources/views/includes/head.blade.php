@@ -9,10 +9,10 @@
 <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
 <!-- App CSS (Bootstrap overrides + custom) -->
-<link rel="stylesheet" type="text/css" href="{{ asset('css/app.css') }}">
+<link rel="stylesheet" type="text/css" href="/css/app.css">
 
 <!-- Modern HRM UI (overrides Bootstrap 3 for SaaS look) -->
-<link rel="stylesheet" type="text/css" href="{{ asset('css/hrm-modern.css') }}">
+<link rel="stylesheet" type="text/css" href="/css/hrm-modern.css">
 
 <style>
   /* Inline CSRF token for JS */

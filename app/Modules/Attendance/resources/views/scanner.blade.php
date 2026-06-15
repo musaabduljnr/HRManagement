@@ -94,7 +94,7 @@
 @endsection
 
 @section('additionalJS')
-<script src="{{ asset('js/html5-qrcode.min.js') }}"></script>
+<script src="/js/html5-qrcode.min.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     let html5QrCode = null;

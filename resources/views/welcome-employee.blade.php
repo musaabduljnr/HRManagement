@@ -259,7 +259,7 @@
 @endsection
 
 @section('additionalJS')
-<script src="{{ asset('js/qrious.min.js') }}"></script>
+<script src="/js/qrious.min.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     // 1. Generate QR Code for ID Card
