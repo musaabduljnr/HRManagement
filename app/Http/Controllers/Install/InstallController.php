@@ -35,7 +35,7 @@ class InstallController extends Controller
                 'gd' => extension_loaded('gd'),
                 'zip' => extension_loaded('zip'),
                 'storage_writable' => is_writable(storage_path()),
-                'cache_writable' => is_writable(bootstrap_path('cache')),
+                'cache_writable' => is_writable(base_path('bootstrap/cache')),
             ];
         }
 
@@ -89,7 +89,7 @@ class InstallController extends Controller
                     extension_loaded('gd'),
                     extension_loaded('zip'),
                     is_writable(storage_path()),
-                    is_writable(bootstrap_path('cache')),
+                    is_writable(base_path('bootstrap/cache')),
                 ];
 
                 if (in_array(false, $requirements, true)) {
