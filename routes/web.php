@@ -654,3 +654,9 @@ Route::group(['prefix' => 'employee', 'as' => 'employee.', 'middleware' => ['aut
     Route::post('profile/bank-details', '\App\Http\Controllers\Employee\HomeController@updateBankDetails')->name('profile.bank_details');
 });
 Auth::routes();
+
+// Installation Wizard Routes
+Route::group(['prefix' => 'install'], function () {
+    Route::get('/', '\App\Http\Controllers\Install\InstallController@index')->name('install.index');
+    Route::post('/step/{step}', '\App\Http\Controllers\Install\InstallController@postStep')->name('install.step');
+});
