@@ -29,6 +29,11 @@ RUN docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-di
         mbstring \
         tokenizer
 
+# Disable event and worker MPMs, enable prefork MPM (required by mod_php)
+RUN a2dismod mpm_event || true \
+    && a2dismod mpm_worker || true \
+    && a2enmod mpm_prefork || true
+
 # Enable Apache mod_rewrite
 RUN a2enmod rewrite
 
