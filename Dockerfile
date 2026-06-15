@@ -1,7 +1,12 @@
 FROM php:7.1-apache
 
+# Replace sources.list with archive repositories for Debian Buster EOL
+RUN echo "deb http://archive.debian.org/debian/ buster main contrib non-free" > /etc/apt/sources.list && \
+    echo "deb http://archive.debian.org/debian-security/ buster/updates main contrib non-free" >> /etc/apt/sources.list && \
+    echo "deb http://archive.debian.org/debian/ buster-updates main contrib non-free" >> /etc/apt/sources.list
+
 # Install system dependencies
-RUN apt-get update && apt-get install -y \
+RUN apt-get update -o Acquire::Check-Valid-Until=false && apt-get install -y \
     libmcrypt-dev \
     libpng-dev \
     libjpeg-dev \
