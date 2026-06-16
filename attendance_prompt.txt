@@ -1,0 +1,161 @@
+<USER_REQUEST>
+# Attendance System Upgrade - Enterprise Shift-Based QR Attendance
+
+Upgrade the existing attendance module in my Laravel HRM system into a secure, enterprise-grade, shift-based attendance management system.
+
+The current system already has QR attendance. Refactor and improve it without breaking existing HRM functionality.
+
+## Core Architecture
+
+The system must use:
+
+* Attendance Rules
+* Auto-generated Daily Attendance Sessions
+* Dynamic QR Codes
+* GPS Validation
+* Selfie Verification
+* Device Fingerprinting
+* Shift Support
+* Check-in and Check-out Validation
+* Attendance Monitoring Dashboard
+* Automated Attendance Processing
+
+---
+
+# 1. Attendance Rules
+
+Create a robust attendance rule system.
+
+Create `attendance_rules` table with:
+
+* id
+* company_id
+* rule_name
+* shift_name
+* branch_id nullable
+* department_id nullable
+* applies_to enum:
+
+  * all_employees
+  * branch
+  * department
+  * selected_employees
+* employee_ids JSON nullable
+* working_days JSON
+* check_in_start_time
+* grace_period_minutes
+* check_in_cutoff_time
+* check_out_enabled boolean
+* check_out_start_time
+* check_out_cutoff_time
+* minimum_work_duration_minutes
+* office_latitude
+* office_longitude
+* allowed_radius_meters
+* selfie_required boolean
+* checkout_selfie_required boolean
+* device_lock_required boolean
+* auto_mark_absent boolean
+* auto_mark_missed_checkout boolean
+* status active/inactive
+* created_by
+* timestamps
+
+HR/Admin must be able to create unlimited attendance rules.
+
+Examples:
+
+Morning Shift:
+
+* 8:00 AM - 5:00 PM
+
+Afternoon Shift:
+
+* 2:00 PM - 10:00 PM
+
+Night Shift:
+
+* 7:00 PM - 6:00 AM
+
+Remote Team:
+
+* Different GPS settings
+
+---
+
+# 2. Rule Assignment Logic
+
+Allow rules to be assigned to:
+
+* Entire company
+* Branch
+* Department
+* Specific employees
+
+Rule priority:
+
+1. Employee-specific rule
+2. Department rule
+3. Branch rule
+4. Company-wide rule
+
+Prevent conflicting active rules for the same employee and schedule.
+
+Add 
+<truncated 5577 bytes>
+ing
+* QR screenshots
+* Duplicate attendance
+* Fake GPS attempts where possible
+* Multiple device abuse
+* Multiple check-ins
+* Multiple check-outs
+* Session tampering
+
+Use:
+
+* Middleware
+* Policies
+* Form Requests
+* Service Classes
+* Database Transactions
+* Queued Jobs where appropriate
+
+---
+
+# 18. Development Requirements
+
+* Laravel best practices only
+* Clean architecture
+* Service classes for attendance logic
+* Use migrations, models, repositories where needed
+* Maintain existing authentication
+* Maintain existing HRM functionality
+* Maintain existing employee records
+* Use Tailwind CSS
+* Mobile responsive
+* Production ready
+* Well documented code
+* No breaking changes
+* No placeholder implementation
+* Fully functional implementation
+
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-06-14T00:20:48+01:00.
+
+The user's current state is as follows:
+Active Document: c:\Users\user\OneDrive\Desktop\HRMan\hrm\app\ActivityLog.php (LANGUAGE_PHP)
+Cursor is on line: 1
+Other open documents:
+- c:\Users\user\OneDrive\Desktop\HRMan\hrm\routes\web.php (LANGUAGE_PHP)
+- c:\Users\user\OneDrive\Desktop\HRMan\hrm\app\Modules\Pim\resources\views\payroll\index.blade.php (LANGUAGE_BLADE)
+- c:\Users\user\OneDrive\Desktop\HRMan\hrm\app\ActivityLog.php (LANGUAGE_PHP)
+- c:\Users\user\OneDrive\Desktop\HRMan\hrm\app\Modules\Pim\Http\Controllers\PayrollController.php (LANGUAGE_PHP)
+- c:\Users\user\OneDrive\Desktop\HRMan\hrm\app\Modules\Attendance\Http\Controllers\AttendanceController.php (LANGUAGE_PHP)
+Running terminal commands:
+- ..\\php7\php.exe artisan serve --host=127.0.0.1 --port=8000 (in c:\Users\user\OneDrive\Desktop\HRMan\hrm, running for 28m2s)
+</ADDITIONAL_METADATA>
+<USER_SETTINGS_CHANGE>
+The user changed setting `Model Selection` from Gemini 3.5 Flash (Medium) to Claude Sonnet 4.6 (Thinking). No need to comment on this change if the user doesn't ask about it. If reporting what model you are, please use a human readable name instead of the exact string.
+</USER_SETTINGS_CHANGE>

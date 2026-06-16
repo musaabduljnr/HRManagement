@@ -130,7 +130,7 @@ class EmployeeDocumentsController extends Controller
     public function store($employeeId, EmployeeDocumentRequest $request)
     {
         $documentData = $request->only(['name', 'description']) + ['user_id' => $employeeId];
-        $attachment = $request->attachment->store('uploads/salaries');
+        $attachment = $request->attachment->store('uploads/documents');
         $documentData['attachment'] = $attachment;
         $documentData = $this->employeeDocumentRepository->create($documentData);
         $request->session()->flash('success', trans('app.pim.employees.documents.store_success'));
@@ -182,7 +182,7 @@ class EmployeeDocumentsController extends Controller
     {
         $documentData = $request->only(['name', 'description']) + ['user_id' => $employeeId];
         if($request->hasFile('attachment')) {
-            $attachment = $request->attachment->store('uploads/salaries');
+            $attachment = $request->attachment->store('uploads/documents');
             $documentData['attachment'] = $attachment;
         }
         $documentData = $this->employeeDocumentRepository->update($id, $documentData);

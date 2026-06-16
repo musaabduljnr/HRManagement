@@ -17,8 +17,12 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function(
     Route::get('/', '\App\Http\Controllers\Admin\HomeController@index')->name('home');
 
     Route::get('/storage/{path}', function($path) {
-        return response()->file(storage_path().'/app/'.$path);
-    })->name('storage')->where('path','(.*)')->middleware(['auth', 'admin']);
+        $fullPath = storage_path('app/' . $path);
+        if (!file_exists($fullPath)) {
+            abort(404);
+        }
+        return response()->file($fullPath);
+    })->name('storage')->where('path', '(.*)')->middleware('auth');
     Route::resource('profile', '\App\Http\Controllers\Admin\ProfileController', 
         [
             'middleware' => ['auth', 'admin'], 
@@ -656,6 +660,17 @@ Route::group(['prefix' => 'employee', 'as' => 'employee.', 'middleware' => ['aut
     Route::post('profile/bank-details', '\App\Http\Controllers\Employee\HomeController@updateBankDetails')->name('profile.bank_details');
 });
 Auth::routes();
+
+// Fallback route to serve public storage assets (profile photos, etc.)
+// This handles Railway/Docker deployments where the symlink may not exist.
+Route::get('/storage/{path}', function($path) {
+    $fullPath = storage_path('app/public/' . $path);
+    if (!file_exists($fullPath)) {
+        abort(404);
+    }
+    return response()->file($fullPath);
+})->where('path', '(.*)');
+
 
 // Installation Wizard Routes
 Route::group(['prefix' => 'install'], function () {

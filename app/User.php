@@ -78,14 +78,14 @@ class User extends Authenticatable
     }
 
     /**
-     * Return the public URL of the profile photo, or null if none uploaded.
+     * Return the public URL of the profile photo, or a default avatar if none uploaded.
      */
     public function getProfilePhotoUrlAttribute()
     {
         if ($this->profile_photo) {
             return asset('storage/' . $this->profile_photo);
         }
-        return null;
+        return asset('images/default-avatar.svg');
     }
 
     public function department()

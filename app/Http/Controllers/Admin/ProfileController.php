@@ -34,7 +34,7 @@ class ProfileController extends Controller
      */
     public function uploadPhoto(Request $request)
     {
-        $request->validate([
+        $this->validate($request, [
             'profile_photo' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:3072',
         ]);
 

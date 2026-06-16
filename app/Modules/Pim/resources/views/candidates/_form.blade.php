@@ -67,7 +67,7 @@
     <div class="col-sm-6">
         {!! Form::file('resume', ['class' => 'form-control']) !!}
         @if(@$application->resume_path)
-            <p class="help-block"><a href="{{ route('storage', str_replace('uploads/', '', $application->resume_path)) }}" target="_blank">View Uploaded Resume</a></p>
+            <p class="help-block"><a href="{{ route('storage', $application->resume_path) }}" target="_blank">View Uploaded Resume</a></p>
         @endif
     </div>
 </div>

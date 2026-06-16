@@ -14,6 +14,11 @@
     {!! Form::label('attachment', trans('app.settings.job_positions.attachment').':', ['class' => 'col-sm-3']) !!}
     <div class="col-sm-6">
         {!! Form::input('file', 'attachment', null, ['class' => 'form-control']) !!}
+        @if(isset($jobPosition) && $jobPosition->attachment)
+            <p class="help-block">
+                Current file: <a href="{{ route('storage', $jobPosition->attachment) }}" target="_blank">View Attachment</a>
+            </p>
+        @endif
     </div>
 </div>
 @include('errors._form-errors')
