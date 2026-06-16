@@ -94,7 +94,7 @@ class AttendanceRulesController extends Controller
         if (!$data['check_out_enabled']) {
             $data['check_out_start_time'] = null;
             $data['check_out_cutoff_time'] = null;
-            $data['minimum_work_duration_minutes'] = null;
+            $data['minimum_work_duration_minutes'] = 0;
         }
 
         // Clean up remaining empty string fields
@@ -102,6 +102,14 @@ class AttendanceRulesController extends Controller
             if ($value === '') {
                 $data[$key] = null;
             }
+        }
+
+        // Handle non-nullable columns with defaults
+        if (is_null($data['minimum_work_duration_minutes'] ?? null)) {
+            $data['minimum_work_duration_minutes'] = 0;
+        }
+        if (is_null($data['grace_period_minutes'] ?? null)) {
+            $data['grace_period_minutes'] = 0;
         }
 
         $rule = AttendanceRule::create($data);
@@ -194,7 +202,7 @@ class AttendanceRulesController extends Controller
         if (!$data['check_out_enabled']) {
             $data['check_out_start_time'] = null;
             $data['check_out_cutoff_time'] = null;
-            $data['minimum_work_duration_minutes'] = null;
+            $data['minimum_work_duration_minutes'] = 0;
         }
 
         // Clean up remaining empty string fields
@@ -202,6 +210,14 @@ class AttendanceRulesController extends Controller
             if ($value === '') {
                 $data[$key] = null;
             }
+        }
+
+        // Handle non-nullable columns with defaults
+        if (is_null($data['minimum_work_duration_minutes'] ?? null)) {
+            $data['minimum_work_duration_minutes'] = 0;
+        }
+        if (is_null($data['grace_period_minutes'] ?? null)) {
+            $data['grace_period_minutes'] = 0;
         }
 
         $rule->update($data);
