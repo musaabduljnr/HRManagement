@@ -91,11 +91,17 @@ class AssetsModuleTest extends TestCase
             'actual_return_date' => date('Y-m-d')
         ]);
         $asset->update(['current_status' => 'Available']);
-
         $this->assertEquals('Available', $asset->fresh()->current_status);
         $this->assertDatabaseHas('asset_assignments', [
             'id' => $assignment->id,
             'status' => 'Returned'
         ]);
+    }
+
+    public function test_non_soft_deletes_query_resolution()
+    {
+        $repo = app(\App\Modules\Assets\Repositories\Interfaces\AssetAssignmentRepositoryInterface::class);
+        $collection = $repo->getCollection([]);
+        $this->assertNotNull($collection);
     }
 }

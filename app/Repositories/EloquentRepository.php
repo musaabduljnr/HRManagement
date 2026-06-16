@@ -331,7 +331,10 @@ class EloquentRepository
      */
     public function getQry($filter = array(), $columns = [])
     {
-        $response = DB::table($this->model->getTable())->whereNull('deleted_at');
+        $response = DB::table($this->model->getTable());
+        if (in_array('Illuminate\Database\Eloquent\SoftDeletes', class_uses_recursive($this->model))) {
+            $response->whereNull('deleted_at');
+        }
         foreach ($filter as $key => $value) {
             $response->where($value['key'], $value['operator'], $value['value']);
         }
@@ -350,7 +353,10 @@ class EloquentRepository
      */
     public function getCollection($filter = array(), $columns = [], $other = false)
     {
-        $response = $this->model->whereNull('deleted_at');
+        $response = $this->model;
+        if (in_array('Illuminate\Database\Eloquent\SoftDeletes', class_uses_recursive($this->model))) {
+            $response = $response->whereNull($this->model->getTable() . '.deleted_at');
+        }
 
         foreach ($filter as $key => $value) {
             if($value['operator'] == 'between') {
