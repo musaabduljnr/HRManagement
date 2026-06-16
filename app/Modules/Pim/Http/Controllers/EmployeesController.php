@@ -121,13 +121,17 @@ class EmployeesController extends Controller
 
 
         if(env('ZAPIER_BIRTHDAY_HOOK')) {
-            $client = new Guzzle();
-            $client->request('POST', env('ZAPIER_BIRTHDAY_HOOK'), [
-                'json' => [
-                    'date' => $employeeData->birth_date,
-                    'name' => $employeeData->first_name.' '.$employeeData->last_name,
-                ],
-            ]);
+            try {
+                $client = new Guzzle();
+                $client->request('POST', env('ZAPIER_BIRTHDAY_HOOK'), [
+                    'json' => [
+                        'date' => $employeeData->birth_date,
+                        'name' => $employeeData->first_name.' '.$employeeData->last_name,
+                    ],
+                ]);
+            } catch (\Exception $e) {
+                \Log::error('Zapier Birthday Hook request failed: ' . $e->getMessage());
+            }
         }
 
         $request->session()->flash('success', trans('app.pim.employees.store_success'));
@@ -162,11 +166,15 @@ class EmployeesController extends Controller
             'change_pass_route' => url('/password/reset'),
             'signature' => env('APP_NAME', 'HRM')
             ];
-        Mail::send('emails.employee-login-password', $data, function($message) use ($employeeData)
-        {
-            $message->subject(trans('emails.employee_login.subject', ['name' => config('app.name')]));
-            $message->to($employeeData['email']);
-        });
+        try {
+            Mail::send('emails.employee-login-password', $data, function($message) use ($employeeData)
+            {
+                $message->subject(trans('emails.employee_login.subject', ['name' => config('app.name')]));
+                $message->to($employeeData['email']);
+            });
+        } catch (\Exception $e) {
+            \Log::error('Sending welcome email with credentials failed: ' . $e->getMessage());
+        }
     }
 
     /**
