@@ -981,7 +981,7 @@ select.form-control {
 }
 
 /* ── ==============================
-   RESPONSIVE - MOBILE SIDEBAR
+   RESPONSIVE - MOBILE SIDEBAR & LAYOUT OVERRIDES
    ============================== ── */
 @media (max-width: 768px) {
   .hrm-sidebar {
@@ -1020,6 +1020,165 @@ select.form-control {
 
   .sidebar-overlay.active {
     display: block;
+  }
+
+  /* ── 1. Table & Container Responsiveness ── */
+  .panel-body, 
+  .custom-panel .panel-body,
+  .table-responsive,
+  .dataTables_wrapper {
+    width: 100% !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  table.table {
+    min-width: 650px !important; /* Force internal scroll instead of columns crunching */
+  }
+
+  /* ── 2. Topbar enhancements on Mobile ── */
+  .hrm-topbar {
+    padding: 0 16px !important;
+    gap: 8px !important;
+  }
+
+  .topbar-title {
+    font-size: 14px !important;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  .topbar-actions {
+    gap: 6px !important;
+  }
+
+  .topbar-actions a,
+  .topbar-actions button {
+    padding: 6px 10px !important;
+    font-size: 11px !important;
+    gap: 4px !important;
+    height: 32px !important;
+  }
+
+  /* ── 3. Grid stacking safety net ── */
+  .row > [class*="col-"] {
+    width: 100% !important;
+    float: none !important;
+    margin-bottom: 16px !important;
+  }
+
+  .row > [class*="col-"]:last-child {
+    margin-bottom: 0 !important;
+  }
+
+  .row {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    display: block !important;
+  }
+
+  /* ── 4. Compact Forms ── */
+  .form-group label {
+    font-size: 12.5px !important;
+  }
+
+  .form-control {
+    font-size: 13px !important;
+    padding: 8px 10px !important;
+  }
+
+  /* ── 5. Compact Buttons ── */
+  .btn {
+    width: 100% !important;
+    justify-content: center !important;
+    margin-bottom: 8px !important;
+  }
+
+  /* Keep button sizing inline for headers/panel actions */
+  .page-header-bar .btn,
+  .panel-heading .btn,
+  .panel-footer .btn,
+  .modal-footer .btn,
+  .topbar-actions .btn,
+  .btn-action {
+    width: auto !important;
+    margin-bottom: 0 !important;
+    display: inline-flex !important;
+  }
+
+  /* ── 6. Stat Cards & Dashboard Widgets ── */
+  .stat-card {
+    padding: 16px !important;
+    gap: 12px !important;
+  }
+
+  .stat-value {
+    font-size: 22px !important;
+  }
+
+  .nav-box {
+    height: 135px !important;
+    padding: 16px 12px !important;
+    margin: 8px 0 !important;
+  }
+
+  .nav-box h2 {
+    font-size: 13px !important;
+    margin-top: 8px !important;
+  }
+
+  .nav-box .nav-card-icon {
+    width: 40px !important;
+    height: 40px !important;
+    font-size: 16px !important;
+    border-radius: var(--radius) !important;
+  }
+
+  /* ── 7. Modals mobile behavior ── */
+  .modal-dialog {
+    margin: 10px !important;
+    width: auto !important;
+  }
+
+  /* ── 8. Chat view stacking ── */
+  .chat-sidebar {
+    width: 100% !important;
+    max-height: 200px !important;
+    border-right: none !important;
+    border-bottom: 1px solid var(--card-border) !important;
+  }
+
+  #messages-container {
+    height: 280px !important;
+    padding: 12px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  /* ── Action text hide on extremely small viewports ── */
+  .topbar-actions a span,
+  .topbar-actions button span,
+  .topbar-actions .btn span,
+  .topbar-actions a font,
+  .topbar-actions button font {
+    display: none !important; /* Hide text, only show icons */
+  }
+
+  .topbar-actions a,
+  .topbar-actions button {
+    padding: 6px !important;
+    width: 32px !important;
+    height: 32px !important;
+    justify-content: center !important;
+  }
+
+  .sidebar-brand-text {
+    font-size: 14px !important;
+  }
+
+  .page-title {
+    font-size: 18px !important;
   }
 }
 
