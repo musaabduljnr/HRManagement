@@ -73,5 +73,13 @@
             <h2>Job Titles</h2>
         </a>
     </div>
+    <div class="col-lg-3 col-md-4 col-sm-6">
+        <a class="nav-box card-primary" href="{{route('settings.system.index')}}">
+            <div class="nav-card-icon">
+                <i class="fa fa-cogs"></i>
+            </div>
+            <h2>System Settings</h2>
+        </a>
+    </div>
 </div>
 @endsection

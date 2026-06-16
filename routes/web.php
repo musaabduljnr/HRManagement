@@ -35,6 +35,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function(
         Route::get('/', function() {
             return view('settings::index');
         })->name('index');
+        Route::get('system', '\App\Modules\Settings\Http\Controllers\SystemSettingsController@index')->name('system.index');
+        Route::post('system', '\App\Modules\Settings\Http\Controllers\SystemSettingsController@store')->name('system.store');
         Route::get('companies/datatable', '\App\Modules\Settings\Http\Controllers\CompaniesController@getDatatable')
             ->name('companies.datatable');
         

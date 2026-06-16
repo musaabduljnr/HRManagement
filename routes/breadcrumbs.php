@@ -333,6 +333,13 @@ Breadcrumbs::register('settings.salary_components.show', function($breadcrumbs, 
  * Job positions breadcrumbs end here
  */
 
+// Home > Settings > System Settings
+Breadcrumbs::register('settings.system.index', function($breadcrumbs)
+{
+    $breadcrumbs->parent('settings.index');
+    $breadcrumbs->push('System Settings', route('settings.system.index'));
+});
+
 /**
  * Settings breadcrumbs end here
  */

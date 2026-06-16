@@ -227,6 +227,11 @@ class AttendanceController extends Controller
      */
     public function qr()
     {
+        $qrClockinEnabled = \DB::table('system_settings')->where('key', 'qr_clockin_enabled')->value('value') !== 'false';
+        if (!$qrClockinEnabled) {
+            return redirect()->route('employee.home')->with('error', 'QR Code clock-in is disabled by administrator.');
+        }
+
         $user = Auth::user();
 
         // Auto generate attendance token if missing
@@ -257,6 +262,11 @@ class AttendanceController extends Controller
      */
     public function webClock(Request $request)
     {
+        $manualClockinEnabled = \DB::table('system_settings')->where('key', 'manual_clockin_enabled')->value('value') === 'true';
+        if (!$manualClockinEnabled) {
+            return redirect()->back()->with('error', 'Manual web clock-in is disabled by administrator.');
+        }
+
         $user = Auth::user();
         if (!$user) {
             return redirect()->back()->with('error', 'Unauthorized.');

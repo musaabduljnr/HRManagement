@@ -1,6 +1,10 @@
 @extends ('layouts.main_employee')
 
 @section('content')
+<?php
+    $manualClockinEnabled = \DB::table('system_settings')->where('key', 'manual_clockin_enabled')->value('value') === 'true';
+    $qrClockinEnabled = \DB::table('system_settings')->where('key', 'qr_clockin_enabled')->value('value') !== 'false';
+?>
 <div class="row" id="dashboard-content">
     <!-- Profile & ID Card Generator -->
     <div class="col-md-6" style="margin-bottom: 20px;">
@@ -61,9 +65,11 @@
                             </div>
 
                             <!-- QR Code attendance scanner -->
+                            @if($qrClockinEnabled)
                             <div style="margin-top: 15px;">
                                 <canvas id="id-card-qr-canvas" style="background: white; padding: 4px; border-radius: 4px; border: 1px solid #eee;"></canvas>
                             </div>
+                            @endif
 
                             <!-- Unique Identifier & Footer -->
                             <div style="margin-top: 10px; background-color: #f5f5f5; padding: 8px 10px; border-top: 1px solid #e5e5e5; font-size: 10px; color: #777; width: 100%;">
@@ -98,6 +104,7 @@
                     @endif
                 </div>
                 
+                @if($manualClockinEnabled)
                 <form action="{{ route('employee.attendance.web_clock') }}" method="POST">
                     {{ csrf_field() }}
                     @if(!$todayRecord)
@@ -114,6 +121,11 @@
                         </button>
                     @endif
                 </form>
+                @else
+                <div class="alert alert-warning text-center" style="margin: 0 auto; max-width: 320px; font-weight: normal; border-radius: 8px; font-size: 12.5px;">
+                    <i class="fa fa-info-circle"></i> Manual web clock-in is disabled by admin. Please use your official ID badge to scan at a kiosk.
+                </div>
+                @endif
             </div>
         </div>
         
@@ -264,9 +276,10 @@
 document.addEventListener('DOMContentLoaded', function() {
     // 1. Generate QR Code for ID Card
     const token = "{{ $token }}";
-    if (token) {
+    const qrCanvas = document.getElementById('id-card-qr-canvas');
+    if (token && qrCanvas) {
         new QRious({
-            element: document.getElementById('id-card-qr-canvas'),
+            element: qrCanvas,
             value: token,
             size: 110,
             level: 'H'

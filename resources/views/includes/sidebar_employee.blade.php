@@ -110,6 +110,10 @@
             </a>
         </li>
 
+        <?php
+            $qrClockinEnabled = \DB::table('system_settings')->where('key', 'qr_clockin_enabled')->value('value') !== 'false';
+        ?>
+        @if($qrClockinEnabled)
         <li class="sidebar-label">Attendance</li>
 
         <li class="{{ Request::is('employee/attendance*') ? 'active' : '' }}">
@@ -122,6 +126,7 @@
                 QR Attendance
             </a>
         </li>
+        @endif
 
         <li class="sidebar-label">Communication</li>
 
