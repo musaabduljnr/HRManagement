@@ -74,13 +74,35 @@ class AttendanceRulesController extends Controller
         $data['company_id'] = 1; // Default company
         $data['created_by'] = Auth::id();
         $data['working_days'] = json_encode($request->input('working_days'));
-        $data['employee_ids'] = $request->input('employee_ids') ? json_encode($request->input('employee_ids')) : null;
         $data['selfie_required'] = $request->has('selfie_required');
         $data['checkout_selfie_required'] = $request->has('checkout_selfie_required');
         $data['device_lock_required'] = $request->has('device_lock_required');
         $data['auto_mark_absent'] = $request->has('auto_mark_absent');
         $data['auto_mark_missed_checkout'] = $request->has('auto_mark_missed_checkout');
         $data['check_out_enabled'] = $request->has('check_out_enabled');
+
+        // Context-specific nullification
+        if ($data['applies_to'] !== 'department') {
+            $data['department_id'] = null;
+        }
+        if ($data['applies_to'] !== 'selected_employees') {
+            $data['employee_ids'] = null;
+        } else {
+            $data['employee_ids'] = $request->input('employee_ids') ? json_encode($request->input('employee_ids')) : null;
+        }
+
+        if (!$data['check_out_enabled']) {
+            $data['check_out_start_time'] = null;
+            $data['check_out_cutoff_time'] = null;
+            $data['minimum_work_duration_minutes'] = null;
+        }
+
+        // Clean up remaining empty string fields
+        foreach ($data as $key => $value) {
+            if ($value === '') {
+                $data[$key] = null;
+            }
+        }
 
         $rule = AttendanceRule::create($data);
 
@@ -152,13 +174,35 @@ class AttendanceRulesController extends Controller
         $rule = AttendanceRule::findOrFail($id);
         $data = $request->all();
         $data['working_days'] = json_encode($request->input('working_days'));
-        $data['employee_ids'] = $request->input('employee_ids') ? json_encode($request->input('employee_ids')) : null;
         $data['selfie_required'] = $request->has('selfie_required');
         $data['checkout_selfie_required'] = $request->has('checkout_selfie_required');
         $data['device_lock_required'] = $request->has('device_lock_required');
         $data['auto_mark_absent'] = $request->has('auto_mark_absent');
         $data['auto_mark_missed_checkout'] = $request->has('auto_mark_missed_checkout');
         $data['check_out_enabled'] = $request->has('check_out_enabled');
+
+        // Context-specific nullification
+        if ($data['applies_to'] !== 'department') {
+            $data['department_id'] = null;
+        }
+        if ($data['applies_to'] !== 'selected_employees') {
+            $data['employee_ids'] = null;
+        } else {
+            $data['employee_ids'] = $request->input('employee_ids') ? json_encode($request->input('employee_ids')) : null;
+        }
+
+        if (!$data['check_out_enabled']) {
+            $data['check_out_start_time'] = null;
+            $data['check_out_cutoff_time'] = null;
+            $data['minimum_work_duration_minutes'] = null;
+        }
+
+        // Clean up remaining empty string fields
+        foreach ($data as $key => $value) {
+            if ($value === '') {
+                $data[$key] = null;
+            }
+        }
 
         $rule->update($data);
 

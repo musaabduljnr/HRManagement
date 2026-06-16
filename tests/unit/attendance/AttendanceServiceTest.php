@@ -212,4 +212,29 @@ class AttendanceServiceTest extends TestCase
         // Clear mocked time
         Carbon::setTestNow();
     }
+
+    public function test_admin_create_rule_empty_fields()
+    {
+        $data = [
+            'company_id' => 1,
+            'rule_name' => 'Test Rule Empty Fields',
+            'shift_name' => 'Standard Shift',
+            'applies_to' => 'all_employees',
+            'working_days' => json_encode(['Monday', 'Tuesday']),
+            'check_in_start_time' => '08:00:00',
+            'check_in_cutoff_time' => '10:00:00',
+            'check_out_start_time' => '', 
+            'check_out_cutoff_time' => '', 
+            'office_latitude' => '', 
+            'office_longitude' => '', 
+            'allowed_radius_meters' => '', 
+            'minimum_work_duration_minutes' => '', 
+            'grace_period_minutes' => '', 
+            'status' => 'active'
+        ];
+
+        $rule = AttendanceRule::create($data);
+        $this->assertNotNull($rule);
+    }
 }
+
