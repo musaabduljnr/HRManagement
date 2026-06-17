@@ -7,13 +7,16 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ config('app.name', 'HRM') }} — Sign In</title>
 
+    <!-- Font preconnect for performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <!-- Bootstrap 3 base -->
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- App CSS -->
     <link href="/css/app.css" rel="stylesheet">
-    <!-- Modern HRM UI -->
+    <!-- Modern HRM UI v2 — Premium SaaS Design -->
     <link href="/css/hrm-modern.css" rel="stylesheet">
 
     <style>
