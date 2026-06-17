@@ -17,7 +17,7 @@
     <!-- App CSS -->
     <link href="/css/app.css" rel="stylesheet">
     <!-- Modern HRM UI v2 — Premium SaaS Design -->
-    <link href="/css/hrm-modern.css" rel="stylesheet">
+    <link href="/css/hrm-modern.css?v=2.0.3" rel="stylesheet">
 
     <style>
         /* Login page specific */

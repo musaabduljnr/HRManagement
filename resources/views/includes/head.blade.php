@@ -18,4 +18,4 @@
 <link rel="stylesheet" type="text/css" href="/css/app.css">
 
 {{-- Modern HRM UI v2 — Premium SaaS Design --}}
-<link rel="stylesheet" type="text/css" href="/css/hrm-modern.css">
+<link rel="stylesheet" type="text/css" href="/css/hrm-modern.css?v=2.0.3">
